@@ -1,0 +1,187 @@
+[
+  {
+    "word": "The",
+    "start": 0.1,
+    "end": 0.25
+  },
+  {
+    "word": "pigs",
+    "start": 0.263,
+    "end": 0.512
+  },
+  {
+    "word": "gave",
+    "start": 0.525,
+    "end": 0.762
+  },
+  {
+    "word": "bacon",
+    "start": 0.775,
+    "end": 1.2
+  },
+  {
+    "word": "the",
+    "start": 1.438,
+    "end": 1.538
+  },
+  {
+    "word": "cows",
+    "start": 1.55,
+    "end": 1.837
+  },
+  {
+    "word": "gave",
+    "start": 1.85,
+    "end": 2.15
+  },
+  {
+    "word": "milk",
+    "start": 2.163,
+    "end": 2.487
+  },
+  {
+    "word": "and",
+    "start": 2.737,
+    "end": 2.812
+  },
+  {
+    "word": "the",
+    "start": 2.825,
+    "end": 2.888
+  },
+  {
+    "word": "sheep",
+    "start": 2.9,
+    "end": 3.2
+  },
+  {
+    "word": "gave",
+    "start": 3.212,
+    "end": 3.5
+  },
+  {
+    "word": "wool",
+    "start": 3.513,
+    "end": 3.875
+  },
+  {
+    "word": "The",
+    "start": 4.737,
+    "end": 4.9
+  },
+  {
+    "word": "widow",
+    "start": 4.912,
+    "end": 5.263
+  },
+  {
+    "word": "sold",
+    "start": 5.275,
+    "end": 5.575
+  },
+  {
+    "word": "these",
+    "start": 5.588,
+    "end": 5.862
+  },
+  {
+    "word": "at",
+    "start": 5.875,
+    "end": 5.925
+  },
+  {
+    "word": "the",
+    "start": 5.938,
+    "end": 6.0
+  },
+  {
+    "word": "market",
+    "start": 6.013,
+    "end": 6.4
+  },
+  {
+    "word": "to",
+    "start": 6.412,
+    "end": 6.513
+  },
+  {
+    "word": "earn",
+    "start": 6.525,
+    "end": 6.725
+  },
+  {
+    "word": "money",
+    "start": 6.737,
+    "end": 6.987
+  },
+  {
+    "word": "for",
+    "start": 7.0,
+    "end": 7.112
+  },
+  {
+    "word": "her",
+    "start": 7.125,
+    "end": 7.338
+  },
+  {
+    "word": "family",
+    "start": 7.35,
+    "end": 7.812
+  },
+  {
+    "word": "It",
+    "start": 8.675,
+    "end": 8.838
+  },
+  {
+    "word": "was",
+    "start": 8.85,
+    "end": 8.988
+  },
+  {
+    "word": "hard",
+    "start": 9.0,
+    "end": 9.287
+  },
+  {
+    "word": "work",
+    "start": 9.3,
+    "end": 9.688
+  },
+  {
+    "word": "but",
+    "start": 9.85,
+    "end": 9.95
+  },
+  {
+    "word": "it",
+    "start": 9.963,
+    "end": 10.05
+  },
+  {
+    "word": "kept",
+    "start": 10.062,
+    "end": 10.312
+  },
+  {
+    "word": "everyone",
+    "start": 10.325,
+    "end": 10.738
+  },
+  {
+    "word": "fed",
+    "start": 10.75,
+    "end": 11.025
+  },
+  {
+    "word": "and",
+    "start": 11.037,
+    "end": 11.125
+  },
+  {
+    "word": "happy",
+    "start": 11.137,
+    "end": 11.537
+  }
+]

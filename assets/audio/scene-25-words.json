@@ -1,0 +1,267 @@
+[
+  {
+    "word": "Oh",
+    "start": 0.1,
+    "end": 0.362
+  },
+  {
+    "word": "what",
+    "start": 0.588,
+    "end": 0.775
+  },
+  {
+    "word": "a",
+    "start": 0.787,
+    "end": 0.85
+  },
+  {
+    "word": "villain",
+    "start": 0.863,
+    "end": 1.175
+  },
+  {
+    "word": "that",
+    "start": 1.188,
+    "end": 1.413
+  },
+  {
+    "word": "fox",
+    "start": 1.425,
+    "end": 1.762
+  },
+  {
+    "word": "was",
+    "start": 1.775,
+    "end": 2.175
+  },
+  {
+    "word": "As",
+    "start": 3.038,
+    "end": 3.25
+  },
+  {
+    "word": "tricky",
+    "start": 3.263,
+    "end": 3.638
+  },
+  {
+    "word": "as",
+    "start": 3.65,
+    "end": 3.788
+  },
+  {
+    "word": "any",
+    "start": 3.8,
+    "end": 4.0
+  },
+  {
+    "word": "deceiver",
+    "start": 4.013,
+    "end": 4.513
+  },
+  {
+    "word": "in",
+    "start": 4.525,
+    "end": 4.625
+  },
+  {
+    "word": "history",
+    "start": 4.638,
+    "end": 5.15
+  },
+  {
+    "word": "Poor",
+    "start": 6.013,
+    "end": 6.263
+  },
+  {
+    "word": "Chanticleer",
+    "start": 6.275,
+    "end": 7.025
+  },
+  {
+    "word": "it",
+    "start": 7.225,
+    "end": 7.325
+  },
+  {
+    "word": "was",
+    "start": 7.338,
+    "end": 7.463
+  },
+  {
+    "word": "an",
+    "start": 7.475,
+    "end": 7.575
+  },
+  {
+    "word": "unlucky",
+    "start": 7.588,
+    "end": 8.012
+  },
+  {
+    "word": "day",
+    "start": 8.025,
+    "end": 8.25
+  },
+  {
+    "word": "when",
+    "start": 8.262,
+    "end": 8.425
+  },
+  {
+    "word": "he",
+    "start": 8.438,
+    "end": 8.562
+  },
+  {
+    "word": "flew",
+    "start": 8.575,
+    "end": 8.85
+  },
+  {
+    "word": "down",
+    "start": 8.863,
+    "end": 9.15
+  },
+  {
+    "word": "from",
+    "start": 9.162,
+    "end": 9.325
+  },
+  {
+    "word": "his",
+    "start": 9.338,
+    "end": 9.512
+  },
+  {
+    "word": "perch",
+    "start": 9.525,
+    "end": 10.1
+  },
+  {
+    "word": "His",
+    "start": 10.963,
+    "end": 11.2
+  },
+  {
+    "word": "dream",
+    "start": 11.213,
+    "end": 11.525
+  },
+  {
+    "word": "had",
+    "start": 11.537,
+    "end": 11.688
+  },
+  {
+    "word": "warned",
+    "start": 11.7,
+    "end": 11.963
+  },
+  {
+    "word": "him",
+    "start": 11.975,
+    "end": 12.088
+  },
+  {
+    "word": "of",
+    "start": 12.1,
+    "end": 12.188
+  },
+  {
+    "word": "danger",
+    "start": 12.2,
+    "end": 12.662
+  },
+  {
+    "word": "but",
+    "start": 12.775,
+    "end": 12.912
+  },
+  {
+    "word": "Pertelote",
+    "start": 12.925,
+    "end": 13.375
+  },
+  {
+    "word": "had",
+    "start": 13.387,
+    "end": 13.588
+  },
+  {
+    "word": "told",
+    "start": 13.6,
+    "end": 13.863
+  },
+  {
+    "word": "him",
+    "start": 13.875,
+    "end": 14.0
+  },
+  {
+    "word": "to",
+    "start": 14.012,
+    "end": 14.125
+  },
+  {
+    "word": "ignore",
+    "start": 14.137,
+    "end": 14.488
+  },
+  {
+    "word": "it",
+    "start": 14.5,
+    "end": 14.713
+  },
+  {
+    "word": "And",
+    "start": 15.575,
+    "end": 15.775
+  },
+  {
+    "word": "now",
+    "start": 15.787,
+    "end": 16.0
+  },
+  {
+    "word": "he",
+    "start": 16.012,
+    "end": 16.163
+  },
+  {
+    "word": "was",
+    "start": 16.175,
+    "end": 16.337
+  },
+  {
+    "word": "walking",
+    "start": 16.35,
+    "end": 16.762
+  },
+  {
+    "word": "right",
+    "start": 16.775,
+    "end": 17.038
+  },
+  {
+    "word": "into",
+    "start": 17.05,
+    "end": 17.325
+  },
+  {
+    "word": "the",
+    "start": 17.337,
+    "end": 17.425
+  },
+  {
+    "word": "fox's",
+    "start": 17.438,
+    "end": 17.887
+  },
+  {
+    "word": "trap",
+    "start": 17.9,
+    "end": 18.325
+  }
+]

@@ -1,0 +1,422 @@
+[
+  {
+    "word": "As",
+    "start": 0.1,
+    "end": 0.3
+  },
+  {
+    "word": "the",
+    "start": 0.312,
+    "end": 0.4
+  },
+  {
+    "word": "fox",
+    "start": 0.412,
+    "end": 0.738
+  },
+  {
+    "word": "ran",
+    "start": 0.75,
+    "end": 1.075
+  },
+  {
+    "word": "Chanticleer",
+    "start": 1.238,
+    "end": 1.85
+  },
+  {
+    "word": "called",
+    "start": 1.863,
+    "end": 2.125
+  },
+  {
+    "word": "out",
+    "start": 2.138,
+    "end": 2.362
+  },
+  {
+    "word": "Sir",
+    "start": 2.538,
+    "end": 2.7
+  },
+  {
+    "word": "Fox",
+    "start": 2.712,
+    "end": 3.212
+  },
+  {
+    "word": "I",
+    "start": 3.4,
+    "end": 3.45
+  },
+  {
+    "word": "know",
+    "start": 3.462,
+    "end": 3.675
+  },
+  {
+    "word": "you've",
+    "start": 3.688,
+    "end": 3.925
+  },
+  {
+    "word": "caught",
+    "start": 3.938,
+    "end": 4.213
+  },
+  {
+    "word": "me",
+    "start": 4.225,
+    "end": 4.412
+  },
+  {
+    "word": "but",
+    "start": 4.6,
+    "end": 4.7
+  },
+  {
+    "word": "before",
+    "start": 4.713,
+    "end": 4.987
+  },
+  {
+    "word": "you",
+    "start": 5.0,
+    "end": 5.175
+  },
+  {
+    "word": "eat",
+    "start": 5.188,
+    "end": 5.425
+  },
+  {
+    "word": "me",
+    "start": 5.438,
+    "end": 5.6
+  },
+  {
+    "word": "wouldn't",
+    "start": 5.862,
+    "end": 6.1
+  },
+  {
+    "word": "you",
+    "start": 6.112,
+    "end": 6.188
+  },
+  {
+    "word": "like",
+    "start": 6.2,
+    "end": 6.375
+  },
+  {
+    "word": "to",
+    "start": 6.388,
+    "end": 6.463
+  },
+  {
+    "word": "shout",
+    "start": 6.475,
+    "end": 6.825
+  },
+  {
+    "word": "back",
+    "start": 6.838,
+    "end": 7.062
+  },
+  {
+    "word": "at",
+    "start": 7.075,
+    "end": 7.15
+  },
+  {
+    "word": "those",
+    "start": 7.162,
+    "end": 7.4
+  },
+  {
+    "word": "foolish",
+    "start": 7.412,
+    "end": 7.763
+  },
+  {
+    "word": "hens",
+    "start": 7.775,
+    "end": 8.113
+  },
+  {
+    "word": "and",
+    "start": 8.125,
+    "end": 8.225
+  },
+  {
+    "word": "tell",
+    "start": 8.238,
+    "end": 8.438
+  },
+  {
+    "word": "them",
+    "start": 8.45,
+    "end": 8.588
+  },
+  {
+    "word": "you've",
+    "start": 8.6,
+    "end": 8.812
+  },
+  {
+    "word": "won",
+    "start": 8.825,
+    "end": 9.213
+  },
+  {
+    "word": "The",
+    "start": 10.075,
+    "end": 10.25
+  },
+  {
+    "word": "proud",
+    "start": 10.262,
+    "end": 10.625
+  },
+  {
+    "word": "fox",
+    "start": 10.637,
+    "end": 10.975
+  },
+  {
+    "word": "opened",
+    "start": 10.988,
+    "end": 11.325
+  },
+  {
+    "word": "his",
+    "start": 11.338,
+    "end": 11.5
+  },
+  {
+    "word": "mouth",
+    "start": 11.512,
+    "end": 11.8
+  },
+  {
+    "word": "to",
+    "start": 11.812,
+    "end": 11.9
+  },
+  {
+    "word": "gloat",
+    "start": 11.912,
+    "end": 12.325
+  },
+  {
+    "word": "and",
+    "start": 12.55,
+    "end": 12.637
+  },
+  {
+    "word": "in",
+    "start": 12.65,
+    "end": 12.75
+  },
+  {
+    "word": "that",
+    "start": 12.762,
+    "end": 13.0
+  },
+  {
+    "word": "instant",
+    "start": 13.012,
+    "end": 13.463
+  },
+  {
+    "word": "Chanticleer",
+    "start": 13.688,
+    "end": 14.338
+  },
+  {
+    "word": "flew",
+    "start": 14.35,
+    "end": 14.662
+  },
+  {
+    "word": "up",
+    "start": 14.675,
+    "end": 14.838
+  },
+  {
+    "word": "into",
+    "start": 14.85,
+    "end": 15.137
+  },
+  {
+    "word": "a",
+    "start": 15.15,
+    "end": 15.225
+  },
+  {
+    "word": "tall",
+    "start": 15.238,
+    "end": 15.55
+  },
+  {
+    "word": "tree",
+    "start": 15.562,
+    "end": 16.012
+  },
+  {
+    "word": "No",
+    "start": 16.875,
+    "end": 17.312
+  },
+  {
+    "word": "no",
+    "start": 17.575,
+    "end": 17.95
+  },
+  {
+    "word": "no",
+    "start": 18.225,
+    "end": 18.712
+  },
+  {
+    "word": "Chanticleer",
+    "start": 19.575,
+    "end": 20.3
+  },
+  {
+    "word": "called",
+    "start": 20.312,
+    "end": 20.6
+  },
+  {
+    "word": "down",
+    "start": 20.613,
+    "end": 21.05
+  },
+  {
+    "word": "You",
+    "start": 21.913,
+    "end": 22.113
+  },
+  {
+    "word": "won't",
+    "start": 22.125,
+    "end": 22.325
+  },
+  {
+    "word": "trick",
+    "start": 22.337,
+    "end": 22.55
+  },
+  {
+    "word": "me",
+    "start": 22.562,
+    "end": 22.7
+  },
+  {
+    "word": "with",
+    "start": 22.712,
+    "end": 22.875
+  },
+  {
+    "word": "flattery",
+    "start": 22.887,
+    "end": 23.387
+  },
+  {
+    "word": "a",
+    "start": 23.4,
+    "end": 23.45
+  },
+  {
+    "word": "second",
+    "start": 23.462,
+    "end": 23.85
+  },
+  {
+    "word": "time",
+    "start": 23.863,
+    "end": 24.288
+  },
+  {
+    "word": "If",
+    "start": 25.15,
+    "end": 25.35
+  },
+  {
+    "word": "a",
+    "start": 25.363,
+    "end": 25.4
+  },
+  {
+    "word": "rooster",
+    "start": 25.413,
+    "end": 25.775
+  },
+  {
+    "word": "closes",
+    "start": 25.788,
+    "end": 26.238
+  },
+  {
+    "word": "his",
+    "start": 26.25,
+    "end": 26.413
+  },
+  {
+    "word": "eyes",
+    "start": 26.425,
+    "end": 26.663
+  },
+  {
+    "word": "when",
+    "start": 26.675,
+    "end": 26.8
+  },
+  {
+    "word": "he",
+    "start": 26.812,
+    "end": 26.95
+  },
+  {
+    "word": "should",
+    "start": 26.962,
+    "end": 27.125
+  },
+  {
+    "word": "keep",
+    "start": 27.137,
+    "end": 27.363
+  },
+  {
+    "word": "them",
+    "start": 27.375,
+    "end": 27.5
+  },
+  {
+    "word": "open",
+    "start": 27.512,
+    "end": 27.85
+  },
+  {
+    "word": "he",
+    "start": 28.075,
+    "end": 28.15
+  },
+  {
+    "word": "deserves",
+    "start": 28.163,
+    "end": 28.613
+  },
+  {
+    "word": "what",
+    "start": 28.625,
+    "end": 28.8
+  },
+  {
+    "word": "happens",
+    "start": 28.812,
+    "end": 29.45
+  }
+]

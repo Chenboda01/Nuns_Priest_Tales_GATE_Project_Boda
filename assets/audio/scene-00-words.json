@@ -1,0 +1,232 @@
+[
+  {
+    "word": "The",
+    "start": 0.1,
+    "end": 0.237
+  },
+  {
+    "word": "Host",
+    "start": 0.25,
+    "end": 0.562
+  },
+  {
+    "word": "and",
+    "start": 0.575,
+    "end": 0.675
+  },
+  {
+    "word": "Chaucer",
+    "start": 0.688,
+    "end": 1.137
+  },
+  {
+    "word": "are",
+    "start": 1.15,
+    "end": 1.25
+  },
+  {
+    "word": "riding",
+    "start": 1.262,
+    "end": 1.65
+  },
+  {
+    "word": "together",
+    "start": 1.663,
+    "end": 2.087
+  },
+  {
+    "word": "on",
+    "start": 2.1,
+    "end": 2.225
+  },
+  {
+    "word": "a",
+    "start": 2.237,
+    "end": 2.275
+  },
+  {
+    "word": "long",
+    "start": 2.288,
+    "end": 2.587
+  },
+  {
+    "word": "journey",
+    "start": 2.6,
+    "end": 3.0
+  },
+  {
+    "word": "Chaucer's",
+    "start": 3.862,
+    "end": 4.35
+  },
+  {
+    "word": "horse",
+    "start": 4.362,
+    "end": 4.675
+  },
+  {
+    "word": "is",
+    "start": 4.688,
+    "end": 4.875
+  },
+  {
+    "word": "thin",
+    "start": 4.888,
+    "end": 5.225
+  },
+  {
+    "word": "old",
+    "start": 5.4,
+    "end": 5.737
+  },
+  {
+    "word": "and",
+    "start": 5.963,
+    "end": 6.112
+  },
+  {
+    "word": "bony",
+    "start": 6.125,
+    "end": 6.537
+  },
+  {
+    "word": "but",
+    "start": 6.737,
+    "end": 6.862
+  },
+  {
+    "word": "that",
+    "start": 6.875,
+    "end": 7.025
+  },
+  {
+    "word": "doesn't",
+    "start": 7.037,
+    "end": 7.3
+  },
+  {
+    "word": "stop",
+    "start": 7.312,
+    "end": 7.7
+  },
+  {
+    "word": "him",
+    "start": 7.713,
+    "end": 8.0
+  },
+  {
+    "word": "He",
+    "start": 8.863,
+    "end": 9.1
+  },
+  {
+    "word": "is",
+    "start": 9.113,
+    "end": 9.225
+  },
+  {
+    "word": "cheerful",
+    "start": 9.238,
+    "end": 9.713
+  },
+  {
+    "word": "and",
+    "start": 9.725,
+    "end": 9.838
+  },
+  {
+    "word": "ready",
+    "start": 9.85,
+    "end": 10.088
+  },
+  {
+    "word": "to",
+    "start": 10.1,
+    "end": 10.2
+  },
+  {
+    "word": "share",
+    "start": 10.213,
+    "end": 10.425
+  },
+  {
+    "word": "a",
+    "start": 10.438,
+    "end": 10.537
+  },
+  {
+    "word": "fun",
+    "start": 10.55,
+    "end": 10.838
+  },
+  {
+    "word": "story",
+    "start": 10.85,
+    "end": 11.262
+  },
+  {
+    "word": "So",
+    "start": 12.125,
+    "end": 12.363
+  },
+  {
+    "word": "he",
+    "start": 12.375,
+    "end": 12.512
+  },
+  {
+    "word": "begins",
+    "start": 12.525,
+    "end": 12.875
+  },
+  {
+    "word": "to",
+    "start": 12.887,
+    "end": 12.975
+  },
+  {
+    "word": "tell",
+    "start": 12.988,
+    "end": 13.188
+  },
+  {
+    "word": "the",
+    "start": 13.2,
+    "end": 13.287
+  },
+  {
+    "word": "tale",
+    "start": 13.3,
+    "end": 13.575
+  },
+  {
+    "word": "of",
+    "start": 13.588,
+    "end": 13.65
+  },
+  {
+    "word": "a",
+    "start": 13.662,
+    "end": 13.738
+  },
+  {
+    "word": "proud",
+    "start": 13.75,
+    "end": 14.088
+  },
+  {
+    "word": "rooster",
+    "start": 14.1,
+    "end": 14.438
+  },
+  {
+    "word": "named",
+    "start": 14.45,
+    "end": 14.738
+  },
+  {
+    "word": "Chanticleer",
+    "start": 14.75,
+    "end": 15.475
+  }
+]

@@ -1,0 +1,272 @@
+[
+  {
+    "word": "Every",
+    "start": 0.1,
+    "end": 0.375
+  },
+  {
+    "word": "morning",
+    "start": 0.388,
+    "end": 0.8
+  },
+  {
+    "word": "Chanticleer",
+    "start": 1.025,
+    "end": 1.7
+  },
+  {
+    "word": "would",
+    "start": 1.712,
+    "end": 1.837
+  },
+  {
+    "word": "fly",
+    "start": 1.85,
+    "end": 2.112
+  },
+  {
+    "word": "up",
+    "start": 2.125,
+    "end": 2.25
+  },
+  {
+    "word": "to",
+    "start": 2.263,
+    "end": 2.325
+  },
+  {
+    "word": "his",
+    "start": 2.337,
+    "end": 2.525
+  },
+  {
+    "word": "favorite",
+    "start": 2.538,
+    "end": 2.95
+  },
+  {
+    "word": "spot",
+    "start": 2.962,
+    "end": 3.263
+  },
+  {
+    "word": "and",
+    "start": 3.275,
+    "end": 3.362
+  },
+  {
+    "word": "crow",
+    "start": 3.375,
+    "end": 3.7
+  },
+  {
+    "word": "as",
+    "start": 3.712,
+    "end": 3.862
+  },
+  {
+    "word": "loudly",
+    "start": 3.875,
+    "end": 4.312
+  },
+  {
+    "word": "as",
+    "start": 4.325,
+    "end": 4.412
+  },
+  {
+    "word": "he",
+    "start": 4.425,
+    "end": 4.537
+  },
+  {
+    "word": "could",
+    "start": 4.55,
+    "end": 4.975
+  },
+  {
+    "word": "His",
+    "start": 5.838,
+    "end": 6.1
+  },
+  {
+    "word": "crowing",
+    "start": 6.112,
+    "end": 6.5
+  },
+  {
+    "word": "woke",
+    "start": 6.513,
+    "end": 6.75
+  },
+  {
+    "word": "up",
+    "start": 6.763,
+    "end": 6.9
+  },
+  {
+    "word": "the",
+    "start": 6.912,
+    "end": 6.987
+  },
+  {
+    "word": "widow",
+    "start": 7.0,
+    "end": 7.412
+  },
+  {
+    "word": "and",
+    "start": 7.425,
+    "end": 7.55
+  },
+  {
+    "word": "her",
+    "start": 7.562,
+    "end": 7.713
+  },
+  {
+    "word": "daughters",
+    "start": 7.725,
+    "end": 8.137
+  },
+  {
+    "word": "to",
+    "start": 8.15,
+    "end": 8.25
+  },
+  {
+    "word": "start",
+    "start": 8.262,
+    "end": 8.6
+  },
+  {
+    "word": "their",
+    "start": 8.613,
+    "end": 8.75
+  },
+  {
+    "word": "day",
+    "start": 8.762,
+    "end": 9.175
+  },
+  {
+    "word": "Every",
+    "start": 10.037,
+    "end": 10.338
+  },
+  {
+    "word": "evening",
+    "start": 10.35,
+    "end": 10.75
+  },
+  {
+    "word": "he",
+    "start": 10.988,
+    "end": 11.075
+  },
+  {
+    "word": "would",
+    "start": 11.088,
+    "end": 11.238
+  },
+  {
+    "word": "crow",
+    "start": 11.25,
+    "end": 11.512
+  },
+  {
+    "word": "again",
+    "start": 11.525,
+    "end": 11.812
+  },
+  {
+    "word": "to",
+    "start": 11.825,
+    "end": 11.925
+  },
+  {
+    "word": "signal",
+    "start": 11.938,
+    "end": 12.312
+  },
+  {
+    "word": "that",
+    "start": 12.325,
+    "end": 12.45
+  },
+  {
+    "word": "the",
+    "start": 12.463,
+    "end": 12.55
+  },
+  {
+    "word": "day",
+    "start": 12.562,
+    "end": 12.762
+  },
+  {
+    "word": "was",
+    "start": 12.775,
+    "end": 12.95
+  },
+  {
+    "word": "done",
+    "start": 12.963,
+    "end": 13.387
+  },
+  {
+    "word": "The",
+    "start": 14.25,
+    "end": 14.4
+  },
+  {
+    "word": "family",
+    "start": 14.412,
+    "end": 14.775
+  },
+  {
+    "word": "always",
+    "start": 14.787,
+    "end": 15.213
+  },
+  {
+    "word": "thanked",
+    "start": 15.225,
+    "end": 15.463
+  },
+  {
+    "word": "him",
+    "start": 15.475,
+    "end": 15.613
+  },
+  {
+    "word": "for",
+    "start": 15.625,
+    "end": 15.738
+  },
+  {
+    "word": "being",
+    "start": 15.75,
+    "end": 15.975
+  },
+  {
+    "word": "their",
+    "start": 15.988,
+    "end": 16.125
+  },
+  {
+    "word": "faithful",
+    "start": 16.137,
+    "end": 16.6
+  },
+  {
+    "word": "alarm",
+    "start": 16.613,
+    "end": 16.913
+  },
+  {
+    "word": "clock",
+    "start": 16.925,
+    "end": 17.363
+  }
+]

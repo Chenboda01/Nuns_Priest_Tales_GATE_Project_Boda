@@ -1,0 +1,257 @@
+[
+  {
+    "word": "The",
+    "start": 0.1,
+    "end": 0.237
+  },
+  {
+    "word": "widow's",
+    "start": 0.25,
+    "end": 0.625
+  },
+  {
+    "word": "cottage",
+    "start": 0.637,
+    "end": 0.963
+  },
+  {
+    "word": "had",
+    "start": 0.975,
+    "end": 1.15
+  },
+  {
+    "word": "only",
+    "start": 1.163,
+    "end": 1.45
+  },
+  {
+    "word": "two",
+    "start": 1.462,
+    "end": 1.688
+  },
+  {
+    "word": "rooms",
+    "start": 1.7,
+    "end": 2.175
+  },
+  {
+    "word": "one",
+    "start": 2.438,
+    "end": 2.663
+  },
+  {
+    "word": "for",
+    "start": 2.675,
+    "end": 2.788
+  },
+  {
+    "word": "sleeping",
+    "start": 2.8,
+    "end": 3.25
+  },
+  {
+    "word": "and",
+    "start": 3.263,
+    "end": 3.4
+  },
+  {
+    "word": "one",
+    "start": 3.413,
+    "end": 3.65
+  },
+  {
+    "word": "for",
+    "start": 3.663,
+    "end": 3.812
+  },
+  {
+    "word": "eating",
+    "start": 3.825,
+    "end": 4.325
+  },
+  {
+    "word": "Both",
+    "start": 5.188,
+    "end": 5.487
+  },
+  {
+    "word": "rooms",
+    "start": 5.5,
+    "end": 5.787
+  },
+  {
+    "word": "were",
+    "start": 5.8,
+    "end": 5.888
+  },
+  {
+    "word": "dark",
+    "start": 5.9,
+    "end": 6.2
+  },
+  {
+    "word": "and",
+    "start": 6.213,
+    "end": 6.312
+  },
+  {
+    "word": "covered",
+    "start": 6.325,
+    "end": 6.612
+  },
+  {
+    "word": "in",
+    "start": 6.625,
+    "end": 6.75
+  },
+  {
+    "word": "black",
+    "start": 6.763,
+    "end": 7.062
+  },
+  {
+    "word": "soot",
+    "start": 7.075,
+    "end": 7.325
+  },
+  {
+    "word": "because",
+    "start": 7.338,
+    "end": 7.562
+  },
+  {
+    "word": "there",
+    "start": 7.575,
+    "end": 7.675
+  },
+  {
+    "word": "was",
+    "start": 7.688,
+    "end": 7.875
+  },
+  {
+    "word": "no",
+    "start": 7.888,
+    "end": 8.125
+  },
+  {
+    "word": "proper",
+    "start": 8.137,
+    "end": 8.438
+  },
+  {
+    "word": "fireplace",
+    "start": 8.45,
+    "end": 9.262
+  },
+  {
+    "word": "Smoke",
+    "start": 10.125,
+    "end": 10.525
+  },
+  {
+    "word": "from",
+    "start": 10.537,
+    "end": 10.675
+  },
+  {
+    "word": "the",
+    "start": 10.688,
+    "end": 10.762
+  },
+  {
+    "word": "cooking",
+    "start": 10.775,
+    "end": 11.125
+  },
+  {
+    "word": "fire",
+    "start": 11.137,
+    "end": 11.488
+  },
+  {
+    "word": "filled",
+    "start": 11.5,
+    "end": 11.825
+  },
+  {
+    "word": "the",
+    "start": 11.838,
+    "end": 11.9
+  },
+  {
+    "word": "whole",
+    "start": 11.912,
+    "end": 12.2
+  },
+  {
+    "word": "house",
+    "start": 12.213,
+    "end": 12.762
+  },
+  {
+    "word": "The",
+    "start": 13.625,
+    "end": 13.762
+  },
+  {
+    "word": "widow",
+    "start": 13.775,
+    "end": 14.137
+  },
+  {
+    "word": "had",
+    "start": 14.15,
+    "end": 14.338
+  },
+  {
+    "word": "to",
+    "start": 14.35,
+    "end": 14.412
+  },
+  {
+    "word": "cook",
+    "start": 14.425,
+    "end": 14.65
+  },
+  {
+    "word": "outside",
+    "start": 14.662,
+    "end": 15.162
+  },
+  {
+    "word": "in",
+    "start": 15.175,
+    "end": 15.25
+  },
+  {
+    "word": "the",
+    "start": 15.262,
+    "end": 15.338
+  },
+  {
+    "word": "yard",
+    "start": 15.35,
+    "end": 15.738
+  },
+  {
+    "word": "where",
+    "start": 15.863,
+    "end": 16.062
+  },
+  {
+    "word": "her",
+    "start": 16.075,
+    "end": 16.288
+  },
+  {
+    "word": "animals",
+    "start": 16.3,
+    "end": 16.675
+  },
+  {
+    "word": "stayed",
+    "start": 16.688,
+    "end": 17.15
+  }
+]

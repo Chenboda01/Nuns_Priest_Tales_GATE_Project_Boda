@@ -1,0 +1,272 @@
+[
+  {
+    "word": "I",
+    "start": 0.1,
+    "end": 0.25
+  },
+  {
+    "word": "am",
+    "start": 0.263,
+    "end": 0.412
+  },
+  {
+    "word": "not",
+    "start": 0.425,
+    "end": 0.637
+  },
+  {
+    "word": "a",
+    "start": 0.65,
+    "end": 0.713
+  },
+  {
+    "word": "coward",
+    "start": 0.725,
+    "end": 1.238
+  },
+  {
+    "word": "Chanticleer",
+    "start": 2.1,
+    "end": 2.837
+  },
+  {
+    "word": "shot",
+    "start": 2.85,
+    "end": 3.175
+  },
+  {
+    "word": "back",
+    "start": 3.188,
+    "end": 3.587
+  },
+  {
+    "word": "I",
+    "start": 4.45,
+    "end": 4.575
+  },
+  {
+    "word": "will",
+    "start": 4.588,
+    "end": 4.75
+  },
+  {
+    "word": "prove",
+    "start": 4.763,
+    "end": 5.088
+  },
+  {
+    "word": "to",
+    "start": 5.1,
+    "end": 5.188
+  },
+  {
+    "word": "you",
+    "start": 5.2,
+    "end": 5.3
+  },
+  {
+    "word": "that",
+    "start": 5.312,
+    "end": 5.475
+  },
+  {
+    "word": "I",
+    "start": 5.487,
+    "end": 5.588
+  },
+  {
+    "word": "am",
+    "start": 5.6,
+    "end": 5.763
+  },
+  {
+    "word": "brave",
+    "start": 5.775,
+    "end": 6.15
+  },
+  {
+    "word": "and",
+    "start": 6.162,
+    "end": 6.25
+  },
+  {
+    "word": "wise",
+    "start": 6.263,
+    "end": 6.9
+  },
+  {
+    "word": "I'm",
+    "start": 7.763,
+    "end": 7.963
+  },
+  {
+    "word": "not",
+    "start": 7.975,
+    "end": 8.15
+  },
+  {
+    "word": "afraid",
+    "start": 8.162,
+    "end": 8.575
+  },
+  {
+    "word": "of",
+    "start": 8.588,
+    "end": 8.675
+  },
+  {
+    "word": "anything",
+    "start": 8.688,
+    "end": 9.05
+  },
+  {
+    "word": "at",
+    "start": 9.062,
+    "end": 9.2
+  },
+  {
+    "word": "all",
+    "start": 9.213,
+    "end": 9.613
+  },
+  {
+    "word": "But",
+    "start": 10.475,
+    "end": 10.675
+  },
+  {
+    "word": "Pertelote",
+    "start": 10.688,
+    "end": 11.175
+  },
+  {
+    "word": "wasn't",
+    "start": 11.188,
+    "end": 11.488
+  },
+  {
+    "word": "impressed",
+    "start": 11.5,
+    "end": 12.113
+  },
+  {
+    "word": "You're",
+    "start": 12.975,
+    "end": 13.175
+  },
+  {
+    "word": "not",
+    "start": 13.188,
+    "end": 13.463
+  },
+  {
+    "word": "proving",
+    "start": 13.475,
+    "end": 13.863
+  },
+  {
+    "word": "anything",
+    "start": 13.875,
+    "end": 14.3
+  },
+  {
+    "word": "she",
+    "start": 14.463,
+    "end": 14.6
+  },
+  {
+    "word": "said",
+    "start": 14.613,
+    "end": 15.05
+  },
+  {
+    "word": "Go",
+    "start": 15.912,
+    "end": 16.175
+  },
+  {
+    "word": "out",
+    "start": 16.188,
+    "end": 16.413
+  },
+  {
+    "word": "and",
+    "start": 16.425,
+    "end": 16.512
+  },
+  {
+    "word": "face",
+    "start": 16.525,
+    "end": 16.85
+  },
+  {
+    "word": "the",
+    "start": 16.863,
+    "end": 16.962
+  },
+  {
+    "word": "world",
+    "start": 16.975,
+    "end": 17.587
+  },
+  {
+    "word": "Show",
+    "start": 18.45,
+    "end": 18.7
+  },
+  {
+    "word": "me",
+    "start": 18.712,
+    "end": 18.812
+  },
+  {
+    "word": "you",
+    "start": 18.825,
+    "end": 18.962
+  },
+  {
+    "word": "are",
+    "start": 18.975,
+    "end": 19.062
+  },
+  {
+    "word": "brave",
+    "start": 19.075,
+    "end": 19.625
+  },
+  {
+    "word": "or",
+    "start": 19.812,
+    "end": 19.962
+  },
+  {
+    "word": "I",
+    "start": 19.975,
+    "end": 20.075
+  },
+  {
+    "word": "will",
+    "start": 20.087,
+    "end": 20.25
+  },
+  {
+    "word": "never",
+    "start": 20.262,
+    "end": 20.525
+  },
+  {
+    "word": "love",
+    "start": 20.538,
+    "end": 20.825
+  },
+  {
+    "word": "you",
+    "start": 20.837,
+    "end": 20.95
+  },
+  {
+    "word": "again",
+    "start": 20.962,
+    "end": 21.438
+  }
+]

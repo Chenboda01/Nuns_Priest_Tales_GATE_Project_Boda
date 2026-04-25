@@ -1,0 +1,142 @@
+[
+  {
+    "word": "The",
+    "start": 0.1,
+    "end": 0.25
+  },
+  {
+    "word": "hens",
+    "start": 0.263,
+    "end": 0.625
+  },
+  {
+    "word": "let",
+    "start": 0.637,
+    "end": 0.838
+  },
+  {
+    "word": "out",
+    "start": 0.85,
+    "end": 1.0
+  },
+  {
+    "word": "a",
+    "start": 1.012,
+    "end": 1.075
+  },
+  {
+    "word": "panic-stricken",
+    "start": 1.087,
+    "end": 1.825
+  },
+  {
+    "word": "cry",
+    "start": 1.837,
+    "end": 2.25
+  },
+  {
+    "word": "Help",
+    "start": 2.438,
+    "end": 2.8
+  },
+  {
+    "word": "The",
+    "start": 3.663,
+    "end": 3.825
+  },
+  {
+    "word": "fox",
+    "start": 3.837,
+    "end": 4.412
+  },
+  {
+    "word": "The",
+    "start": 5.275,
+    "end": 5.412
+  },
+  {
+    "word": "fox",
+    "start": 5.425,
+    "end": 5.775
+  },
+  {
+    "word": "has",
+    "start": 5.787,
+    "end": 5.925
+  },
+  {
+    "word": "Chanticleer",
+    "start": 5.938,
+    "end": 6.85
+  },
+  {
+    "word": "And",
+    "start": 7.713,
+    "end": 7.912
+  },
+  {
+    "word": "off",
+    "start": 7.925,
+    "end": 8.075
+  },
+  {
+    "word": "they",
+    "start": 8.088,
+    "end": 8.213
+  },
+  {
+    "word": "all",
+    "start": 8.225,
+    "end": 8.4
+  },
+  {
+    "word": "went",
+    "start": 8.412,
+    "end": 8.688
+  },
+  {
+    "word": "chasing",
+    "start": 8.938,
+    "end": 9.363
+  },
+  {
+    "word": "after",
+    "start": 9.375,
+    "end": 9.613
+  },
+  {
+    "word": "the",
+    "start": 9.625,
+    "end": 9.713
+  },
+  {
+    "word": "fox",
+    "start": 9.725,
+    "end": 10.088
+  },
+  {
+    "word": "as",
+    "start": 10.1,
+    "end": 10.213
+  },
+  {
+    "word": "fast",
+    "start": 10.225,
+    "end": 10.625
+  },
+  {
+    "word": "as",
+    "start": 10.637,
+    "end": 10.75
+  },
+  {
+    "word": "they",
+    "start": 10.762,
+    "end": 10.875
+  },
+  {
+    "word": "could",
+    "start": 10.887,
+    "end": 11.325
+  }
+]

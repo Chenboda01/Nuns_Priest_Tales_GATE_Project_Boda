@@ -1,0 +1,317 @@
+[
+  {
+    "word": "But",
+    "start": 0.1,
+    "end": 0.287
+  },
+  {
+    "word": "lurking",
+    "start": 0.3,
+    "end": 0.65
+  },
+  {
+    "word": "nearby",
+    "start": 0.662,
+    "end": 1.062
+  },
+  {
+    "word": "was",
+    "start": 1.075,
+    "end": 1.225
+  },
+  {
+    "word": "a",
+    "start": 1.238,
+    "end": 1.288
+  },
+  {
+    "word": "wicked",
+    "start": 1.3,
+    "end": 1.663
+  },
+  {
+    "word": "fox",
+    "start": 1.675,
+    "end": 2.138
+  },
+  {
+    "word": "a",
+    "start": 2.337,
+    "end": 2.388
+  },
+  {
+    "word": "sly",
+    "start": 2.4,
+    "end": 2.75
+  },
+  {
+    "word": "old",
+    "start": 2.763,
+    "end": 2.962
+  },
+  {
+    "word": "villain",
+    "start": 2.975,
+    "end": 3.275
+  },
+  {
+    "word": "who",
+    "start": 3.288,
+    "end": 3.45
+  },
+  {
+    "word": "had",
+    "start": 3.462,
+    "end": 3.612
+  },
+  {
+    "word": "been",
+    "start": 3.625,
+    "end": 3.775
+  },
+  {
+    "word": "hiding",
+    "start": 3.788,
+    "end": 4.162
+  },
+  {
+    "word": "in",
+    "start": 4.175,
+    "end": 4.25
+  },
+  {
+    "word": "the",
+    "start": 4.263,
+    "end": 4.338
+  },
+  {
+    "word": "woods",
+    "start": 4.35,
+    "end": 4.588
+  },
+  {
+    "word": "for",
+    "start": 4.6,
+    "end": 4.7
+  },
+  {
+    "word": "three",
+    "start": 4.713,
+    "end": 5.0
+  },
+  {
+    "word": "years",
+    "start": 5.013,
+    "end": 5.6
+  },
+  {
+    "word": "That",
+    "start": 6.463,
+    "end": 6.75
+  },
+  {
+    "word": "very",
+    "start": 6.763,
+    "end": 7.0
+  },
+  {
+    "word": "night",
+    "start": 7.013,
+    "end": 7.338
+  },
+  {
+    "word": "the",
+    "start": 7.525,
+    "end": 7.612
+  },
+  {
+    "word": "fox",
+    "start": 7.625,
+    "end": 7.938
+  },
+  {
+    "word": "had",
+    "start": 7.95,
+    "end": 8.1
+  },
+  {
+    "word": "sneaked",
+    "start": 8.113,
+    "end": 8.475
+  },
+  {
+    "word": "through",
+    "start": 8.488,
+    "end": 8.725
+  },
+  {
+    "word": "the",
+    "start": 8.738,
+    "end": 8.812
+  },
+  {
+    "word": "hedge",
+    "start": 8.825,
+    "end": 9.15
+  },
+  {
+    "word": "and",
+    "start": 9.162,
+    "end": 9.25
+  },
+  {
+    "word": "hidden",
+    "start": 9.262,
+    "end": 9.537
+  },
+  {
+    "word": "himself",
+    "start": 9.55,
+    "end": 10.025
+  },
+  {
+    "word": "in",
+    "start": 10.037,
+    "end": 10.137
+  },
+  {
+    "word": "a",
+    "start": 10.15,
+    "end": 10.213
+  },
+  {
+    "word": "bed",
+    "start": 10.225,
+    "end": 10.425
+  },
+  {
+    "word": "of",
+    "start": 10.438,
+    "end": 10.525
+  },
+  {
+    "word": "stinging",
+    "start": 10.537,
+    "end": 10.925
+  },
+  {
+    "word": "nettles",
+    "start": 10.938,
+    "end": 11.488
+  },
+  {
+    "word": "He",
+    "start": 12.35,
+    "end": 12.512
+  },
+  {
+    "word": "was",
+    "start": 12.525,
+    "end": 12.662
+  },
+  {
+    "word": "waiting",
+    "start": 12.675,
+    "end": 13.025
+  },
+  {
+    "word": "for",
+    "start": 13.037,
+    "end": 13.113
+  },
+  {
+    "word": "the",
+    "start": 13.125,
+    "end": 13.225
+  },
+  {
+    "word": "perfect",
+    "start": 13.238,
+    "end": 13.713
+  },
+  {
+    "word": "moment",
+    "start": 13.725,
+    "end": 14.05
+  },
+  {
+    "word": "to",
+    "start": 14.062,
+    "end": 14.137
+  },
+  {
+    "word": "catch",
+    "start": 14.15,
+    "end": 14.463
+  },
+  {
+    "word": "Chanticleer",
+    "start": 14.475,
+    "end": 15.262
+  },
+  {
+    "word": "That's",
+    "start": 16.125,
+    "end": 16.413
+  },
+  {
+    "word": "the",
+    "start": 16.425,
+    "end": 16.525
+  },
+  {
+    "word": "sneaky",
+    "start": 16.538,
+    "end": 16.887
+  },
+  {
+    "word": "way",
+    "start": 16.9,
+    "end": 17.137
+  },
+  {
+    "word": "of",
+    "start": 17.15,
+    "end": 17.25
+  },
+  {
+    "word": "foxes",
+    "start": 17.262,
+    "end": 17.75
+  },
+  {
+    "word": "always",
+    "start": 18.0,
+    "end": 18.413
+  },
+  {
+    "word": "lying",
+    "start": 18.425,
+    "end": 18.725
+  },
+  {
+    "word": "in",
+    "start": 18.738,
+    "end": 18.837
+  },
+  {
+    "word": "wait",
+    "start": 18.85,
+    "end": 19.087
+  },
+  {
+    "word": "to",
+    "start": 19.1,
+    "end": 19.175
+  },
+  {
+    "word": "cause",
+    "start": 19.188,
+    "end": 19.475
+  },
+  {
+    "word": "trouble",
+    "start": 19.488,
+    "end": 19.938
+  }
+]
