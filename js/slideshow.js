@@ -4,9 +4,11 @@
   var audio = document.getElementById('narration-audio');
   var bgMusic = document.getElementById('bg-music');
   var musicToggle = document.getElementById('music-toggle');
+  var themeToggle = document.getElementById('theme-toggle');
   var overlay = document.getElementById('first-load');
   var musicStarted = false;
   var musicOn = true;
+  var darkOn = localStorage.getItem('ct-theme') === 'dark';
   var currentScene = null;
   var currentWords = [];
   var highlightFrame = null;
@@ -146,6 +148,23 @@
     }
   }
 
+  function applyTheme() {
+    if (darkOn) {
+      document.body.classList.add('dark');
+      themeToggle.textContent = '☀️';
+    } else {
+      document.body.classList.remove('dark');
+      themeToggle.textContent = '🌙';
+    }
+  }
+  applyTheme();
+
+  function toggleTheme() {
+    darkOn = !darkOn;
+    localStorage.setItem('ct-theme', darkOn ? 'dark' : 'light');
+    applyTheme();
+  }
+
   document.addEventListener('click', function(e) {
     if (overlay && overlay.style.display !== 'none') {
       overlay.style.display = 'none';
@@ -174,12 +193,21 @@
       if (!musicStarted) startMusic();
       toggleMusic();
     }
+    if (e.key === 't' || e.key === 'T') {
+      e.preventDefault();
+      toggleTheme();
+    }
   });
 
   musicToggle.addEventListener('click', function(e) {
     e.stopPropagation();
     if (!musicStarted) startMusic();
     toggleMusic();
+  });
+
+  themeToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleTheme();
   });
 
   Reveal.on('slidechanged', function() {
