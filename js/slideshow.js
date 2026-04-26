@@ -111,16 +111,33 @@
     if (container && container.children.length === 0) {
       loadWords(scene, container);
     }
+    playBtn.textContent = '⏳';
     audio.src = data.audio;
     audio.load();
-    audio.play().then(function() {
-      playBtn.textContent = '⏸';
-      playingScene = scene;
-      startHighlightLoop();
-    }).catch(function(err) {
-      playBtn.textContent = '⚠';
-      setTimeout(function() { if (playBtn.textContent === '⚠') playBtn.textContent = '▶'; }, 2000);
-    });
+    var playAttempted = false;
+    audio.oncanplay = function() {
+      if (playAttempted) return;
+      playAttempted = true;
+      audio.play().then(function() {
+        playBtn.textContent = '⏸';
+        playingScene = scene;
+        startHighlightLoop();
+      }).catch(function() {
+        playBtn.textContent = '▶';
+      });
+    };
+    setTimeout(function() {
+      if (!playAttempted) {
+        playAttempted = true;
+        audio.play().then(function() {
+          playBtn.textContent = '⏸';
+          playingScene = scene;
+          startHighlightLoop();
+        }).catch(function() {
+          playBtn.textContent = '▶';
+        });
+      }
+    }, 3000);
     audio.onended = function() {
       playBtn.textContent = '↻';
       playingScene = null;
