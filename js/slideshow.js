@@ -169,6 +169,12 @@
     }
   }
 
+  function beginStory(shouldAutoplay) {
+    if (overlay) overlay.style.display = 'none';
+    startMusic();
+    setupActiveScene(shouldAutoplay);
+  }
+
   function startMusic() {
     if (musicStarted) return;
     musicStarted = true;
@@ -244,25 +250,31 @@
     togglePlay();
   });
 
+  document.addEventListener('click', function() {
+    if (overlay && overlay.style.display !== 'none') {
+      setTimeout(function() { beginStory(true); }, 0);
+    }
+  });
+
   if (overlay) {
     overlay.addEventListener('click', function() {
-      overlay.style.display = 'none';
-      startMusic();
-      setupActiveScene(true);
+      beginStory(true);
     });
   }
 
   document.addEventListener('keydown', function(e) {
+    var navigationKeys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'];
     if (e.key === ' ' || e.code === 'Space') {
       if (overlay && overlay.style.display !== 'none') {
-        overlay.style.display = 'none';
-        startMusic();
-        setupActiveScene(true);
+        beginStory(true);
         e.preventDefault();
         return;
       }
       var scene = getActiveScene();
       if (scene) { e.preventDefault(); togglePlay(); }
+    }
+    if (navigationKeys.indexOf(e.key) !== -1 && overlay && overlay.style.display !== 'none') {
+      setTimeout(function() { beginStory(true); }, 0);
     }
     if (e.key === 'm' || e.key === 'M') {
       e.preventDefault();
