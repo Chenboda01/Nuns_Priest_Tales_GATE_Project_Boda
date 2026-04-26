@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  var audio = document.getElementById('narration-audio');
   var bgMusic = document.getElementById('bg-music');
   var musicToggle = document.getElementById('music-toggle');
   var themeToggle = document.getElementById('theme-toggle');
@@ -11,7 +12,9 @@
   var musicStarted = false;
   var musicOn = true;
   var darkOn = localStorage.getItem('ct-theme') === 'dark';
-  var multiLineOn = false;
+  var captionStates = ['multiline', 'singleline', 'off'];
+  var captionState = localStorage.getItem('ct-caption-state') || 'singleline';
+  if (captionStates.indexOf(captionState) === -1) captionState = 'singleline';
   var playingAudio = null;
   var highlightFrame = null;
   var playingScene = null;
@@ -27,13 +30,14 @@
   function stopAudio() {
     if (playingAudio) {
       playingAudio.pause();
-      playingAudio.src = '';
+      playingAudio.removeAttribute('src');
+      playingAudio.load();
       playingAudio = null;
     }
     if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
     playBtn.textContent = '▶';
     playingScene = null;
-    progressBar.style.width = '0%';
+    if (progressBar) progressBar.style.width = '0%';
   }
 
   function loadWords(scene, container) {
@@ -92,7 +96,7 @@
       if (audioEl && !audioEl.paused) {
         highlightWord(audioEl.currentTime);
         var pct = audioEl.duration ? (audioEl.currentTime / audioEl.duration) * 100 : 0;
-        progressBar.style.width = pct + '%';
+        if (progressBar) progressBar.style.width = pct + '%';
         highlightFrame = requestAnimationFrame(loop);
       }
     }
@@ -100,7 +104,7 @@
   }
 
   function playScene(scene) {
-    if (!scene) return;
+    if (!scene || !audio) return;
     stopAudio();
     var data = getSceneData(scene);
     if (!data) return;
@@ -108,26 +112,25 @@
     if (container && container.children.length === 0) {
       loadWords(scene, container);
     }
-    var a = new Audio(data.audio);
-    a.preload = 'auto';
-    playingAudio = a;
+    audio.src = data.audio;
+    audio.preload = 'auto';
+    playingAudio = audio;
     playBtn.textContent = '⏳';
-    a.addEventListener('canplay', function() {
-      a.play().then(function() {
-        playBtn.textContent = '⏸';
-        playingScene = scene;
-        startHighlightLoop(a);
-      }).catch(function() {
-        playBtn.textContent = '▶';
-      });
-    });
-    a.addEventListener('ended', function() {
+    audio.onended = function() {
       playBtn.textContent = '↻';
       playingScene = null;
-      progressBar.style.width = '100%';
+      if (progressBar) progressBar.style.width = '100%';
       if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
-    });
-    a.addEventListener('error', function() {
+    };
+    audio.onerror = function() {
+      playBtn.textContent = '▶';
+    };
+    audio.load();
+    audio.play().then(function() {
+      playBtn.textContent = '⏸';
+      playingScene = scene;
+      startHighlightLoop(audio);
+    }).catch(function() {
       playBtn.textContent = '▶';
     });
   }
@@ -137,9 +140,12 @@
     if (!scene) return;
     if (playingScene === scene && playingAudio) {
       if (playingAudio.paused) {
-        playingAudio.play();
-        playBtn.textContent = '⏸';
-        startHighlightLoop(playingAudio);
+        playingAudio.play().then(function() {
+          playBtn.textContent = '⏸';
+          startHighlightLoop(playingAudio);
+        }).catch(function() {
+          playBtn.textContent = '▶';
+        });
       } else {
         playingAudio.pause();
         playBtn.textContent = '▶';
@@ -153,16 +159,21 @@
   function startMusic() {
     if (musicStarted) return;
     musicStarted = true;
-    if (musicOn && bgMusic) {
+    if (musicOn && bgMusic && bgMusic.getAttribute('src')) {
       bgMusic.volume = 0.18;
       bgMusic.play().catch(function() {});
       musicToggle.textContent = '♫';
+    } else {
+      musicToggle.textContent = '🔇';
     }
   }
 
   function toggleMusic() {
     musicOn = !musicOn;
-    if (!bgMusic) return;
+    if (!bgMusic || !bgMusic.getAttribute('src')) {
+      musicToggle.textContent = '🔇';
+      return;
+    }
     if (musicOn) {
       bgMusic.volume = 0.18;
       bgMusic.play().catch(function() {});
@@ -190,15 +201,28 @@
     applyTheme();
   }
 
-  function toggleCaption() {
-    multiLineOn = !multiLineOn;
-    if (multiLineOn) {
+  function applyCaptionState() {
+    document.body.classList.remove('multiline', 'caption-off');
+    if (captionState === 'multiline') {
       document.body.classList.add('multiline');
       captionToggle.textContent = '☰';
+      captionToggle.title = 'Captions: multiline (C key)';
+    } else if (captionState === 'off') {
+      document.body.classList.add('caption-off');
+      captionToggle.textContent = '✕';
+      captionToggle.title = 'Captions: off (C key)';
     } else {
-      document.body.classList.remove('multiline');
       captionToggle.textContent = '≡';
+      captionToggle.title = 'Captions: single line (C key)';
     }
+    localStorage.setItem('ct-caption-state', captionState);
+  }
+  applyCaptionState();
+
+  function toggleCaption() {
+    var currentIndex = captionStates.indexOf(captionState);
+    captionState = captionStates[(currentIndex + 1) % captionStates.length];
+    applyCaptionState();
   }
 
   playBtn.addEventListener('click', function(e) {
@@ -211,6 +235,7 @@
     overlay.addEventListener('click', function() {
       overlay.style.display = 'none';
       startMusic();
+      togglePlay();
     });
   }
 
@@ -219,6 +244,7 @@
       if (overlay && overlay.style.display !== 'none') {
         overlay.style.display = 'none';
         startMusic();
+        togglePlay();
         e.preventDefault();
         return;
       }

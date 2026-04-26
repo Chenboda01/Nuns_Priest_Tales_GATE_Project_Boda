@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>The Nun's Priest's Tale — A Canterbury Tales Story for Kids</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='48' font-size='48'%3E🐓%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
   <link rel="stylesheet" href="css/medieval-theme.css">
 </head>
@@ -194,7 +195,7 @@
 </div></div>
 
 <audio id="narration-audio" preload="none"></audio>
-<audio id="bg-music" src="assets/music/medieval-bg.mp3" loop preload="none"></audio>
+<audio id="bg-music" loop preload="none"></audio>
 
 <button class="caption-toggle" id="caption-toggle" title="Toggle caption mode (C key)">≡</button>
 <button class="play-btn" id="play-btn" title="Play narration (Space)">▶</button>
@@ -205,12 +206,13 @@
   <p>Click anywhere to begin the story...</p>
 </div>
 
+<div class="progress-bar" id="progress-bar" style="width:0%"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
 <script src="js/scene-data.js"></script>
 <script src="js/slideshow.js"></script>
 <script>
   Reveal.initialize({ hash: true, transition: 'fade', history: true });
 </script>
-<div class="progress-bar" id="progress-bar" style="width:0%"></div>
 </body>
 </html>
