@@ -175,6 +175,18 @@
     setupActiveScene(shouldAutoplay);
   }
 
+  function isOverlayVisible() {
+    return overlay && overlay.style.display !== 'none';
+  }
+
+  function beginAfterRevealNavigation(direction) {
+    if (direction === 'right') Reveal.right();
+    if (direction === 'left') Reveal.left();
+    if (direction === 'down') Reveal.down();
+    if (direction === 'up') Reveal.up();
+    beginStory(true);
+  }
+
   function startMusic() {
     if (musicStarted) return;
     musicStarted = true;
@@ -250,11 +262,21 @@
     togglePlay();
   });
 
-  document.addEventListener('click', function() {
-    if (overlay && overlay.style.display !== 'none') {
-      setTimeout(function() { beginStory(true); }, 0);
+  document.addEventListener('click', function(e) {
+    if (!isOverlayVisible()) return;
+    var navRight = e.target.closest('.navigate-right, .navigate-next');
+    var navLeft = e.target.closest('.navigate-left, .navigate-prev');
+    var navDown = e.target.closest('.navigate-down');
+    var navUp = e.target.closest('.navigate-up');
+    if (navRight || navLeft || navDown || navUp) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      beginAfterRevealNavigation(navRight ? 'right' : navLeft ? 'left' : navDown ? 'down' : 'up');
+    } else {
+      beginStory(true);
     }
-  });
+  }, true);
 
   if (overlay) {
     overlay.addEventListener('click', function() {
@@ -264,17 +286,26 @@
 
   document.addEventListener('keydown', function(e) {
     var navigationKeys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'];
+    if (navigationKeys.indexOf(e.key) !== -1 && isOverlayVisible()) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      var direction = (e.key === 'ArrowLeft' || e.key === 'PageUp') ? 'left' :
+        e.key === 'ArrowDown' ? 'down' :
+        e.key === 'ArrowUp' ? 'up' :
+        e.key === 'Home' ? 'left' : 'right';
+      beginAfterRevealNavigation(direction);
+      return;
+    }
     if (e.key === ' ' || e.code === 'Space') {
-      if (overlay && overlay.style.display !== 'none') {
+      if (isOverlayVisible()) {
         beginStory(true);
         e.preventDefault();
+        e.stopImmediatePropagation();
         return;
       }
       var scene = getActiveScene();
       if (scene) { e.preventDefault(); togglePlay(); }
-    }
-    if (navigationKeys.indexOf(e.key) !== -1 && overlay && overlay.style.display !== 'none') {
-      setTimeout(function() { beginStory(true); }, 0);
     }
     if (e.key === 'm' || e.key === 'M') {
       e.preventDefault();
@@ -289,7 +320,7 @@
       e.preventDefault();
       toggleCaption();
     }
-  });
+  }, true);
 
   musicToggle.addEventListener('click', function(e) {
     e.stopPropagation();

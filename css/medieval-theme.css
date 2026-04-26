@@ -232,7 +232,7 @@ body.dark .caption-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  pointer-events: none;
 }
 
 .first-load-overlay p {
