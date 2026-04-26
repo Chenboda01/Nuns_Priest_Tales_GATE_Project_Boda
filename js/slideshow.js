@@ -81,11 +81,11 @@
 
     if (found) {
       var inner = document.querySelector('.reveal .slides section.present .caption-inner');
-      if (inner) {
+      if (inner && found.offsetLeft !== undefined) {
         var spanLeft = found.offsetLeft;
         var innerWidth = inner.clientWidth;
         var scrollTo = Math.max(0, spanLeft - innerWidth / 2);
-        inner.scrollTo({ left: scrollTo, behavior: 'smooth' });
+        inner.scrollLeft = scrollTo;
       }
     }
   }
