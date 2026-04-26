@@ -13,8 +13,8 @@
   var musicOn = true;
   var darkOn = localStorage.getItem('ct-theme') === 'dark';
   var captionStates = ['multiline', 'singleline', 'off'];
-  var captionState = localStorage.getItem('ct-caption-state') || 'singleline';
-  if (captionStates.indexOf(captionState) === -1) captionState = 'singleline';
+  var captionState = localStorage.getItem('ct-caption-state') || 'multiline';
+  if (captionStates.indexOf(captionState) === -1) captionState = 'multiline';
   var playingAudio = null;
   var highlightFrame = null;
   var playingScene = null;
@@ -67,6 +67,14 @@
       });
   }
 
+  function ensureWords(scene) {
+    if (!scene) return;
+    var container = document.getElementById('words-' + pad(scene));
+    if (container && container.children.length === 0 && !container.textContent.trim()) {
+      loadWords(scene, container);
+    }
+  }
+
   function highlightWord(currentTime) {
     var spans = document.querySelectorAll('.reveal .slides section.present .word');
     var found = null;
@@ -108,10 +116,7 @@
     stopAudio();
     var data = getSceneData(scene);
     if (!data) return;
-    var container = document.getElementById('words-' + pad(scene));
-    if (container && container.children.length === 0) {
-      loadWords(scene, container);
-    }
+    ensureWords(scene);
     audio.src = data.audio;
     audio.preload = 'auto';
     playingAudio = audio;
@@ -152,6 +157,14 @@
         if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
       }
     } else {
+      playScene(scene);
+    }
+  }
+
+  function setupActiveScene(shouldAutoplay) {
+    var scene = getActiveScene();
+    ensureWords(scene);
+    if (shouldAutoplay && scene) {
       playScene(scene);
     }
   }
@@ -235,7 +248,7 @@
     overlay.addEventListener('click', function() {
       overlay.style.display = 'none';
       startMusic();
-      togglePlay();
+      setupActiveScene(true);
     });
   }
 
@@ -244,7 +257,7 @@
       if (overlay && overlay.style.display !== 'none') {
         overlay.style.display = 'none';
         startMusic();
-        togglePlay();
+        setupActiveScene(true);
         e.preventDefault();
         return;
       }
@@ -282,7 +295,12 @@
     toggleCaption();
   });
 
+  Reveal.on('ready', function() {
+    setupActiveScene(false);
+  });
+
   Reveal.on('slidechanged', function() {
     stopAudio();
+    setupActiveScene(musicStarted);
   });
 })();
