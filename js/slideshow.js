@@ -133,9 +133,10 @@
     if (!scene) return;
     if (playingScene === scene) {
       if (audio.paused) {
-        audio.play();
-        playBtn.textContent = '⏸';
-        startHighlightLoop();
+        audio.play().then(function() {
+          playBtn.textContent = '⏸';
+          startHighlightLoop();
+        }).catch(function() {});
       } else {
         audio.pause();
         playBtn.textContent = '▶';
@@ -202,18 +203,19 @@
     togglePlay();
   });
 
-  document.addEventListener('click', function(e) {
-    if (overlay && overlay.style.display !== 'none') {
+  if (overlay) {
+    overlay.addEventListener('click', function() {
       overlay.style.display = 'none';
       startMusic();
-    }
-  });
+    });
+  }
 
   document.addEventListener('keydown', function(e) {
     if (e.key === ' ' || e.code === 'Space') {
       if (overlay && overlay.style.display !== 'none') {
         overlay.style.display = 'none';
         startMusic();
+        e.preventDefault();
         return;
       }
       var scene = getActiveScene();
