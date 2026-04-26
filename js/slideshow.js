@@ -5,14 +5,14 @@
   var bgMusic = document.getElementById('bg-music');
   var musicToggle = document.getElementById('music-toggle');
   var themeToggle = document.getElementById('theme-toggle');
+  var playBtn = document.getElementById('play-btn');
   var overlay = document.getElementById('first-load');
   var musicStarted = false;
   var musicOn = true;
   var darkOn = localStorage.getItem('ct-theme') === 'dark';
-  var currentScene = null;
   var currentWords = [];
   var highlightFrame = null;
-  var activeBtn = null;
+  var playingScene = null;
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -26,7 +26,8 @@
     audio.pause();
     audio.currentTime = 0;
     if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
-    if (activeBtn) { activeBtn.textContent = '▶ Listen'; activeBtn = null; }
+    playBtn.textContent = '▶';
+    playingScene = null;
   }
 
   function loadWords(scene, container) {
@@ -85,7 +86,8 @@
     loop();
   }
 
-  function playScene(scene, btn) {
+  function playScene(scene) {
+    if (!scene) return;
     stopAudio();
     var data = getSceneData(scene);
     if (!data) return;
@@ -97,32 +99,33 @@
     audio.load();
     audio.oncanplaythrough = function() {
       audio.play().then(function() {
-        btn.textContent = '⏸ Pause';
-        activeBtn = btn;
+        playBtn.textContent = '⏸';
+        playingScene = scene;
         startHighlightLoop();
       }).catch(function() {});
     };
     audio.onended = function() {
-      btn.textContent = '↻ Replay';
-      activeBtn = null;
+      playBtn.textContent = '↻';
+      playingScene = null;
       if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
     };
   }
 
-  function togglePlay(btn) {
-    var scene = btn.getAttribute('data-scene');
-    if (activeBtn === btn) {
+  function togglePlay() {
+    var scene = getActiveScene();
+    if (!scene) return;
+    if (playingScene === scene) {
       if (audio.paused) {
         audio.play();
-        btn.textContent = '⏸ Pause';
+        playBtn.textContent = '⏸';
         startHighlightLoop();
       } else {
         audio.pause();
-        btn.textContent = '▶ Listen';
+        playBtn.textContent = '▶';
         if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
       }
     } else {
-      playScene(scene, btn);
+      playScene(scene);
     }
   }
 
@@ -165,16 +168,16 @@
     applyTheme();
   }
 
+  playBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (!musicStarted) startMusic();
+    togglePlay();
+  });
+
   document.addEventListener('click', function(e) {
     if (overlay && overlay.style.display !== 'none') {
       overlay.style.display = 'none';
       startMusic();
-    }
-    var btn = e.target.closest('.play-btn');
-    if (btn) {
-      e.preventDefault();
-      if (!musicStarted) startMusic();
-      togglePlay(btn);
     }
   });
 
@@ -185,8 +188,8 @@
         startMusic();
         return;
       }
-      var btn = document.querySelector('.reveal .slides section.present .play-btn');
-      if (btn) { e.preventDefault(); togglePlay(btn); }
+      var scene = getActiveScene();
+      if (scene) { e.preventDefault(); togglePlay(); }
     }
     if (e.key === 'm' || e.key === 'M') {
       e.preventDefault();
