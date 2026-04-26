@@ -1,7 +1,6 @@
 (function() {
   'use strict';
 
-  var audio = document.getElementById('narration-audio');
   var bgMusic = document.getElementById('bg-music');
   var musicToggle = document.getElementById('music-toggle');
   var themeToggle = document.getElementById('theme-toggle');
@@ -13,7 +12,7 @@
   var musicOn = true;
   var darkOn = localStorage.getItem('ct-theme') === 'dark';
   var multiLineOn = false;
-  var currentWords = [];
+  var playingAudio = null;
   var highlightFrame = null;
   var playingScene = null;
 
@@ -26,8 +25,11 @@
   }
 
   function stopAudio() {
-    audio.pause();
-    audio.currentTime = 0;
+    if (playingAudio) {
+      playingAudio.pause();
+      playingAudio.src = '';
+      playingAudio = null;
+    }
     if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
     playBtn.textContent = '▶';
     playingScene = null;
@@ -40,7 +42,6 @@
     fetch(data.words)
       .then(function(r) { return r.json(); })
       .then(function(wordList) {
-        currentWords = wordList;
         container.innerHTML = '';
         wordList.forEach(function(w, i) {
           var span = document.createElement('span');
@@ -48,7 +49,6 @@
           span.textContent = w.word;
           span.dataset.start = w.start;
           span.dataset.end = w.end;
-          span.dataset.index = i;
           container.appendChild(span);
           if (i < wordList.length - 1) {
             container.appendChild(document.createTextNode(' '));
@@ -56,17 +56,16 @@
         });
       })
       .catch(function() {
-        currentWords = [];
         fetch(data.audio.replace('.mp3', '.txt').replace('audio', 'scenes'))
           .then(function(r) { return r.text(); })
           .then(function(txt) { container.textContent = txt; })
-          .catch(function() { container.textContent = '(Caption unavailable)'; });
+          .catch(function() { container.textContent = ''; });
       });
   }
 
   function highlightWord(currentTime) {
     var spans = document.querySelectorAll('.reveal .slides section.present .word');
-    var found = false;
+    var found = null;
     spans.forEach(function(span) {
       var s = parseFloat(span.dataset.start);
       var e = parseFloat(span.dataset.end);
@@ -78,23 +77,21 @@
       }
     });
     if (!found) { spans.forEach(function(s) { s.classList.remove('highlighted'); }); }
-
     if (found) {
       var inner = document.querySelector('.reveal .slides section.present .caption-inner');
       if (inner && found.offsetLeft !== undefined) {
         var spanLeft = found.offsetLeft;
         var innerWidth = inner.clientWidth;
-        var scrollTo = Math.max(0, spanLeft - innerWidth / 2);
-        inner.scrollLeft = scrollTo;
+        inner.scrollLeft = Math.max(0, spanLeft - innerWidth / 2);
       }
     }
   }
 
-  function startHighlightLoop() {
+  function startHighlightLoop(audioEl) {
     function loop() {
-      if (!audio.paused) {
-        highlightWord(audio.currentTime);
-        var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      if (audioEl && !audioEl.paused) {
+        highlightWord(audioEl.currentTime);
+        var pct = audioEl.duration ? (audioEl.currentTime / audioEl.duration) * 100 : 0;
         progressBar.style.width = pct + '%';
         highlightFrame = requestAnimationFrame(loop);
       }
@@ -111,49 +108,40 @@
     if (container && container.children.length === 0) {
       loadWords(scene, container);
     }
-    var done = false;
-    function tryPlay() {
-      if (done) return;
-      audio.play().then(function() {
-        if (done) return;
-        done = true;
+    var a = new Audio(data.audio);
+    a.preload = 'auto';
+    playingAudio = a;
+    playBtn.textContent = '⏳';
+    a.addEventListener('canplay', function() {
+      a.play().then(function() {
         playBtn.textContent = '⏸';
         playingScene = scene;
-        startHighlightLoop();
-      }).catch(function() {});
-    }
-    playBtn.textContent = '⏳';
-    audio.src = data.audio;
-    audio.load();
-    audio.onloadeddata = function() { tryPlay(); };
-    audio.oncanplay = function() { tryPlay(); };
-    setTimeout(function() { tryPlay(); }, 2000);
-    audio.onended = function() {
+        startHighlightLoop(a);
+      }).catch(function() {
+        playBtn.textContent = '▶';
+      });
+    });
+    a.addEventListener('ended', function() {
       playBtn.textContent = '↻';
       playingScene = null;
       progressBar.style.width = '100%';
       if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
-    };
-  }
-    audio.onended = function() {
-      playBtn.textContent = '↻';
-      playingScene = null;
-      progressBar.style.width = '100%';
-      if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
-    };
+    });
+    a.addEventListener('error', function() {
+      playBtn.textContent = '▶';
+    });
   }
 
   function togglePlay() {
     var scene = getActiveScene();
     if (!scene) return;
-    if (playingScene === scene) {
-      if (audio.paused) {
-        audio.play().then(function() {
-          playBtn.textContent = '⏸';
-          startHighlightLoop();
-        }).catch(function() {});
+    if (playingScene === scene && playingAudio) {
+      if (playingAudio.paused) {
+        playingAudio.play();
+        playBtn.textContent = '⏸';
+        startHighlightLoop(playingAudio);
       } else {
-        audio.pause();
+        playingAudio.pause();
         playBtn.textContent = '▶';
         if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
       }
@@ -165,7 +153,7 @@
   function startMusic() {
     if (musicStarted) return;
     musicStarted = true;
-    if (musicOn) {
+    if (musicOn && bgMusic) {
       bgMusic.volume = 0.18;
       bgMusic.play().catch(function() {});
       musicToggle.textContent = '♫';
@@ -174,6 +162,7 @@
 
   function toggleMusic() {
     musicOn = !musicOn;
+    if (!bgMusic) return;
     if (musicOn) {
       bgMusic.volume = 0.18;
       bgMusic.play().catch(function() {});
