@@ -5,12 +5,14 @@
   var bgMusic = document.getElementById('bg-music');
   var musicToggle = document.getElementById('music-toggle');
   var themeToggle = document.getElementById('theme-toggle');
+  var captionToggle = document.getElementById('caption-toggle');
   var playBtn = document.getElementById('play-btn');
   var progressBar = document.getElementById('progress-bar');
   var overlay = document.getElementById('first-load');
   var musicStarted = false;
   var musicOn = true;
   var darkOn = localStorage.getItem('ct-theme') === 'dark';
+  var multiLineOn = false;
   var currentWords = [];
   var highlightFrame = null;
   var playingScene = null;
@@ -183,6 +185,17 @@
     applyTheme();
   }
 
+  function toggleCaption() {
+    multiLineOn = !multiLineOn;
+    if (multiLineOn) {
+      document.body.classList.add('multiline');
+      captionToggle.textContent = '☰';
+    } else {
+      document.body.classList.remove('multiline');
+      captionToggle.textContent = '≡';
+    }
+  }
+
   playBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     if (!musicStarted) startMusic();
@@ -215,6 +228,10 @@
       e.preventDefault();
       toggleTheme();
     }
+    if (e.key === 'c' || e.key === 'C') {
+      e.preventDefault();
+      toggleCaption();
+    }
   });
 
   musicToggle.addEventListener('click', function(e) {
@@ -226,6 +243,11 @@
   themeToggle.addEventListener('click', function(e) {
     e.stopPropagation();
     toggleTheme();
+  });
+
+  captionToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleCaption();
   });
 
   Reveal.on('slidechanged', function() {
