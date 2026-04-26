@@ -112,10 +112,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 50;
-  background: rgba(0, 0, 0, 0.72);
+  z-index: 55;
+  background: rgba(0, 0, 0, 0.78);
   color: #f4e4c1;
-  padding: 6px 0;
+  padding: 8px 0;
+  min-height: 28px;
 }
 
 .caption-inner {

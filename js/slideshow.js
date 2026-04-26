@@ -111,33 +111,30 @@
     if (container && container.children.length === 0) {
       loadWords(scene, container);
     }
-    playBtn.textContent = '⏳';
-    audio.src = data.audio;
-    audio.load();
-    var playAttempted = false;
-    audio.oncanplay = function() {
-      if (playAttempted) return;
-      playAttempted = true;
+    var done = false;
+    function tryPlay() {
+      if (done) return;
       audio.play().then(function() {
+        if (done) return;
+        done = true;
         playBtn.textContent = '⏸';
         playingScene = scene;
         startHighlightLoop();
-      }).catch(function() {
-        playBtn.textContent = '▶';
-      });
+      }).catch(function() {});
+    }
+    playBtn.textContent = '⏳';
+    audio.src = data.audio;
+    audio.load();
+    audio.onloadeddata = function() { tryPlay(); };
+    audio.oncanplay = function() { tryPlay(); };
+    setTimeout(function() { tryPlay(); }, 2000);
+    audio.onended = function() {
+      playBtn.textContent = '↻';
+      playingScene = null;
+      progressBar.style.width = '100%';
+      if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
     };
-    setTimeout(function() {
-      if (!playAttempted) {
-        playAttempted = true;
-        audio.play().then(function() {
-          playBtn.textContent = '⏸';
-          playingScene = scene;
-          startHighlightLoop();
-        }).catch(function() {
-          playBtn.textContent = '▶';
-        });
-      }
-    }, 3000);
+  }
     audio.onended = function() {
       playBtn.textContent = '↻';
       playingScene = null;
