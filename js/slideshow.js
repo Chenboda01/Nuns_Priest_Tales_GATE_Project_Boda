@@ -6,6 +6,7 @@
   var musicToggle = document.getElementById('music-toggle');
   var themeToggle = document.getElementById('theme-toggle');
   var playBtn = document.getElementById('play-btn');
+  var progressBar = document.getElementById('progress-bar');
   var overlay = document.getElementById('first-load');
   var musicStarted = false;
   var musicOn = true;
@@ -28,6 +29,7 @@
     if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
     playBtn.textContent = '▶';
     playingScene = null;
+    progressBar.style.width = '0%';
   }
 
   function loadWords(scene, container) {
@@ -68,18 +70,30 @@
       var e = parseFloat(span.dataset.end);
       if (currentTime >= s && currentTime < e) {
         span.classList.add('highlighted');
-        found = true;
+        found = span;
       } else {
         span.classList.remove('highlighted');
       }
     });
     if (!found) { spans.forEach(function(s) { s.classList.remove('highlighted'); }); }
+
+    if (found) {
+      var inner = document.querySelector('.reveal .slides section.present .caption-inner');
+      if (inner) {
+        var spanLeft = found.offsetLeft;
+        var innerWidth = inner.clientWidth;
+        var scrollTo = Math.max(0, spanLeft - innerWidth / 2);
+        inner.scrollTo({ left: scrollTo, behavior: 'smooth' });
+      }
+    }
   }
 
   function startHighlightLoop() {
     function loop() {
       if (!audio.paused) {
         highlightWord(audio.currentTime);
+        var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+        progressBar.style.width = pct + '%';
         highlightFrame = requestAnimationFrame(loop);
       }
     }
@@ -107,6 +121,7 @@
     audio.onended = function() {
       playBtn.textContent = '↻';
       playingScene = null;
+      progressBar.style.width = '100%';
       if (highlightFrame) { cancelAnimationFrame(highlightFrame); highlightFrame = null; }
     };
   }
