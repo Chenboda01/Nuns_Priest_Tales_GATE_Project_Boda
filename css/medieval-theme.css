@@ -52,7 +52,7 @@
   position: fixed;
   top: 12px;
   right: 108px;
-  z-index: 100;
+  z-index: 210;
   font-family: 'Lora', Georgia, serif;
   font-size: 0.85em;
   background: var(--crimson);
@@ -73,7 +73,7 @@
   position: fixed;
   top: 12px;
   right: 60px;
-  z-index: 100;
+  z-index: 210;
   background: rgba(62, 39, 35, 0.7);
   color: #f4e4c1;
   border: 1px solid var(--gold);
@@ -92,7 +92,7 @@
   position: fixed;
   top: 12px;
   right: 12px;
-  z-index: 100;
+  z-index: 210;
   background: rgba(62, 39, 35, 0.7);
   color: #f4e4c1;
   border: 1px solid var(--gold);
@@ -147,13 +147,13 @@
 }
 
 body.multiline .caption-inner {
-  overflow: visible;
-  white-space: normal;
+  overflow: visible !important;
+  white-space: normal !important;
   padding: 4px 60px;
 }
 body.multiline .caption-text {
-  display: block;
-  white-space: normal;
+  display: block !important;
+  white-space: normal !important;
   text-align: center;
   font-size: 1em;
   line-height: 1.6;
@@ -166,7 +166,7 @@ body.multiline .caption-overlay {
   position: fixed;
   top: 12px;
   right: 156px;
-  z-index: 100;
+  z-index: 210;
   background: rgba(62, 39, 35, 0.7);
   color: #f4e4c1;
   border: 1px solid var(--gold);
@@ -245,16 +245,16 @@ body.dark, body.dark html { background: #111; }
 body.dark .reveal .slides { background: #111; }
 
 .reveal .progress {
-  background: rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.15) !important;
 }
 .reveal .progress span {
-  background: var(--dark-brown);
+  background: var(--dark-brown) !important;
 }
 body.dark .reveal .progress {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.1) !important;
 }
 body.dark .reveal .progress span {
-  background: var(--gold);
+  background: var(--gold) !important;
 }
 body.dark .reveal { color: #eee; }
 body.dark .reveal h1,
