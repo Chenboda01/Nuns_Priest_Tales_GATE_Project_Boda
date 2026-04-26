@@ -113,13 +113,14 @@
     }
     audio.src = data.audio;
     audio.load();
-    audio.oncanplaythrough = function() {
-      audio.play().then(function() {
-        playBtn.textContent = '⏸';
-        playingScene = scene;
-        startHighlightLoop();
-      }).catch(function() {});
-    };
+    audio.play().then(function() {
+      playBtn.textContent = '⏸';
+      playingScene = scene;
+      startHighlightLoop();
+    }).catch(function(err) {
+      playBtn.textContent = '⚠';
+      setTimeout(function() { if (playBtn.textContent === '⚠') playBtn.textContent = '▶'; }, 2000);
+    });
     audio.onended = function() {
       playBtn.textContent = '↻';
       playingScene = null;
