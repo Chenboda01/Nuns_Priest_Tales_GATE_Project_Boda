@@ -161,18 +161,15 @@
     }
   }
 
-  function setupActiveScene(shouldAutoplay) {
+  function setupActiveScene() {
     var scene = getActiveScene();
     ensureWords(scene);
-    if (shouldAutoplay && scene) {
-      playScene(scene);
-    }
   }
 
-  function beginStory(shouldAutoplay) {
+  function beginStory() {
     if (overlay) overlay.style.display = 'none';
     startMusic();
-    setupActiveScene(shouldAutoplay);
+    setupActiveScene();
   }
 
   function isOverlayVisible() {
@@ -184,7 +181,7 @@
     if (direction === 'left') Reveal.left();
     if (direction === 'down') Reveal.down();
     if (direction === 'up') Reveal.up();
-    beginStory(true);
+    beginStory();
   }
 
   function hasBackgroundMusic() {
@@ -291,13 +288,13 @@
       e.stopImmediatePropagation();
       beginAfterRevealNavigation(navRight ? 'right' : navLeft ? 'left' : navDown ? 'down' : 'up');
     } else {
-      beginStory(true);
+      beginStory();
     }
   }, true);
 
   if (overlay) {
     overlay.addEventListener('click', function() {
-      beginStory(true);
+      beginStory();
     });
   }
 
@@ -316,7 +313,7 @@
     }
     if (e.key === ' ' || e.code === 'Space') {
       if (isOverlayVisible()) {
-        beginStory(true);
+        beginStory();
         e.preventDefault();
         e.stopImmediatePropagation();
         return;
@@ -354,11 +351,11 @@
   });
 
   Reveal.on('ready', function() {
-    setupActiveScene(false);
+    setupActiveScene();
   });
 
   Reveal.on('slidechanged', function() {
     stopAudio();
-    setupActiveScene(musicStarted);
+    setupActiveScene();
   });
 })();
