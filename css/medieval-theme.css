@@ -1,141 +1,28 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic);
+/* ============================================================
+   Canterbury Tales slideshow additions
+   Built on Reveal.js + night.css (Roman Food theme)
+   ============================================================ */
 
-:root {
-  --r-background-color: #111;
-  --r-main-font: Open Sans, sans-serif;
-  --r-main-font-size: 40px;
-  --r-main-color: #eee;
-  --r-block-margin: 20px;
-  --r-heading-margin: 0 0 20px 0;
-  --r-heading-font: Montserrat, Impact, sans-serif;
-  --r-heading-color: #eee;
-  --r-heading-line-height: 1.2;
-  --r-heading-letter-spacing: -0.03em;
-  --r-heading-text-transform: none;
-  --r-heading-text-shadow: none;
-  --r-heading-font-weight: normal;
-  --r-heading1-text-shadow: none;
-  --r-heading1-size: 3.77em;
-  --r-heading2-size: 2.11em;
-  --r-heading3-size: 1.55em;
-  --r-heading4-size: 1em;
-  --r-code-font: monospace;
-  --r-link-color: #e7ad52;
-  --r-link-color-dark: #d08a1d;
-  --r-link-color-hover: #f3d7ac;
-  --r-selection-background-color: #e7ad52;
-  --r-selection-color: #fff;
-  --dark-brown: #eee;
-  --crimson: #eee;
-  --gold: #e7ad52;
-  --parchment: #111;
-}
-
+/* ---- Night theme background enforcement ---- */
 html,
 body,
 .reveal-viewport {
-  background: #111;
-  background-color: var(--r-background-color);
-}
-
-.reveal {
-  font-family: var(--r-main-font);
-  font-size: var(--r-main-font-size);
-  font-weight: normal;
-  color: var(--r-main-color);
-}
-
-.reveal ::selection {
-  color: var(--r-selection-color);
-  background: var(--r-selection-background-color);
-  text-shadow: none;
+  background: #111 !important;
+  background-color: #111 !important;
 }
 
 .reveal .slides {
   background: #111;
 }
 
-.reveal .slides section,
-.reveal .slides section > section {
-  padding: 0;
-  height: 100%;
-  line-height: 1.3;
-  font-weight: inherit;
+.reveal {
+  font-family: var(--r-main-font, 'Open Sans', sans-serif);
+  font-size: var(--r-main-font-size, 40px);
+  font-weight: normal;
+  color: var(--r-main-color, #eee);
 }
 
-.reveal h1,
-.reveal h2,
-.reveal h3,
-.reveal h4,
-.reveal h5,
-.reveal h6 {
-  margin: var(--r-heading-margin);
-  color: var(--r-heading-color);
-  font-family: var(--r-heading-font);
-  font-weight: var(--r-heading-font-weight);
-  line-height: var(--r-heading-line-height);
-  letter-spacing: var(--r-heading-letter-spacing);
-  text-transform: var(--r-heading-text-transform);
-  text-shadow: var(--r-heading-text-shadow);
-  word-wrap: break-word;
-}
-
-.reveal h1 { font-size: var(--r-heading1-size); }
-.reveal h2 { font-size: var(--r-heading2-size); }
-.reveal h3 { font-size: var(--r-heading3-size); }
-.reveal h4 { font-size: var(--r-heading4-size); }
-.reveal h1 { text-shadow: var(--r-heading1-text-shadow); }
-
-.reveal p {
-  margin: var(--r-block-margin) 0;
-  line-height: 1.3;
-}
-
-.reveal a {
-  color: var(--r-link-color);
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-
-.reveal a:hover {
-  color: var(--r-link-color-hover);
-  text-shadow: none;
-  border: none;
-}
-
-.reveal ul,
-.reveal ol,
-.reveal dl {
-  display: inline-block;
-  text-align: left;
-  margin: 0 0 0 1em;
-}
-
-.scene-slide {
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.reveal img,
-.reveal video,
-.reveal iframe,
-.scene-image {
-  max-width: 95%;
-  max-height: 95%;
-}
-
-.scene-image {
-  width: auto;
-  object-fit: contain;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-
+/* ---- Top-right control buttons ---- */
 .caption-toggle,
 .play-btn,
 .theme-toggle,
@@ -148,20 +35,21 @@ body,
   padding: 0;
   border: 1px solid var(--r-link-color);
   border-radius: 50%;
-  background: rgba(17, 17, 17, 0.72);
-  color: var(--r-main-color);
+  background: rgba(17, 17, 17, 0.75);
+  color: var(--r-link-color);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--r-main-font);
   font-size: 0.85em;
+  transition: background 0.15s, color 0.15s;
 }
 
-.caption-toggle { right: 156px; }
-.play-btn { right: 108px; }
-.theme-toggle { right: 60px; font-size: 1.2em; }
-.music-toggle { right: 12px; font-size: 1.2em; }
+.caption-toggle  { right: 156px; }
+.play-btn        { right: 108px; }
+.theme-toggle    { right:  60px; font-size: 1.2em; }
+.music-toggle    { right:  12px; font-size: 1.2em; }
 
 .caption-toggle:hover,
 .play-btn:hover,
@@ -171,6 +59,7 @@ body,
   color: var(--r-link-color-hover);
 }
 
+/* ---- Caption overlay (at bottom of scene images) ---- */
 .caption-overlay {
   position: absolute;
   bottom: 7%;
@@ -178,11 +67,10 @@ body,
   right: 5%;
   z-index: 80;
   background: rgba(0, 0, 0, 0.78);
-  color: #eee;
+  color: var(--r-main-color);
   padding: 8px 0;
   min-height: 28px;
-  border-radius: 0;
-  box-shadow: none;
+  font-family: var(--r-main-font);
 }
 
 body.caption-off .caption-overlay {
@@ -197,10 +85,9 @@ body.caption-off .caption-overlay {
 
 .caption-text {
   display: inline-block;
-  font-size: 1.1em;
-  line-height: 1.8;
+  font-size: 1em;
+  line-height: 1.6;
   font-family: var(--r-main-font);
-  letter-spacing: 0;
   white-space: nowrap;
   transition: transform 0.2s ease;
 }
@@ -218,6 +105,7 @@ body.caption-off .caption-overlay {
   font-weight: 700;
 }
 
+/* ---- Multiline caption mode ---- */
 body.multiline .caption-inner {
   overflow: visible !important;
   white-space: normal !important;
@@ -236,6 +124,7 @@ body.multiline .caption-overlay {
   padding: 4px 0 6px;
 }
 
+/* ---- MP3 narration progress bar ---- */
 .progress-bar {
   position: fixed;
   bottom: 5px;
@@ -246,14 +135,7 @@ body.multiline .caption-overlay {
   transition: width 0.1s linear;
 }
 
-.reveal .progress {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-.reveal .progress span {
-  background: var(--r-link-color) !important;
-}
-
+/* ---- First-load overlay ---- */
 .first-load-overlay {
   position: fixed;
   inset: 0;
@@ -269,7 +151,6 @@ body.multiline .caption-overlay {
   font-family: var(--r-heading-font);
   font-size: 2em;
   color: var(--r-link-color);
-  text-shadow: none;
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -278,25 +159,37 @@ body.multiline .caption-overlay {
   50% { opacity: 1; }
 }
 
-body.dark,
-body.dark html,
-body.dark .reveal .slides {
-  background: #111;
+/* ---- Light theme (toggle from night) ---- */
+body.light,
+body.light html,
+body.light .reveal .slides {
+  background: #fff;
 }
 
-body.dark .reveal,
-body.dark .reveal h1,
-body.dark .reveal h2,
-body.dark .reveal h3,
-body.dark .reveal h4 {
-  color: #eee;
+body.light .reveal,
+body.light .reveal h1,
+body.light .reveal h2,
+body.light .reveal h3,
+body.light .reveal h4 {
+  color: #222;
 }
 
+body.light .reveal .progress {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body.light .reveal .progress span {
+  background: var(--r-link-color);
+}
+
+body.light .reveal .controls {
+  color: var(--r-link-color);
+}
+
+/* ---- Responsive ---- */
 @media (max-width: 768px) {
-  :root { --r-main-font-size: 30px; }
-  .caption-text { font-size: 0.9em; }
+  .caption-text { font-size: 0.85em; }
   .caption-inner { padding: 0 40px; }
-  .scene-image { max-height: 80%; }
   .play-btn,
   .music-toggle,
   .theme-toggle,
@@ -308,8 +201,7 @@ body.dark .reveal h4 {
 }
 
 @media (max-width: 375px) {
-  :root { --r-main-font-size: 26px; }
-  .caption-text { font-size: 0.75em; }
+  .caption-text { font-size: 0.7em; }
   .caption-inner { padding: 0 24px; }
   .caption-overlay { padding: 4px 0; }
 }

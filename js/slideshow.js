@@ -230,11 +230,11 @@
 
   function applyTheme() {
     if (darkOn) {
-      document.body.classList.add('dark');
-      themeToggle.textContent = '☀️';
-    } else {
-      document.body.classList.remove('dark');
+      document.body.classList.remove('light');
       themeToggle.textContent = '🌙';
+    } else {
+      document.body.classList.add('light');
+      themeToggle.textContent = '☀️';
     }
   }
   applyTheme();
