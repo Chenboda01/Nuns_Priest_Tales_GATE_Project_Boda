@@ -9,8 +9,7 @@
   var playBtn = document.getElementById('play-btn');
   var progressBar = document.getElementById('progress-bar');
   var overlay = document.getElementById('first-load');
-  var musicStarted = false;
-  var musicOn = localStorage.getItem('ct-music-on') !== 'off';
+  var musicOn = false;
   var darkOn = localStorage.getItem('ct-theme') === 'dark';
   var captionStates = ['multiline', 'singleline', 'off'];
   var captionState = localStorage.getItem('ct-caption-state') || 'multiline';
@@ -168,7 +167,6 @@
 
   function beginStory() {
     if (overlay) overlay.style.display = 'none';
-    startMusic();
     setupActiveScene();
   }
 
@@ -199,13 +197,6 @@
     }
     bgMusic.volume = 0.18;
     bgMusic.play().then(applyMusicIcon).catch(applyMusicIcon);
-  }
-
-  function startMusic() {
-    if (musicStarted) return;
-    musicStarted = true;
-    if (musicOn) playBackgroundMusic();
-    else applyMusicIcon();
   }
 
   function toggleMusic() {
@@ -271,7 +262,6 @@
 
   playBtn.addEventListener('click', function(e) {
     e.stopPropagation();
-    if (!musicStarted) startMusic();
     togglePlay();
   });
 
