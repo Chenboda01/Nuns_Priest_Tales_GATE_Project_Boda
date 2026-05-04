@@ -23,7 +23,11 @@
   function getActiveScene() {
     var slide = document.querySelector('.reveal .slides section.present');
     if (!slide) return null;
-    return slide.getAttribute('data-scene');
+    var scene = slide.getAttribute('data-scene');
+    if (!scene && slide.parentElement) {
+      scene = slide.parentElement.getAttribute('data-scene');
+    }
+    return scene;
   }
 
   function stopAudio() {
@@ -118,8 +122,19 @@
     ensureWords(scene);
     audio.src = data.audio;
     audio.preload = 'auto';
+    audio.load();
     playingAudio = audio;
     playBtn.textContent = '⏳';
+    
+    audio.oncanplaythrough = function() {
+      audio.play().then(function() {
+        playBtn.textContent = '⏸';
+        playingScene = scene;
+        startHighlightLoop(audio);
+      }).catch(function() {
+        playBtn.textContent = '▶';
+      });
+    };
     audio.onended = function() {
       playBtn.textContent = '↻';
       playingScene = null;
@@ -129,14 +144,6 @@
     audio.onerror = function() {
       playBtn.textContent = '▶';
     };
-    audio.load();
-    audio.play().then(function() {
-      playBtn.textContent = '⏸';
-      playingScene = scene;
-      startHighlightLoop(audio);
-    }).catch(function() {
-      playBtn.textContent = '▶';
-    });
   }
 
   function togglePlay() {
@@ -260,6 +267,80 @@
     applyCaptionState();
   }
 
+  // ---- Live Captioning (Web Speech API) ----
+  var micBtn = document.getElementById('mic-btn');
+  var liveCaptionOverlay = document.getElementById('live-caption-overlay');
+  var recognition = null;
+  var micOn = false;
+  var micRestartTimer = null;
+  
+  function initSpeechRecognition() {
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      if (micBtn) micBtn.style.display = 'none';
+      return;
+    }
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    
+    recognition.onresult = function(event) {
+      var transcript = '';
+      for (var i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      if (liveCaptionOverlay) {
+        liveCaptionOverlay.textContent = transcript.trim();
+      }
+    };
+    
+    recognition.onerror = function(event) {
+      if (event.error === 'no-speech') return;
+      if (micOn && event.error === 'aborted') return;
+      stopMic();
+    };
+    
+    recognition.onend = function() {
+      if (micOn) {
+        clearTimeout(micRestartTimer);
+        micRestartTimer = setTimeout(function() {
+          if (micOn) recognition.start();
+        }, 200);
+      } else {
+        if (micBtn) micBtn.classList.remove('listening');
+      }
+    };
+  }
+  
+  function startMic() {
+    if (!recognition) return;
+    micOn = true;
+    if (micBtn) micBtn.classList.add('listening');
+    if (liveCaptionOverlay) liveCaptionOverlay.classList.add('active');
+    try { recognition.start(); } catch(e) {}
+  }
+  
+  function stopMic() {
+    micOn = false;
+    clearTimeout(micRestartTimer);
+    if (micBtn) micBtn.classList.remove('listening');
+    if (liveCaptionOverlay) liveCaptionOverlay.classList.remove('active');
+    try { recognition.stop(); } catch(e) {}
+  }
+  
+  function toggleMic() {
+    if (micOn) { stopMic(); }
+    else { initSpeechRecognition(); startMic(); }
+  }
+  
+  if (micBtn) {
+    micBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleMic();
+    });
+  }
+  
   playBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     togglePlay();
@@ -323,6 +404,10 @@
       e.preventDefault();
       toggleCaption();
     }
+    if (e.key === 'v' || e.key === 'V') {
+      e.preventDefault();
+      toggleMic();
+    }
   }, true);
 
   musicToggle.addEventListener('click', function(e) {
@@ -348,4 +433,11 @@
     stopAudio();
     setupActiveScene();
   });
+
+  // Create live caption overlay dynamically
+  var lco = document.createElement('div');
+  lco.id = 'live-caption-overlay';
+  lco.className = 'live-caption-overlay';
+  document.body.appendChild(lco);
+  liveCaptionOverlay = document.getElementById('live-caption-overlay');
 })();
