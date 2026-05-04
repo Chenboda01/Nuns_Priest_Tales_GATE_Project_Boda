@@ -275,6 +275,80 @@
   var micOn = false;
   var micRestartTimer = null;
   
+  // ---- Canterbury Tales vocabulary for speech correction ----
+  var STORY_VOCAB = [
+    // Characters
+    'Chanticleer','Pertelote','Partlet','Dame','widow','Chaucer','Host','Fox','Renard',
+    'Mally','Cato','Kenelm','Croesus','Andromache','Hector','Achilles','Scipio',
+    'Macrobius','Sinon','Brown','Judas','Prioress',
+    // Places
+    'farm','cottage','yard','kitchen','valley','market','Canterbury','Africa','Troy',
+    'woodside','hedge','gate','field','village','library','town','stall',
+    // Animals
+    'rooster','cock','hen','hens','pig','pigs','cow','cows','sheep','ox','mermaid',
+    'butterfly','horse','horses','beast','beasts','dog','dogs','bear','bears','bird',
+    // Body
+    'comb','wattles','beak','feathers','neck','legs','throat','face','eyes','head',
+    'blood','heart','voice','spurs',
+    // People
+    'daughters','friends','priest','carter','ostler','husband','wife','wives','brother',
+    'doctor','strangers','man','men','woman','women',
+    // Objects
+    'fence','perch','beam','nettles','corn','grain','medicine','herbs','bible',
+    'book','books','cart','money','bacon','milk','wool','fire','smoke','arrow',
+    'sword','bed','beds','soot','fireplace','well','poem',
+    // Abstract / Story terms
+    'dream','dreams','dreamer','nightmare','joy','sorrow','pride','flattery','coward',
+    'milksop','danger','murder','warning','vision','legend','history','moral',
+    'story','stories','tale','tales','battle','fight',
+    // Descriptive
+    'beautiful','brave','wise','proud','poor','honest','old','wicked','sly','clever',
+    'humble','hungry','fierce','loud','happy','sad','afraid','frightened',
+    // Actions
+    'crow','sing','speak','talk','fly','walk','run','chase','escape','capture',
+    'sleep','wake','groan','cry','shout','laugh','flatter',
+    // Time
+    'morning','evening','night','day','daybreak','sunshine','dawn',
+    // Misc
+    'Canterbury','Nun','Priest','Pilgrim','pilgrimage','England','London',
+    'introduction','acknowledgements','subtitles','scene','scenes','act'
+  ];
+  
+  function closestVocab(word) {
+    if (!word || word.length < 2) return word;
+    var lower = word.toLowerCase();
+    for (var i = 0; i < STORY_VOCAB.length; i++) {
+      if (STORY_VOCAB[i].toLowerCase() === lower) return STORY_VOCAB[i];
+    }
+    var best = null;
+    var bestDist = 3;
+    for (var i = 0; i < STORY_VOCAB.length; i++) {
+      var d = levenshtein(lower, STORY_VOCAB[i].toLowerCase());
+      if (d < bestDist) { bestDist = d; best = STORY_VOCAB[i]; }
+    }
+    return best || word;
+  }
+  
+  function levenshtein(a, b) {
+    var m = a.length, n = b.length;
+    var d = [];
+    for (var i = 0; i <= m; i++) { d[i] = [i]; }
+    for (var j = 0; j <= n; j++) { d[0][j] = j; }
+    for (var i = 1; i <= m; i++) {
+      for (var j = 1; j <= n; j++) {
+        d[i][j] = a[i-1] === b[j-1] ? d[i-1][j-1] : Math.min(d[i-1][j], d[i][j-1], d[i-1][j-1]) + 1;
+      }
+    }
+    return d[m][n];
+  }
+  
+  function correctTranscript(raw) {
+    return raw.split(/(\s+)/).map(function(token) {
+      if (/^\s+$/.test(token)) return token;
+      return closestVocab(token);
+    }).join('');
+  }
+  
   function initSpeechRecognition() {
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -291,8 +365,9 @@
       for (var i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript;
       }
+      var corrected = correctTranscript(transcript);
       if (liveCaptionOverlay) {
-        liveCaptionOverlay.textContent = transcript.trim();
+        liveCaptionOverlay.textContent = corrected.trim();
       }
     };
     
