@@ -480,10 +480,8 @@
       e.preventDefault();
       toggleCaption();
     }
-    if (e.key === 'v' || e.key === 'V') {
+    if (e.key === 'l' || e.key === 'L') {
       e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
       toggleMic();
     }
   }, true);
