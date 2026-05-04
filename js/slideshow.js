@@ -482,6 +482,8 @@
     }
     if (e.key === 'v' || e.key === 'V') {
       e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
       toggleMic();
     }
   }, true);
