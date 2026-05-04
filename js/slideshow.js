@@ -175,6 +175,7 @@
   function beginStory() {
     if (overlay) overlay.style.display = 'none';
     setupActiveScene();
+    toggleMic();
   }
 
   function isOverlayVisible() {
