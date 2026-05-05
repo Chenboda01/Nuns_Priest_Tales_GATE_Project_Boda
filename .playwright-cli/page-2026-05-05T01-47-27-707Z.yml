@@ -1,0 +1,28 @@
+- generic [active] [ref=e1]:
+  - application [ref=e2]:
+    - generic:
+      - img "Canterbury Tales title card" [ref=e4]
+      - generic:
+        - generic:
+          - heading [level=3]: Introduction
+        - generic:
+          - heading [level=3]: About These Scenes
+          - paragraph:
+            - text: This slideshow retells
+            - emphasis: The Nun's Priest's Tale
+            - text: through a sequence of illustrated scenes. Follow Chanticleer, Pertelote, the widow's farm, and the sly fox as the story moves from a strange dream to a clever escape.
+      - generic:
+        - generic:
+          - heading [level=3]: Act 1 — The Widow's Farm
+          - paragraph: Introducing the Characters
+    - complementary:
+      - button "next slide" [ref=e12] [cursor=pointer]
+    - text: Speaker notes
+  - button "☰" [ref=e16] [cursor=pointer]
+  - button "▶" [ref=e17] [cursor=pointer]
+  - button "☀️" [ref=e18] [cursor=pointer]
+  - button "🔇" [ref=e19] [cursor=pointer]
+  - button "🎤" [ref=e20] [cursor=pointer]
+  - button "⏸ Pause" [ref=e21] [cursor=pointer]
+  - generic:
+    - paragraph: Click anywhere to begin the story...

@@ -331,7 +331,7 @@
   ];
   
   function cleanToken(w) {
-    return w.replace(/^[^a-zA-Z]+|[^a-zA-Z]+$/g, '').replace(/[.,!?;:'"]+$/g, '');
+    return w.replace(/^[^a-zA-Z]+/, '').replace(/[^a-zA-Z]+$/, '');
   }
   
   function closestVocab(word) {
@@ -373,6 +373,7 @@
   }
   
   function initSpeechRecognition() {
+    if (recognition) return;
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       if (micBtn) micBtn.style.display = 'none';
@@ -396,7 +397,10 @@
     
     recognition.onerror = function(event) {
       if (event.error === 'no-speech') return;
-      if (micOn && event.error === 'aborted') return;
+      if (event.error === 'aborted' && micOn) return;
+      if (event.error === 'not-allowed' && liveCaptionOverlay) {
+        liveCaptionOverlay.textContent = 'Microphone access denied. Please allow mic in browser settings.';
+      }
       stopMic();
     };
     
@@ -404,8 +408,10 @@
       if (micOn) {
         clearTimeout(micRestartTimer);
         micRestartTimer = setTimeout(function() {
-          if (micOn) recognition.start();
-        }, 200);
+          if (micOn && recognition) {
+            try { recognition.start(); } catch(e) { stopMic(); }
+          }
+        }, 300);
       } else {
         if (micBtn) micBtn.classList.remove('listening');
       }
