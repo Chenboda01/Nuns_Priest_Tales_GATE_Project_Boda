@@ -312,8 +312,27 @@
     'morning','evening','night','day','daybreak','sunshine','dawn',
     // Misc
     'Canterbury','Nun','Priest','Pilgrim','pilgrimage','England','London',
-    'introduction','acknowledgements','subtitles','scene','scenes','act'
+    'introduction','acknowledgements','subtitles','scene','scenes','act',
+    // Common English words (prevent false corrections)
+    'the','a','an','is','are','was','were','be','been','being','have','has','had',
+    'do','does','did','will','would','could','should','may','might','must','shall','can',
+    'I','you','he','she','it','we','they','me','him','her','us','them','my','your',
+    'his','our','their','its','mine','yours','hers','ours','theirs',
+    'this','that','these','those','here','there','where','when','why','how','what',
+    'who','whom','which','if','then','else','but','or','and','not','no','yes',
+    'so','very','too','just','only','also','even','still','yet','already','always',
+    'never','sometimes','often','now','ago','before','after','during','while',
+    'in','on','at','to','from','by','with','about','against','between','into',
+    'through','above','below','up','down','out','off','over','under','again',
+    'for','of','as','all','both','each','every','few','more','most','other',
+    'some','such','any','many','much','one','two','three','first','last',
+    'new','good','great','big','small','large','little','long','short','high',
+    'different','same','right','left','own','next','able','young','early','late'
   ];
+  
+  function cleanToken(w) {
+    return w.replace(/^[^a-zA-Z]+|[^a-zA-Z]+$/g, '').replace(/[.,!?;:'"]+$/g, '');
+  }
   
   function closestVocab(word) {
     if (!word || word.length < 2) return word;
@@ -321,8 +340,9 @@
     for (var i = 0; i < STORY_VOCAB.length; i++) {
       if (STORY_VOCAB[i].toLowerCase() === lower) return STORY_VOCAB[i];
     }
+    var maxDist = lower.length <= 3 ? 1 : 2;
     var best = null;
-    var bestDist = 3;
+    var bestDist = maxDist + 1;
     for (var i = 0; i < STORY_VOCAB.length; i++) {
       var d = levenshtein(lower, STORY_VOCAB[i].toLowerCase());
       if (d < bestDist) { bestDist = d; best = STORY_VOCAB[i]; }
@@ -346,7 +366,9 @@
   function correctTranscript(raw) {
     return raw.split(/(\s+)/).map(function(token) {
       if (/^\s+$/.test(token)) return token;
-      return closestVocab(token);
+      var cleaned = cleanToken(token);
+      if (!cleaned) return token;
+      return closestVocab(cleaned);
     }).join('');
   }
   
