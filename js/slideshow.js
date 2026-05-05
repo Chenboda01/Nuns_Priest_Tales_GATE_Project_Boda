@@ -419,9 +419,16 @@
   }
   
   if (pauseBtn) {
+    pauseBtn.textContent = '⏸ Pause';
     pauseBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       Reveal.togglePause();
+    });
+    Reveal.on('paused', function() {
+      pauseBtn.textContent = '▶ Resume';
+    });
+    Reveal.on('resumed', function() {
+      pauseBtn.textContent = '⏸ Pause';
     });
   }
   

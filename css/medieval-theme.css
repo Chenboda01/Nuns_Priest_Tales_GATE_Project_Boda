@@ -27,8 +27,7 @@ body,
 .play-btn,
 .theme-toggle,
 .music-toggle,
-.mic-btn,
-.pause-btn {
+.mic-btn {
   position: fixed;
   top: 12px;
   z-index: 210;
@@ -48,7 +47,6 @@ body,
   transition: background 0.15s, color 0.15s;
 }
 
-.pause-btn       { right: 252px; }
 .mic-btn         { right: 204px; }
 .caption-toggle  { right: 156px; }
 .play-btn        { right: 108px; }
@@ -59,8 +57,7 @@ body,
 .play-btn:hover,
 .theme-toggle:hover,
 .music-toggle:hover,
-.mic-btn:hover,
-.pause-btn:hover {
+.mic-btn:hover {
   background: rgba(231, 173, 82, 0.18);
   color: var(--r-link-color-hover);
 }
@@ -200,8 +197,7 @@ body.light .reveal .controls {
   .music-toggle,
   .theme-toggle,
   .caption-toggle,
-  .mic-btn,
-  .pause-btn {
+  .mic-btn {
     width: 34px;
     height: 34px;
     font-size: 0.85em;
@@ -250,24 +246,28 @@ body.light .reveal .controls {
   display: block;
 }
 
-/* ---- Reveal.js pause overlay ---- */
-.reveal .pause-overlay {
-  z-index: 100;
-}
-.reveal .pause-overlay .resume-button {
-  bottom: 80px;
-  right: 20px;
+/* ---- Pause presentation button ---- */
+.pause-btn {
   position: fixed;
-  font-size: 0.6em;
-  padding: 8px 18px;
+  bottom: 24px;
+  right: 80px;
+  z-index: 110;
+  padding: 8px 16px;
   border: 1px solid var(--r-link-color);
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(17, 17, 17, 0.85);
   color: var(--r-link-color);
   cursor: pointer;
+  font-family: var(--r-main-font);
+  font-size: 0.6em;
+  transition: background 0.15s, color 0.15s;
 }
-.reveal .pause-overlay .resume-button:hover {
+.pause-btn:hover {
   background: rgba(231, 173, 82, 0.18);
+  color: var(--r-link-color-hover);
+}
+.reveal .pause-overlay .resume-button {
+  display: none;
 }
 
 /* ---- Mic button active/pulse ---- */
