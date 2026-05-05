@@ -252,14 +252,14 @@ body.light .reveal .controls {
   bottom: 24px;
   right: 80px;
   z-index: 110;
-  padding: 8px 16px;
-  border: 1px solid var(--r-link-color);
-  border-radius: 4px;
-  background: rgba(17, 17, 17, 0.85);
+  padding: 12px 24px;
+  border: 2px solid var(--r-link-color);
+  border-radius: 6px;
+  background: rgba(17, 17, 17, 0.9);
   color: var(--r-link-color);
   cursor: pointer;
   font-family: var(--r-main-font);
-  font-size: 0.6em;
+  font-size: 0.9em;
   transition: background 0.15s, color 0.15s;
 }
 .pause-btn:hover {
