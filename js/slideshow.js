@@ -270,6 +270,7 @@
 
   // ---- Live Captioning (Web Speech API) ----
   var micBtn = document.getElementById('mic-btn');
+  var pauseBtn = document.getElementById('pause-btn');
   var liveCaptionOverlay = document.getElementById('live-caption-overlay');
   var recognition = null;
   var micOn = false;
@@ -417,13 +418,20 @@
     });
   }
   
+  if (pauseBtn) {
+    pauseBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      Reveal.togglePause();
+    });
+  }
+  
   playBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     togglePlay();
   });
 
   document.addEventListener('click', function(e) {
-    if (e.target.closest('.caption-toggle, .play-btn, .theme-toggle, .music-toggle')) return;
+    if (e.target.closest('.caption-toggle, .play-btn, .theme-toggle, .music-toggle, .mic-btn, .pause-btn')) return;
     if (!isOverlayVisible()) return;
     var navRight = e.target.closest('.navigate-right, .navigate-next');
     var navLeft = e.target.closest('.navigate-left, .navigate-prev');

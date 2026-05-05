@@ -27,7 +27,8 @@ body,
 .play-btn,
 .theme-toggle,
 .music-toggle,
-.mic-btn {
+.mic-btn,
+.pause-btn {
   position: fixed;
   top: 12px;
   z-index: 210;
@@ -47,6 +48,7 @@ body,
   transition: background 0.15s, color 0.15s;
 }
 
+.pause-btn       { right: 252px; }
 .mic-btn         { right: 204px; }
 .caption-toggle  { right: 156px; }
 .play-btn        { right: 108px; }
@@ -57,7 +59,8 @@ body,
 .play-btn:hover,
 .theme-toggle:hover,
 .music-toggle:hover,
-.mic-btn:hover {
+.mic-btn:hover,
+.pause-btn:hover {
   background: rgba(231, 173, 82, 0.18);
   color: var(--r-link-color-hover);
 }
@@ -197,7 +200,8 @@ body.light .reveal .controls {
   .music-toggle,
   .theme-toggle,
   .caption-toggle,
-  .mic-btn {
+  .mic-btn,
+  .pause-btn {
     width: 34px;
     height: 34px;
     font-size: 0.85em;
