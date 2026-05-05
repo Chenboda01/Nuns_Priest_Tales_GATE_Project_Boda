@@ -329,7 +329,7 @@
     'new','good','great','big','small','large','little','long','short','high',
     'different','same','right','left','own','next','able','young','early','late'
   ];
-  var STORY_NAMES = ['Chanticleer', 'Pertelote', 'Partlet', 'Chaucer', 'Renard', 'Mally', 'Kenelm', 'Croesus', 'Andromache', 'Hector', 'Achilles', 'Scipio', 'Macrobius', 'Sinon'];
+  var STORY_NAMES = ['Boda', 'Chen', 'Chanticleer', 'Pertelote', 'Partlet', 'Chaucer', 'Renard', 'Mally', 'Kenelm', 'Croesus', 'Andromache', 'Hector', 'Achilles', 'Scipio', 'Macrobius', 'Sinon'];
   var DIRECT_CORRECTIONS = {
     'chanticlear': 'Chanticleer',
     'chanticleer': 'Chanticleer',
@@ -341,6 +341,17 @@
     'partlet': 'Partlet',
     'renard': 'Renard'
   };
+  var DIRECT_PHRASE_CORRECTIONS = [
+    [/\bgo\s+to\s+chen\b/gi, 'Boda Chen'],
+    [/\bbuild\s+a\s+china\b/gi, 'Boda Chen'],
+    [/\bbuild\s+a\s+chen\b/gi, 'Boda Chen'],
+    [/\bboda\s+china\b/gi, 'Boda Chen'],
+    [/\bbota\s+chen\b/gi, 'Boda Chen'],
+    [/\bbod[a-z]*\s+ch(?:en|in|ina)\b/gi, 'Boda Chen'],
+    [/\bwidows?\s+form\b/gi, "widow's farm"],
+    [/\bwidows?\s+farm\b/gi, "widow's farm"],
+    [/\bthe\s+sly\s+box\b/gi, 'the sly fox']
+  ];
   
   function cleanToken(w) {
     return w.replace(/^[^a-zA-Z]+/, '').replace(/[^a-zA-Z]+$/, '');
@@ -363,16 +374,39 @@
     return words;
   }
 
+  function phraseListFromText(text) {
+    var words = wordListFromText(text);
+    var phrases = [];
+    for (var i = 0; i < words.length - 1; i++) {
+      phrases.push(words[i] + ' ' + words[i + 1]);
+    }
+    for (var j = 0; j < words.length - 2; j++) {
+      phrases.push(words[j] + ' ' + words[j + 1] + ' ' + words[j + 2]);
+    }
+    return phrases;
+  }
+
   function currentSlideVocabulary() {
     var text = '';
     document.querySelectorAll('.reveal .slides section.present').forEach(function(slide) {
       text += ' ' + slide.textContent;
+      slide.querySelectorAll('img[alt]').forEach(function(img) { text += ' ' + img.alt; });
       if (slide.parentElement) text += ' ' + slide.parentElement.textContent;
     });
     var scene = getActiveScene();
     var data = scene ? getSceneData(scene) : null;
     if (data) text += ' ' + data.title;
     return wordListFromText(text).concat(STORY_NAMES);
+  }
+
+  function currentSlidePhrases() {
+    var text = '';
+    document.querySelectorAll('.reveal .slides section.present').forEach(function(slide) {
+      text += ' ' + slide.textContent;
+      slide.querySelectorAll('img[alt]').forEach(function(img) { text += ' ' + img.alt; });
+      if (slide.parentElement) text += ' ' + slide.parentElement.textContent;
+    });
+    return phraseListFromText(text).concat(['Boda Chen', "widow's farm", 'sly fox']);
   }
 
   function closestFromList(word, list, maxRatio) {
@@ -425,12 +459,22 @@
     return prefix + corrected + suffix;
   }
 
+  function applyPhraseCorrections(raw) {
+    var corrected = raw;
+    DIRECT_PHRASE_CORRECTIONS.forEach(function(rule) {
+      corrected = corrected.replace(rule[0], rule[1]);
+    });
+    currentSlidePhrases().forEach(function(phrase) {
+      if (phrase === 'Boda Chen') corrected = corrected.replace(/\bgo\s+to\b/gi, 'Boda Chen');
+      var heard = phrase.replace(/\bBoda\b/gi, '(?:Boda|go to|build a)').replace(/\bChen\b/gi, '(?:Chen|China)');
+      corrected = corrected.replace(new RegExp('\\b' + heard + '\\b', 'gi'), phrase);
+    });
+    return corrected;
+  }
+
   function correctTranscript(raw) {
     var slideWords = currentSlideVocabulary();
-    var phraseCorrected = raw
-      .replace(/\bwidows?\s+form\b/gi, "widow's farm")
-      .replace(/\bwidows?\s+farm\b/gi, "widow's farm")
-      .replace(/\bthe\s+sly\s+box\b/gi, 'the sly fox');
+    var phraseCorrected = applyPhraseCorrections(raw);
     return phraseCorrected.split(/(\s+)/).map(function(token) {
       if (/^\s+$/.test(token)) return token;
       var cleaned = cleanToken(token);
