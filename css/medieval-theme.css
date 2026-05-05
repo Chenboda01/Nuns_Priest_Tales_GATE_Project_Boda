@@ -248,7 +248,7 @@ body.light .reveal .controls {
 
 /* ---- Pause presentation button ---- */
 .reveal .pause-overlay {
-  background: #f5e6c8 !important;
+  background: #2e2618 !important;
 }
 .pause-btn {
   position: fixed;
