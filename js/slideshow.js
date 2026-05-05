@@ -345,6 +345,49 @@
   function cleanToken(w) {
     return w.replace(/^[^a-zA-Z]+/, '').replace(/[^a-zA-Z]+$/, '');
   }
+
+  function normalizeWord(w) {
+    return cleanToken(w).toLowerCase();
+  }
+
+  function wordListFromText(text) {
+    var matches = (text || '').match(/[A-Za-z][A-Za-z']*/g) || [];
+    var seen = {};
+    var words = [];
+    matches.forEach(function(w) {
+      var key = normalizeWord(w);
+      if (key.length < 3 || seen[key]) return;
+      seen[key] = true;
+      words.push(w.replace(/^./, function(c) { return c.toUpperCase() === c ? c : c.toLowerCase(); }));
+    });
+    return words;
+  }
+
+  function currentSlideVocabulary() {
+    var text = '';
+    document.querySelectorAll('.reveal .slides section.present').forEach(function(slide) {
+      text += ' ' + slide.textContent;
+      if (slide.parentElement) text += ' ' + slide.parentElement.textContent;
+    });
+    var scene = getActiveScene();
+    var data = scene ? getSceneData(scene) : null;
+    if (data) text += ' ' + data.title;
+    return wordListFromText(text).concat(STORY_NAMES);
+  }
+
+  function closestFromList(word, list, maxRatio) {
+    var lower = normalizeWord(word);
+    if (!lower || lower.length < 3) return word;
+    var best = null;
+    var bestDist = Math.max(1, Math.ceil(lower.length * maxRatio));
+    for (var i = 0; i < list.length; i++) {
+      var candidate = list[i];
+      var d = levenshtein(lower, normalizeWord(candidate));
+      if (d === 0) return candidate;
+      if (d < bestDist) { bestDist = d; best = candidate; }
+    }
+    return best || word;
+  }
   
   function closestStoryName(word) {
     if (!word || word.length < 2) return word;
@@ -376,7 +419,14 @@
     return d[m][n];
   }
   
+  function preserveTokenShape(original, corrected) {
+    var prefix = original.match(/^[^a-zA-Z]*/)[0];
+    var suffix = original.match(/[^a-zA-Z]*$/)[0];
+    return prefix + corrected + suffix;
+  }
+
   function correctTranscript(raw) {
+    var slideWords = currentSlideVocabulary();
     var phraseCorrected = raw
       .replace(/\bwidows?\s+form\b/gi, "widow's farm")
       .replace(/\bwidows?\s+farm\b/gi, "widow's farm")
@@ -385,7 +435,9 @@
       if (/^\s+$/.test(token)) return token;
       var cleaned = cleanToken(token);
       if (!cleaned) return token;
-      return closestStoryName(cleaned);
+      var firstPass = closestFromList(cleaned, slideWords, 0.38);
+      var secondPass = closestStoryName(firstPass);
+      return preserveTokenShape(token, secondPass);
     }).join('');
   }
   
