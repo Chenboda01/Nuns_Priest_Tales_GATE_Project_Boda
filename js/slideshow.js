@@ -329,23 +329,36 @@
     'new','good','great','big','small','large','little','long','short','high',
     'different','same','right','left','own','next','able','young','early','late'
   ];
+  var STORY_NAMES = ['Chanticleer', 'Pertelote', 'Partlet', 'Chaucer', 'Renard', 'Mally', 'Kenelm', 'Croesus', 'Andromache', 'Hector', 'Achilles', 'Scipio', 'Macrobius', 'Sinon'];
+  var DIRECT_CORRECTIONS = {
+    'chanticlear': 'Chanticleer',
+    'chanticleer': 'Chanticleer',
+    'chanticlears': 'Chanticleer',
+    'turtle': 'Pertelote',
+    'turtles': 'Pertelote',
+    'perla': 'Pertelote',
+    'partlot': 'Pertelote',
+    'partlet': 'Partlet',
+    'renard': 'Renard'
+  };
   
   function cleanToken(w) {
     return w.replace(/^[^a-zA-Z]+/, '').replace(/[^a-zA-Z]+$/, '');
   }
   
-  function closestVocab(word) {
+  function closestStoryName(word) {
     if (!word || word.length < 2) return word;
     var lower = word.toLowerCase();
-    for (var i = 0; i < STORY_VOCAB.length; i++) {
-      if (STORY_VOCAB[i].toLowerCase() === lower) return STORY_VOCAB[i];
+    if (DIRECT_CORRECTIONS[lower]) return DIRECT_CORRECTIONS[lower];
+    for (var i = 0; i < STORY_NAMES.length; i++) {
+      if (STORY_NAMES[i].toLowerCase() === lower) return STORY_NAMES[i];
     }
-    var maxDist = lower.length <= 3 ? 1 : 2;
+    if (lower.length < 5) return word;
     var best = null;
-    var bestDist = maxDist + 1;
-    for (var i = 0; i < STORY_VOCAB.length; i++) {
-      var d = levenshtein(lower, STORY_VOCAB[i].toLowerCase());
-      if (d < bestDist) { bestDist = d; best = STORY_VOCAB[i]; }
+    var bestDist = 3;
+    for (var i = 0; i < STORY_NAMES.length; i++) {
+      var d = levenshtein(lower, STORY_NAMES[i].toLowerCase());
+      if (d < bestDist) { bestDist = d; best = STORY_NAMES[i]; }
     }
     return best || word;
   }
@@ -364,11 +377,15 @@
   }
   
   function correctTranscript(raw) {
-    return raw.split(/(\s+)/).map(function(token) {
+    var phraseCorrected = raw
+      .replace(/\bwidows?\s+form\b/gi, "widow's farm")
+      .replace(/\bwidows?\s+farm\b/gi, "widow's farm")
+      .replace(/\bthe\s+sly\s+box\b/gi, 'the sly fox');
+    return phraseCorrected.split(/(\s+)/).map(function(token) {
       if (/^\s+$/.test(token)) return token;
       var cleaned = cleanToken(token);
       if (!cleaned) return token;
-      return closestVocab(cleaned);
+      return closestStoryName(cleaned);
     }).join('');
   }
   
