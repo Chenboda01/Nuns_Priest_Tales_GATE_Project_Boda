@@ -247,10 +247,13 @@ body.light .reveal .controls {
 }
 
 /* ---- Pause presentation button ---- */
+.reveal .pause-overlay {
+  background: #f5e6c8 !important;
+}
 .pause-btn {
   position: fixed;
-  bottom: 24px;
-  right: 80px;
+  bottom: 60px;
+  right: 160px;
   z-index: 110;
   padding: 16px 32px;
   border: 2px solid var(--r-link-color);
