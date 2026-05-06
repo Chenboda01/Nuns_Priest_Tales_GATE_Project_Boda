@@ -20,8 +20,15 @@
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
+  function getCurrentSlide() {
+    if (window.Reveal && typeof Reveal.getCurrentSlide === 'function') {
+      return Reveal.getCurrentSlide();
+    }
+    return document.querySelector('.reveal .slides section.present');
+  }
+
   function getActiveScene() {
-    var slide = document.querySelector('.reveal .slides section.present');
+    var slide = getCurrentSlide();
     if (!slide) return null;
     var scene = slide.getAttribute('data-scene');
     if (!scene && slide.parentElement) {
@@ -125,17 +132,26 @@
     audio.load();
     playingAudio = audio;
     playBtn.textContent = '⏳';
-    
-    audio.oncanplaythrough = function() {
+
+    function beginPlayback() {
       stopMic();
-      audio.play().then(function() {
+      var playPromise = audio.play();
+      if (!playPromise || typeof playPromise.then !== 'function') {
+        playBtn.textContent = '⏸';
+        playingScene = scene;
+        startHighlightLoop(audio);
+        return;
+      }
+      playPromise.then(function() {
         playBtn.textContent = '⏸';
         playingScene = scene;
         startHighlightLoop(audio);
       }).catch(function() {
         playBtn.textContent = '▶';
       });
-    };
+    }
+
+    beginPlayback();
     audio.onended = function() {
       playBtn.textContent = '↻';
       playingScene = null;
@@ -605,6 +621,10 @@
   
   playBtn.addEventListener('click', function(e) {
     e.stopPropagation();
+    if (isOverlayVisible()) {
+      if (overlay) overlay.style.display = 'none';
+      setupActiveScene();
+    }
     togglePlay();
   });
 
