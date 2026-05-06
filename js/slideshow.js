@@ -127,6 +127,7 @@
     playBtn.textContent = '⏳';
     
     audio.oncanplaythrough = function() {
+      stopMic();
       audio.play().then(function() {
         playBtn.textContent = '⏸';
         playingScene = scene;
@@ -151,6 +152,7 @@
     if (!scene) return;
     if (playingScene === scene && playingAudio) {
       if (playingAudio.paused) {
+        stopMic();
         playingAudio.play().then(function() {
           playBtn.textContent = '⏸';
           startHighlightLoop(playingAudio);
