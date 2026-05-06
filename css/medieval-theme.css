@@ -266,18 +266,6 @@ body.light .reveal .controls {
   letter-spacing: 0.04em;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65);
 }
-.reveal .pause-overlay::after {
-  content: "Take a breath, then continue the tale.";
-  position: fixed;
-  top: 47%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 105;
-  color: #f5e6c8;
-  font-family: var(--r-main-font);
-  font-size: 0.65em;
-  opacity: 0.9;
-}
 .pause-btn {
   position: fixed;
   bottom: 60px;
