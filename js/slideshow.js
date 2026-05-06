@@ -37,6 +37,21 @@
     return scene;
   }
 
+  function getActiveSceneData() {
+    var scene = getActiveScene();
+    return scene ? getSceneData(scene) : null;
+  }
+
+  function updatePlayButtonState() {
+    var data = getActiveSceneData();
+    var canPlay = !!(data && data.audio);
+    playBtn.classList.toggle('no-audio', !canPlay);
+    playBtn.classList.toggle('disabled', !canPlay);
+    playBtn.setAttribute('aria-disabled', canPlay ? 'false' : 'true');
+    playBtn.title = canPlay ? 'Play narration (Space)' : 'No narration on this slide';
+    if (!canPlay) playBtn.textContent = '▶';
+  }
+
   function stopAudio() {
     if (playingAudio) {
       playingAudio.pause();
@@ -48,6 +63,7 @@
     playBtn.textContent = '▶';
     playingScene = null;
     if (progressBar) progressBar.style.width = '0%';
+    updatePlayButtonState();
   }
 
   function loadWords(scene, container) {
@@ -165,7 +181,11 @@
 
   function togglePlay() {
     var scene = getActiveScene();
-    if (!scene) return;
+    var data = getActiveSceneData();
+    if (!scene || !data || !data.audio) {
+      updatePlayButtonState();
+      return;
+    }
     if (playingScene === scene && playingAudio) {
       if (playingAudio.paused) {
         stopMic();
@@ -188,6 +208,7 @@
   function setupActiveScene() {
     var scene = getActiveScene();
     ensureWords(scene);
+    updatePlayButtonState();
   }
 
   function beginStory() {
