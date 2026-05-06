@@ -249,11 +249,14 @@ body.light .reveal .controls {
 /* ---- Pause presentation button ---- */
 .reveal .pause-overlay {
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 179, 112, 0.42), transparent 34%),
-    radial-gradient(circle at 20% 18%, rgba(255, 226, 185, 0.24), transparent 24%),
-    linear-gradient(135deg, rgba(102, 55, 28, 0.58) 0%, rgba(46, 28, 20, 0.74) 48%, rgba(137, 78, 36, 0.62) 100%) !important;
-  -webkit-backdrop-filter: blur(28px) brightness(0.66) saturate(1.15);
-  backdrop-filter: blur(28px) brightness(0.66) saturate(1.15);
+    radial-gradient(circle at 50% 42%, rgba(255, 184, 120, 0.58), transparent 36%),
+    radial-gradient(circle at 20% 18%, rgba(255, 230, 196, 0.34), transparent 26%),
+    linear-gradient(135deg, rgba(122, 63, 31, 0.68) 0%, rgba(55, 30, 20, 0.82) 48%, rgba(166, 90, 40, 0.72) 100%) !important;
+  -webkit-backdrop-filter: blur(44px) brightness(0.58) saturate(1.28);
+  backdrop-filter: blur(44px) brightness(0.58) saturate(1.28);
+}
+.reveal.paused .slides {
+  filter: blur(8px) brightness(0.82) saturate(1.08);
 }
 .reveal .pause-overlay::before {
   content: "Presentation Paused";
