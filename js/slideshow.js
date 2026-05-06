@@ -315,6 +315,7 @@
   var micOn = false;
   var micRestartTimer = null;
   var resumeMicAfterPause = false;
+  var micStartRetryTimer = null;
   
   // ---- Canterbury Tales vocabulary for speech correction ----
   var STORY_VOCAB = [
@@ -591,17 +592,31 @@
     };
   }
   
+  function safelyStartRecognition(attemptsLeft) {
+    clearTimeout(micStartRetryTimer);
+    try {
+      recognition.start();
+    } catch(e) {
+      if (attemptsLeft > 0 && micOn) {
+        micStartRetryTimer = setTimeout(function() {
+          safelyStartRecognition(attemptsLeft - 1);
+        }, 350);
+      }
+    }
+  }
+
   function startMic() {
     if (!recognition) return;
     micOn = true;
     if (micBtn) micBtn.classList.add('listening');
     if (liveCaptionOverlay) liveCaptionOverlay.classList.add('active');
-    try { recognition.start(); } catch(e) {}
+    safelyStartRecognition(3);
   }
   
   function stopMic() {
     micOn = false;
     clearTimeout(micRestartTimer);
+    clearTimeout(micStartRetryTimer);
     if (micBtn) micBtn.classList.remove('listening');
     if (liveCaptionOverlay) liveCaptionOverlay.classList.remove('active');
     try { recognition.stop(); } catch(e) {}
@@ -634,7 +649,8 @@
       if (resumeMicAfterPause) {
         resumeMicAfterPause = false;
         initSpeechRecognition();
-        startMic();
+        clearTimeout(micStartRetryTimer);
+        micStartRetryTimer = setTimeout(startMic, 350);
       }
       pauseBtn.textContent = '⏸ Pause';
     });

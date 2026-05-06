@@ -335,19 +335,23 @@ body.light .reveal .controls {
 }
 
 .pause-story-sky {
-  top: 14%;
-  height: 22%;
+  top: 10%;
+  height: 24%;
 }
 
 .pause-story-farm {
-  bottom: 15%;
-  height: 34%;
-  border-bottom: 4px solid rgba(255, 196, 130, 0.45);
-  background: linear-gradient(to top, rgba(126, 66, 28, 0.28), transparent 62%);
+  bottom: 12%;
+  height: 42%;
+  border-bottom: 5px solid rgba(255, 196, 130, 0.62);
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255, 176, 96, 0.22), transparent 55%),
+    linear-gradient(to top, rgba(126, 66, 28, 0.36), transparent 62%);
 }
 
 .pause-sun,
 .pause-dream,
+.pause-warning,
+.pause-path,
 .pause-cottage,
 .pause-gate,
 .pause-character,
@@ -357,75 +361,104 @@ body.light .reveal .controls {
 }
 
 .pause-sun {
-  left: 9%;
+  left: 4%;
   top: 10%;
-  font-size: 2.1em;
+  font-size: 3em;
   color: #ffd083;
-  animation: pause-sun-arc 18s linear infinite;
+  animation: pause-sun-arc 12s linear infinite;
 }
 
 .pause-dream {
-  right: 14%;
-  top: 22%;
-  font-size: 2.6em;
+  right: 4%;
+  top: 16%;
+  font-size: 3.4em;
   color: rgba(255, 230, 196, 0.78);
-  animation: pause-dream-drift 9s ease-in-out infinite;
+  animation: pause-dream-drift 4s ease-in-out infinite;
+}
+
+.pause-warning {
+  left: 50%;
+  top: 38%;
+  transform: translateX(-50%);
+  padding: 8px 18px;
+  border: 1px solid rgba(255, 211, 154, 0.55);
+  border-radius: 999px;
+  background: rgba(80, 34, 14, 0.62);
+  color: #ffe2ba;
+  font-family: var(--r-heading-font);
+  font-size: 0.62em;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  animation: pause-warning-pulse 2s ease-in-out infinite;
+}
+
+.pause-path {
+  left: 19%;
+  right: 6%;
+  bottom: 18%;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 204, 134, 0.72), transparent);
+  box-shadow: 0 0 24px rgba(255, 177, 91, 0.45);
+  animation: pause-path-rush 1.25s linear infinite;
 }
 
 .pause-cottage {
-  left: 3%;
+  left: 0;
   bottom: 0;
-  font-size: 4.5em;
+  font-size: 5.3em;
   color: #ffc886;
+  animation: cottage-shake 6s ease-in-out infinite;
 }
 
 .pause-gate {
-  left: 23%;
-  bottom: 2%;
-  font-size: 4em;
+  left: 18%;
+  bottom: 1%;
+  font-size: 4.6em;
   color: rgba(255, 211, 154, 0.88);
+  animation: gate-swing 6s ease-in-out infinite;
 }
 
 .pause-character {
-  bottom: 8%;
-  font-size: 2.8em;
+  bottom: 10%;
+  font-size: 3.8em;
   filter: drop-shadow(0 8px 14px rgba(30, 8, 0, 0.45));
 }
 
 .pause-chanticleer {
-  left: 30%;
-  animation: chanticleer-tale 18s ease-in-out infinite;
+  left: 22%;
+  animation: chanticleer-tale 6s cubic-bezier(0.36, 0, 0.2, 1) infinite;
 }
 
 .pause-pertelote {
-  left: 42%;
-  animation: pertelote-tale 18s ease-in-out infinite;
+  left: 34%;
+  animation: pertelote-tale 6s cubic-bezier(0.36, 0, 0.2, 1) infinite;
 }
 
 .pause-hen-one {
-  left: 52%;
-  font-size: 2.2em;
-  animation: hen-peck 4s ease-in-out infinite;
+  left: 46%;
+  font-size: 3em;
+  animation: hen-peck 1.35s ease-in-out infinite;
 }
 
 .pause-hen-two {
-  left: 60%;
-  font-size: 2.1em;
-  animation: hen-peck 4.8s ease-in-out infinite 0.8s;
+  left: 56%;
+  font-size: 2.9em;
+  animation: hen-peck 1.6s ease-in-out infinite 0.4s;
 }
 
 .pause-fox {
-  right: 3%;
-  bottom: 6%;
-  animation: fox-sneak 18s ease-in-out infinite;
+  right: 0;
+  bottom: 9%;
+  animation: fox-sneak 6s cubic-bezier(0.36, 0, 0.2, 1) infinite;
 }
 
 .pause-dust {
-  left: 34%;
+  left: 24%;
   bottom: 1%;
-  font-size: 3em;
+  font-size: 5em;
   color: rgba(255, 212, 158, 0.58);
-  animation: pause-dust-puff 18s ease-in-out infinite;
+  animation: pause-dust-puff 6s ease-in-out infinite;
 }
 
 .pause-story-caption {
@@ -446,49 +479,77 @@ body.light .reveal .controls {
 }
 
 @keyframes pause-sun-arc {
-  0%, 100% { transform: translate(0, 18px) scale(0.9); opacity: 0.65; }
-  30% { transform: translate(220px, -22px) scale(1.05); opacity: 1; }
-  65% { transform: translate(520px, 10px) scale(0.96); opacity: 0.78; }
+  0%, 100% { transform: translate(0, 24px) scale(0.85) rotate(0deg); opacity: 0.7; }
+  35% { transform: translate(360px, -34px) scale(1.12) rotate(160deg); opacity: 1; }
+  70% { transform: translate(680px, 26px) scale(0.92) rotate(320deg); opacity: 0.7; }
 }
 
 @keyframes pause-dream-drift {
-  0%, 100% { transform: translateX(0); opacity: 0.5; }
-  50% { transform: translateX(-44px); opacity: 0.95; }
+  0%, 100% { transform: translateX(0) scale(0.9); opacity: 0.45; }
+  50% { transform: translateX(-120px) scale(1.12); opacity: 1; }
+}
+
+@keyframes pause-warning-pulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(255, 184, 120, 0); opacity: 0.76; }
+  50% { box-shadow: 0 0 30px rgba(255, 184, 120, 0.58); opacity: 1; }
+}
+
+@keyframes pause-path-rush {
+  0% { transform: translateX(-18px) scaleX(0.86); opacity: 0.35; }
+  50% { transform: translateX(20px) scaleX(1.12); opacity: 0.95; }
+  100% { transform: translateX(58px) scaleX(0.86); opacity: 0.35; }
+}
+
+@keyframes cottage-shake {
+  0%, 48%, 100% { transform: rotate(0deg); }
+  54%, 66% { transform: rotate(-3deg); }
+  60%, 72% { transform: rotate(3deg); }
+}
+
+@keyframes gate-swing {
+  0%, 42%, 100% { transform: rotate(0deg); }
+  52%, 72% { transform: rotate(-15deg) translateY(-6px); }
 }
 
 @keyframes chanticleer-tale {
-  0%, 12% { transform: translateY(0) rotate(0deg); }
-  18%, 26% { transform: translateY(-18px) rotate(-6deg); }
-  42% { transform: translateX(36px) rotate(4deg); }
-  62% { transform: translateX(150px) translateY(-8px) rotate(8deg); }
-  78% { transform: translateX(250px) translateY(-22px) rotate(-8deg); }
-  100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  0%, 10% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  18% { transform: translate(80px, -44px) rotate(-10deg) scale(1.08); }
+  32% { transform: translate(170px, 4px) rotate(8deg) scale(1); }
+  52% { transform: translate(340px, -22px) rotate(16deg) scale(1.06); }
+  72% { transform: translate(560px, -58px) rotate(-12deg) scale(1.14); }
+  86% { transform: translate(690px, 0) rotate(18deg) scale(0.96); }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); }
 }
 
 @keyframes pertelote-tale {
-  0%, 20% { transform: translateX(0) rotate(0deg); }
-  34% { transform: translateX(-34px) rotate(-5deg); }
-  52% { transform: translateX(28px) rotate(4deg); }
-  70% { transform: translateX(92px) rotate(7deg); }
-  100% { transform: translateX(0) rotate(0deg); }
+  0%, 15% { transform: translate(0, 0) rotate(0deg); }
+  28% { transform: translate(-90px, -12px) rotate(-18deg); }
+  48% { transform: translate(120px, -30px) rotate(14deg); }
+  68% { transform: translate(300px, 6px) rotate(-10deg); }
+  84% { transform: translate(430px, -18px) rotate(16deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
 }
 
 @keyframes hen-peck {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(10px) rotate(8deg); }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  35% { transform: translate(34px, 8px) rotate(14deg); }
+  70% { transform: translate(-24px, -10px) rotate(-12deg); }
 }
 
 @keyframes fox-sneak {
-  0%, 36% { transform: translateX(0); opacity: 0.25; }
-  54% { transform: translateX(-170px); opacity: 1; }
-  72% { transform: translateX(-300px) translateY(-10px); opacity: 0.92; }
-  86% { transform: translateX(-90px); opacity: 0.55; }
-  100% { transform: translateX(0); opacity: 0.25; }
+  0%, 20% { transform: translate(0, 0) scale(0.9); opacity: 0.35; }
+  36% { transform: translate(-220px, -12px) scale(1.08); opacity: 1; }
+  54% { transform: translate(-430px, -44px) rotate(-8deg) scale(1.16); opacity: 1; }
+  72% { transform: translate(-640px, 0) rotate(12deg) scale(0.98); opacity: 0.85; }
+  86% { transform: translate(-250px, 10px) scale(0.86); opacity: 0.5; }
+  100% { transform: translate(0, 0) scale(0.9); opacity: 0.35; }
 }
 
 @keyframes pause-dust-puff {
-  0%, 48%, 100% { transform: scale(0.45); opacity: 0; }
-  58%, 78% { transform: scale(1.25) translateX(160px); opacity: 0.85; }
+  0%, 16%, 100% { transform: scale(0.35) translateX(0); opacity: 0; }
+  32% { transform: scale(1.4) translateX(160px); opacity: 0.65; }
+  56% { transform: scale(1.9) translateX(360px); opacity: 0.95; }
+  78% { transform: scale(1.2) translateX(600px); opacity: 0.45; }
 }
 
 /* ---- Mic button active/pulse ---- */
