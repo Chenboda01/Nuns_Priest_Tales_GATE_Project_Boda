@@ -339,12 +339,17 @@
     'perla': 'Pertelote',
     'partlot': 'Pertelote',
     'partlet': 'Partlet',
-    'renard': 'Renard'
+    'renard': 'Renard',
+    'introduckshioun': 'Introduction',
+    'introduckshion': 'Introduction',
+    'introduction': 'Introduction'
   };
   var DIRECT_PHRASE_CORRECTIONS = [
     [/\bgo\s+to\s+chen\b/gi, 'Boda Chen'],
     [/\bbuild\s+a\s+china\b/gi, 'Boda Chen'],
     [/\bbuild\s+a\s+chen\b/gi, 'Boda Chen'],
+    [/\bboulder\s+chen\b/gi, 'Boda Chen'],
+    [/\bboulder\s+china\b/gi, 'Boda Chen'],
     [/\bboda\s+china\b/gi, 'Boda Chen'],
     [/\bbota\s+chen\b/gi, 'Boda Chen'],
     [/\bbod[a-z]*\s+ch(?:en|in|ina)\b/gi, 'Boda Chen'],
@@ -386,32 +391,40 @@
     return phrases;
   }
 
-  function currentSlideVocabulary() {
+  function activeContextText() {
     var text = '';
     document.querySelectorAll('.reveal .slides section.present').forEach(function(slide) {
       text += ' ' + slide.textContent;
       slide.querySelectorAll('img[alt]').forEach(function(img) { text += ' ' + img.alt; });
-      if (slide.parentElement) text += ' ' + slide.parentElement.textContent;
+      if (slide.parentElement) {
+        Array.prototype.forEach.call(slide.parentElement.children, function(child) {
+          if (child.tagName === 'SECTION' && child !== slide && child.querySelector('h1, h2, h3, h4')) {
+            text += ' ' + child.textContent;
+          }
+        });
+      }
     });
     var scene = getActiveScene();
     var data = scene ? getSceneData(scene) : null;
     if (data) text += ' ' + data.title;
+    text += ' ' + document.title;
+    return text;
+  }
+
+  function currentSlideVocabulary() {
+    var text = activeContextText();
     return wordListFromText(text).concat(STORY_NAMES);
   }
 
   function currentSlidePhrases() {
-    var text = '';
-    document.querySelectorAll('.reveal .slides section.present').forEach(function(slide) {
-      text += ' ' + slide.textContent;
-      slide.querySelectorAll('img[alt]').forEach(function(img) { text += ' ' + img.alt; });
-      if (slide.parentElement) text += ' ' + slide.parentElement.textContent;
-    });
+    var text = activeContextText();
     return phraseListFromText(text).concat(['Boda Chen', "widow's farm", 'sly fox']);
   }
 
   function closestFromList(word, list, maxRatio) {
     var lower = normalizeWord(word);
     if (!lower || lower.length < 3) return word;
+    if (DIRECT_CORRECTIONS[lower]) return DIRECT_CORRECTIONS[lower];
     var best = null;
     var bestDist = Math.max(1, Math.ceil(lower.length * maxRatio));
     for (var i = 0; i < list.length; i++) {
@@ -477,6 +490,7 @@
     var phraseCorrected = applyPhraseCorrections(raw);
     return phraseCorrected.split(/(\s+)/).map(function(token) {
       if (/^\s+$/.test(token)) return token;
+      if (token.indexOf("'") !== -1) return token;
       var cleaned = cleanToken(token);
       if (!cleaned) return token;
       var firstPass = closestFromList(cleaned, slideWords, 0.38);
