@@ -588,6 +588,7 @@
       Reveal.togglePause();
     });
     Reveal.on('paused', function() {
+      stopMic();
       pauseBtn.textContent = '▶ Resume';
     });
     Reveal.on('resumed', function() {
