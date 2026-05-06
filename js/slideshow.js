@@ -393,7 +393,13 @@
 
   function activeContextText() {
     var text = '';
-    document.querySelectorAll('.reveal .slides section.present').forEach(function(slide) {
+    var slides = [];
+    if (window.Reveal && Reveal.getCurrentSlide) {
+      slides = [Reveal.getCurrentSlide()];
+    } else {
+      slides = Array.prototype.slice.call(document.querySelectorAll('.reveal .slides section.present'));
+    }
+    slides.forEach(function(slide) {
       text += ' ' + slide.textContent;
       slide.querySelectorAll('img[alt]').forEach(function(img) { text += ' ' + img.alt; });
       if (slide.parentElement) {
