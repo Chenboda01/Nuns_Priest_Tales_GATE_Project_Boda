@@ -277,6 +277,7 @@
   var recognition = null;
   var micOn = false;
   var micRestartTimer = null;
+  var resumeMicAfterPause = false;
   
   // ---- Canterbury Tales vocabulary for speech correction ----
   var STORY_VOCAB = [
@@ -588,10 +589,16 @@
       Reveal.togglePause();
     });
     Reveal.on('paused', function() {
+      resumeMicAfterPause = micOn;
       stopMic();
       pauseBtn.textContent = '▶ Resume';
     });
     Reveal.on('resumed', function() {
+      if (resumeMicAfterPause) {
+        resumeMicAfterPause = false;
+        initSpeechRecognition();
+        startMic();
+      }
       pauseBtn.textContent = '⏸ Pause';
     });
   }
