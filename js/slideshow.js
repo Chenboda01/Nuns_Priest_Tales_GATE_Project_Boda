@@ -379,6 +379,7 @@
     'turtles': 'Pertelote',
     'perla': 'Pertelote',
     'partlot': 'Pertelote',
+    'portillo': 'Pertelote',
     'partlet': 'Partlet',
     'renard': 'Renard',
     'introduckshioun': 'Introduction',
