@@ -389,6 +389,8 @@
     [/\bsanta\s+clara\b/gi, 'Chanticleer'],
     [/\bsanta\s+clear\b/gi, 'Chanticleer'],
     [/\bchant\s+a\s+clear\b/gi, 'Chanticleer'],
+    [/\btrying\s+to\s+clear\b/gi, 'Chanticleer'],
+    [/\bpanda\s+clear\b/gi, 'Chanticleer'],
     [/\bwidows?\s+form\b/gi, "widow's farm"],
     [/\bwidows?\s+farm\b/gi, "widow's farm"],
     [/\bthe\s+sly\s+box\b/gi, 'the sly fox']
