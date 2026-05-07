@@ -386,14 +386,6 @@
     'introduction': 'Introduction'
   };
   var DIRECT_PHRASE_CORRECTIONS = [
-    [/\bgo\s+to\s+chen\b/gi, 'Boda Chen'],
-    [/\bbuild\s+a\s+china\b/gi, 'Boda Chen'],
-    [/\bbuild\s+a\s+chen\b/gi, 'Boda Chen'],
-    [/\bboulder\s+chen\b/gi, 'Boda Chen'],
-    [/\bboulder\s+china\b/gi, 'Boda Chen'],
-    [/\bboda\s+china\b/gi, 'Boda Chen'],
-    [/\bbota\s+chen\b/gi, 'Boda Chen'],
-    [/\bbod[a-z]*\s+ch(?:en|in|ina)\b/gi, 'Boda Chen'],
     [/\bwidows?\s+form\b/gi, "widow's farm"],
     [/\bwidows?\s+farm\b/gi, "widow's farm"],
     [/\bthe\s+sly\s+box\b/gi, 'the sly fox']
@@ -454,8 +446,11 @@
     var scene = getActiveScene();
     var data = scene ? getSceneData(scene) : null;
     if (data) text += ' ' + data.title;
-    text += ' ' + document.title;
     return text;
+  }
+
+  function contextHasPhrase(text, phrase) {
+    return new RegExp('\\b' + phrase.replace(/\s+/g, '\\s+') + '\\b', 'i').test(text || '');
   }
 
   function currentSlideVocabulary() {
@@ -465,7 +460,9 @@
 
   function currentSlidePhrases() {
     var text = activeContextText();
-    return phraseListFromText(text).concat(['Boda Chen', "widow's farm", 'sly fox']);
+    var phrases = phraseListFromText(text).concat(["widow's farm", 'sly fox']);
+    if (contextHasPhrase(text, 'Boda Chen')) phrases.push('Boda Chen');
+    return phrases;
   }
 
   function closestFromList(word, list, maxRatio) {
@@ -525,8 +522,17 @@
       corrected = corrected.replace(rule[0], rule[1]);
     });
     currentSlidePhrases().forEach(function(phrase) {
-      if (phrase === 'Boda Chen') corrected = corrected.replace(/\bgo\s+to\b/gi, 'Boda Chen');
-      var heard = phrase.replace(/\bBoda\b/gi, '(?:Boda|go to|build a)').replace(/\bChen\b/gi, '(?:Chen|China)');
+      if (phrase === 'Boda Chen') {
+        corrected = corrected
+          .replace(/\b(?:bulletin|bullet\s+in|build\s+in|go\s+to|bow\s+to)\b/gi, 'Boda Chen')
+          .replace(/\bgo\s+to\s+chen\b/gi, 'Boda Chen')
+          .replace(/\bbuild\s+a\s+(?:china|chen)\b/gi, 'Boda Chen')
+          .replace(/\bboulder\s+(?:chen|china)\b/gi, 'Boda Chen')
+          .replace(/\bboda\s+china\b/gi, 'Boda Chen')
+          .replace(/\bbota\s+chen\b/gi, 'Boda Chen')
+          .replace(/\bbod[a-z]*\s+ch(?:en|in|ina)\b/gi, 'Boda Chen');
+      }
+      var heard = phrase.replace(/\bBoda\b/gi, '(?:Boda|go to|build a|bow to)').replace(/\bChen\b/gi, '(?:Chen|China)');
       corrected = corrected.replace(new RegExp('\\b' + heard + '\\b', 'gi'), phrase);
     });
     return corrected;
