@@ -524,7 +524,9 @@
     currentSlidePhrases().forEach(function(phrase) {
       if (phrase === 'Boda Chen') {
         corrected = corrected
-          .replace(/\b(?:bulletin|bullet\s+in|build\s+in|go\s+to|bow\s+to)\b/gi, 'Boda Chen')
+          .replace(/\b(?:bulletin|bullet\s+in|photo|photo\s+chen|photo\s+chin|photo\s+china|build\s+in|go\s+to|bow\s+to|boda|poda|boto)\b/gi, 'Boda Chen')
+          .replace(/\bphoto\s+(?:chen|chain|chin|china)\b/gi, 'Boda Chen')
+          .replace(/\bboulder\s+chair\b/gi, 'Boda Chen')
           .replace(/\bgo\s+to\s+chen\b/gi, 'Boda Chen')
           .replace(/\bbuild\s+a\s+(?:china|chen)\b/gi, 'Boda Chen')
           .replace(/\bboulder\s+(?:chen|china)\b/gi, 'Boda Chen')
@@ -532,7 +534,7 @@
           .replace(/\bbota\s+chen\b/gi, 'Boda Chen')
           .replace(/\bbod[a-z]*\s+ch(?:en|in|ina)\b/gi, 'Boda Chen');
       }
-      var heard = phrase.replace(/\bBoda\b/gi, '(?:Boda|go to|build a|bow to)').replace(/\bChen\b/gi, '(?:Chen|China)');
+      var heard = phrase.replace(/\bBoda\b/gi, '(?:Boda|go to|build a|bow to|photo|poda|boto|boulder)').replace(/\bChen\b/gi, '(?:Chen|China|chain|chin|chair)');
       corrected = corrected.replace(new RegExp('\\b' + heard + '\\b', 'gi'), phrase);
     });
     return corrected;
