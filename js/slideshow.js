@@ -387,13 +387,19 @@
     'introduction': 'Introduction'
   };
   var DIRECT_PHRASE_CORRECTIONS = [
+    // Chanticleer mishearings
     [/\bsanta\s+clara\b/gi, 'Chanticleer'],
     [/\bsanta\s+clear\b/gi, 'Chanticleer'],
     [/\bchant\s+a\s+clear\b/gi, 'Chanticleer'],
     [/\btrying\s+to\s+clear\b/gi, 'Chanticleer'],
     [/\bpanda\s+clear\b/gi, 'Chanticleer'],
+    // widow's farm mishearings
     [/\bwidows?\s+form\b/gi, "widow's farm"],
     [/\bwidows?\s+farm\b/gi, "widow's farm"],
+    [/\bwidows?\s+swan\b/gi, "widow's farm"],
+    [/\bwindow\s+(?:farm|form|swan)\b/gi, "widow's farm"],
+    [/\blittle\s+(?:swan|fawn|farm|form)\b/gi, "widow's farm"],
+    // the sly fox
     [/\bthe\s+sly\s+box\b/gi, 'the sly fox']
   ];
   
