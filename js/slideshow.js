@@ -69,6 +69,11 @@
   function loadWords(scene, container) {
     var data = getSceneData(scene);
     if (!data) return;
+    var txtPath = data.audio.replace('.mp3', '.txt').replace('audio', 'scenes');
+    fetch(txtPath)
+      .then(function(r) { return r.text(); })
+      .then(function(txt) { if (txt.trim()) container.textContent = txt; })
+      .catch(function() {});
     fetch(data.words)
       .then(function(r) { return r.json(); })
       .then(function(wordList) {
@@ -85,12 +90,7 @@
           }
         });
       })
-      .catch(function() {
-        fetch(data.audio.replace('.mp3', '.txt').replace('audio', 'scenes'))
-          .then(function(r) { return r.text(); })
-          .then(function(txt) { container.textContent = txt; })
-          .catch(function() { container.textContent = ''; });
-      });
+      .catch(function() {});
   }
 
   function ensureWords(scene) {
@@ -580,15 +580,23 @@
     }).join('');
   }
   
+  function showMicMessage(msg) {
+    if (liveCaptionOverlay) {
+      liveCaptionOverlay.textContent = msg;
+      liveCaptionOverlay.classList.add('active');
+    }
+  }
+
   function initSpeechRecognition() {
     if (recognition) return;
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      if (liveCaptionOverlay) liveCaptionOverlay.textContent = 'Speech recognition not supported in this browser. Please use Chrome or Edge.';
+      showMicMessage('Speech recognition not supported. Use Chrome or Edge.');
       return;
     }
     if (!window.isSecureContext) {
-      if (liveCaptionOverlay) liveCaptionOverlay.textContent = 'Microphone requires HTTPS. Use a secure connection or localhost.';
+      showMicMessage('Microphone requires HTTPS. Use a secure connection or localhost.');
+      return;
     }
     recognition = new SpeechRecognition();
     recognition.continuous = true;
@@ -612,14 +620,14 @@
       if (event.error === 'no-speech') {
         micRestartCount++;
         if (micRestartCount >= MAX_MIC_RESTARTS) {
-          if (liveCaptionOverlay) liveCaptionOverlay.textContent = 'No speech detected. Tap mic to try again.';
+          showMicMessage('No speech detected. Tap mic to try again.');
           stopMic();
         }
         return;
       }
       if (event.error === 'aborted' && micOn) return;
-      if (event.error === 'not-allowed' && liveCaptionOverlay) {
-        liveCaptionOverlay.textContent = 'Microphone access denied. Please allow mic in browser settings.';
+      if (event.error === 'not-allowed') {
+        showMicMessage('Microphone access denied. Allow mic in browser settings.');
       }
       stopMic();
     };
