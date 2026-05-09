@@ -316,6 +316,15 @@
   var micRestartTimer = null;
   var resumeMicAfterPause = false;
   var micStartRetryTimer = null;
+
+  if (!liveCaptionOverlay) {
+    var lco = document.createElement('div');
+    lco.id = 'live-caption-overlay';
+    lco.className = 'live-caption-overlay';
+    lco.textContent = '🎤 Tap the mic button to start live captions';
+    document.body.appendChild(lco);
+    liveCaptionOverlay = document.getElementById('live-caption-overlay');
+  }
   
   // ---- Canterbury Tales vocabulary for speech correction ----
   var STORY_VOCAB = [
@@ -573,8 +582,11 @@
     if (recognition) return;
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      if (micBtn) micBtn.style.display = 'none';
+      if (liveCaptionOverlay) liveCaptionOverlay.textContent = 'Speech recognition not supported in this browser. Please use Chrome or Edge.';
       return;
+    }
+    if (!window.isSecureContext) {
+      if (liveCaptionOverlay) liveCaptionOverlay.textContent = 'Microphone requires HTTPS. Use a secure connection or localhost.';
     }
     recognition = new SpeechRecognition();
     recognition.continuous = true;
@@ -632,7 +644,10 @@
     if (!recognition) return;
     micOn = true;
     if (micBtn) micBtn.classList.add('listening');
-    if (liveCaptionOverlay) liveCaptionOverlay.classList.add('active');
+    if (liveCaptionOverlay) {
+      liveCaptionOverlay.classList.add('active');
+      liveCaptionOverlay.textContent = '🎤 Listening...';
+    }
     safelyStartRecognition(3);
   }
   
@@ -775,11 +790,4 @@
     stopAudio();
     setupActiveScene();
   });
-
-  // Create live caption overlay dynamically
-  var lco = document.createElement('div');
-  lco.id = 'live-caption-overlay';
-  lco.className = 'live-caption-overlay';
-  document.body.appendChild(lco);
-  liveCaptionOverlay = document.getElementById('live-caption-overlay');
 })();

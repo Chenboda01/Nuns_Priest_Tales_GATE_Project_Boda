@@ -244,19 +244,20 @@ body.light .reveal .controls {
 /* ---- Live caption overlay ---- */
 .live-caption-overlay {
   position: fixed;
-  bottom: 10%;
-  left: 10%;
-  right: 10%;
-  z-index: 90;
-  background: rgba(0, 0, 0, 0.75);
+  bottom: 8%;
+  left: 5%;
+  right: 5%;
+  z-index: 211;
+  background: rgba(0, 0, 0, 0.82);
   color: #fff;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
   font-family: var(--r-main-font);
-  font-size: 1.4em;
+  font-size: 1.2em;
   text-align: center;
   min-height: 1.5em;
   display: none;
+  pointer-events: none;
 }
 
 .live-caption-overlay.active {
