@@ -280,19 +280,14 @@ body.light .reveal .controls {
   text-shadow: 0 4px 22px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.5);
   z-index: 10;
   pointer-events: none;
-  padding: 12px 24px;
-  border: 2px solid var(--r-link-color);
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.45);
 }
 .silence-icon {
   display: inline-block;
-  width: 34px;
-  height: 34px;
-  margin: 0 32px;
+  width: 32px;
+  height: 32px;
+  margin: 0 6px;
   vertical-align: middle;
-  opacity: 0.88;
-  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.6));
+  opacity: 0.85;
 }
 
 /* ---- Pause presentation button ---- */
