@@ -316,6 +316,8 @@
   var micRestartTimer = null;
   var resumeMicAfterPause = false;
   var micStartRetryTimer = null;
+  var micRestartCount = 0;
+  var MAX_MIC_RESTARTS = 5;
 
   if (!liveCaptionOverlay) {
     var lco = document.createElement('div');
@@ -591,21 +593,30 @@
     recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
     recognition.lang = 'en-US';
     
     recognition.onresult = function(event) {
+      micRestartCount = 0;
       var transcript = '';
       for (var i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript;
       }
       var corrected = correctTranscript(transcript);
       if (liveCaptionOverlay) {
-        liveCaptionOverlay.textContent = corrected.trim();
+        liveCaptionOverlay.textContent = corrected.trim() || '🎤 Listening...';
       }
     };
     
     recognition.onerror = function(event) {
-      if (event.error === 'no-speech') return;
+      if (event.error === 'no-speech') {
+        micRestartCount++;
+        if (micRestartCount >= MAX_MIC_RESTARTS) {
+          if (liveCaptionOverlay) liveCaptionOverlay.textContent = 'No speech detected. Tap mic to try again.';
+          stopMic();
+        }
+        return;
+      }
       if (event.error === 'aborted' && micOn) return;
       if (event.error === 'not-allowed' && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = 'Microphone access denied. Please allow mic in browser settings.';
@@ -614,13 +625,13 @@
     };
     
     recognition.onend = function() {
-      if (micOn) {
+      if (micOn && micRestartCount < MAX_MIC_RESTARTS) {
         clearTimeout(micRestartTimer);
         micRestartTimer = setTimeout(function() {
           if (micOn && recognition) {
             try { recognition.start(); } catch(e) { stopMic(); }
           }
-        }, 300);
+        }, 500);
       } else {
         if (micBtn) micBtn.classList.remove('listening');
       }
@@ -643,6 +654,7 @@
   function startMic() {
     if (!recognition) return;
     micOn = true;
+    micRestartCount = 0;
     if (micBtn) micBtn.classList.add('listening');
     if (liveCaptionOverlay) {
       liveCaptionOverlay.classList.add('active');
