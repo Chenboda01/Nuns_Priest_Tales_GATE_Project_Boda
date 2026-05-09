@@ -276,6 +276,7 @@ body.light .reveal .controls {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 16px;
   color: var(--r-link-color);
   font-family: var(--r-heading-font);
   font-size: 1.8em;
@@ -284,6 +285,12 @@ body.light .reveal .controls {
   text-shadow: 0 4px 22px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.5);
   z-index: 10;
   pointer-events: none;
+}
+.silence-icon {
+  width: 42px;
+  height: 42px;
+  opacity: 0.85;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.6));
 }
 
 /* ---- Pause presentation button ---- */
