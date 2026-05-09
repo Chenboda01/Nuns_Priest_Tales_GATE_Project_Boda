@@ -281,6 +281,7 @@ body.light .reveal .controls {
   -webkit-backdrop-filter: blur(10px) saturate(1.8);
 }
 .silence-line {
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   gap: 6px;
