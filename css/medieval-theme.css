@@ -280,6 +280,10 @@ body.light .reveal .controls {
   text-shadow: 0 4px 22px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.5);
   z-index: 10;
   pointer-events: none;
+  padding: 8px 14px;
+  border: 2px solid var(--r-link-color);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.4);
 }
 .silence-icon {
   display: inline-block;
