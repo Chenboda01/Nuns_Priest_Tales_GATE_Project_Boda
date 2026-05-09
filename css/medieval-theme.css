@@ -282,14 +282,14 @@ body.light .reveal .controls {
   padding: 8px 14px;
   border: 2px solid var(--r-link-color);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(10px) saturate(1.8);
   -webkit-backdrop-filter: blur(10px) saturate(1.8);
-  color: var(--r-link-color);
   font-family: var(--r-heading-font);
   font-size: 1em;
   letter-spacing: 0.04em;
-  text-shadow: 0 4px 22px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5), 0 0 18px rgba(231, 173, 82, 0.35);
 }
 .silence-icon {
   display: inline-block;
