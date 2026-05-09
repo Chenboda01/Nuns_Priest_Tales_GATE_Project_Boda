@@ -70,13 +70,11 @@
     var data = getSceneData(scene);
     if (!data) return;
     var txtPath = data.audio.replace('.mp3', '.txt').replace('audio', 'scenes');
-    fetch(txtPath)
-      .then(function(r) { return r.text(); })
-      .then(function(txt) { if (txt.trim()) container.textContent = txt; })
-      .catch(function() {});
+    var wordsLoaded = false;
     fetch(data.words)
       .then(function(r) { return r.json(); })
       .then(function(wordList) {
+        wordsLoaded = true;
         container.innerHTML = '';
         wordList.forEach(function(w, i) {
           var span = document.createElement('span');
@@ -89,6 +87,12 @@
             container.appendChild(document.createTextNode(' '));
           }
         });
+      })
+      .catch(function() {});
+    fetch(txtPath)
+      .then(function(r) { return r.text(); })
+      .then(function(txt) {
+        if (!wordsLoaded && txt.trim()) container.textContent = txt;
       })
       .catch(function() {});
   }
