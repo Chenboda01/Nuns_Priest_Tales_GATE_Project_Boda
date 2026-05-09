@@ -282,9 +282,7 @@ body.light .reveal .controls {
   padding: 8px 14px;
   border: 2px solid var(--r-link-color);
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.12);
   color: var(--r-link-color);
   font-family: var(--r-heading-font);
   font-size: 1em;
