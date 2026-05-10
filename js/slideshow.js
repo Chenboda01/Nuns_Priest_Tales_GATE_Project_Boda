@@ -611,12 +611,14 @@
     recognition.onresult = function(event) {
       micRestartCount = 0;
       var transcript = '';
+      var allFinal = true;
       for (var i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript;
+        if (!event.results[i].isFinal) allFinal = false;
       }
-      var corrected = correctTranscript(transcript);
+      var display = allFinal ? correctTranscript(transcript).trim() : transcript.trim();
       if (liveCaptionOverlay) {
-        liveCaptionOverlay.textContent = corrected.trim() || '🎤 Listening...';
+        liveCaptionOverlay.textContent = display || '🎤 Listening...';
       }
     };
     
@@ -643,7 +645,7 @@
           if (micOn && recognition) {
             try { recognition.start(); } catch(e) { stopMic(); }
           }
-        }, 500);
+        }, 150);
       } else {
         if (micBtn) micBtn.classList.remove('listening');
       }
@@ -658,7 +660,7 @@
       if (attemptsLeft > 0 && micOn) {
         micStartRetryTimer = setTimeout(function() {
           safelyStartRecognition(attemptsLeft - 1);
-        }, 350);
+        }, 100);
       }
     }
   }
