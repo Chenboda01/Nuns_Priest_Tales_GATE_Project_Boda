@@ -323,6 +323,7 @@
   var micRestartCount = 0;
   var MAX_MIC_RESTARTS = 5;
   var micSilenceTimer = null;
+  var micSpeaking = false;
 
   if (!liveCaptionOverlay) {
     var lco = document.createElement('div');
@@ -625,14 +626,16 @@
     };
     
     recognition.onspeechstart = function() {
+      micSpeaking = true;
       clearTimeout(micSilenceTimer);
       if (liveCaptionOverlay) liveCaptionOverlay.textContent = '🔊 Hearing...';
     };
     
     recognition.onspeechend = function() {
-      if (liveCaptionOverlay && liveCaptionOverlay.textContent === '🔊 Hearing...') {
+      if (micSpeaking && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = '⏳ Processing...';
       }
+      micSpeaking = false;
     };
     
     recognition.onaudiostart = function() {
@@ -686,6 +689,7 @@
     if (!recognition) return;
     micOn = true;
     micRestartCount = 0;
+    micSpeaking = false;
     clearTimeout(micSilenceTimer);
     micSilenceTimer = setTimeout(function() {
       if (micOn && liveCaptionOverlay && liveCaptionOverlay.textContent === '🎤 Listening...') {
