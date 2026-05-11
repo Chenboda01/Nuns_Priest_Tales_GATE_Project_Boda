@@ -322,6 +322,7 @@
   var micStartRetryTimer = null;
   var micRestartCount = 0;
   var MAX_MIC_RESTARTS = 5;
+  var micSilenceTimer = null;
 
   if (!liveCaptionOverlay) {
     var lco = document.createElement('div');
@@ -610,6 +611,7 @@
     
     recognition.onresult = function(event) {
       micRestartCount = 0;
+      clearTimeout(micSilenceTimer);
       var transcript = '';
       var allFinal = true;
       for (var i = event.resultIndex; i < event.results.length; i++) {
@@ -620,6 +622,21 @@
       if (liveCaptionOverlay) {
         liveCaptionOverlay.textContent = display || '🎤 Listening...';
       }
+    };
+    
+    recognition.onspeechstart = function() {
+      clearTimeout(micSilenceTimer);
+      if (liveCaptionOverlay) liveCaptionOverlay.textContent = '🔊 Hearing...';
+    };
+    
+    recognition.onspeechend = function() {
+      if (liveCaptionOverlay && liveCaptionOverlay.textContent === '🔊 Hearing...') {
+        liveCaptionOverlay.textContent = '⏳ Processing...';
+      }
+    };
+    
+    recognition.onaudiostart = function() {
+      clearTimeout(micSilenceTimer);
     };
     
     recognition.onerror = function(event) {
@@ -669,6 +686,12 @@
     if (!recognition) return;
     micOn = true;
     micRestartCount = 0;
+    clearTimeout(micSilenceTimer);
+    micSilenceTimer = setTimeout(function() {
+      if (micOn && liveCaptionOverlay && liveCaptionOverlay.textContent === '🎤 Listening...') {
+        liveCaptionOverlay.textContent = 'No speech heard. Check mic or speak louder.';
+      }
+    }, 10000);
     if (micBtn) micBtn.classList.add('listening');
     if (liveCaptionOverlay) {
       liveCaptionOverlay.classList.add('active');
@@ -681,6 +704,7 @@
     micOn = false;
     clearTimeout(micRestartTimer);
     clearTimeout(micStartRetryTimer);
+    clearTimeout(micSilenceTimer);
     if (micBtn) micBtn.classList.remove('listening');
     if (liveCaptionOverlay) liveCaptionOverlay.classList.remove('active');
     try { recognition.stop(); } catch(e) {}
