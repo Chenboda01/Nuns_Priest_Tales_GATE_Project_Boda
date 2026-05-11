@@ -619,9 +619,16 @@
         transcript += event.results[i][0].transcript;
         if (!event.results[i].isFinal) allFinal = false;
       }
-      var display = allFinal ? correctTranscript(transcript).trim() : transcript.trim();
-      if (liveCaptionOverlay) {
-        liveCaptionOverlay.textContent = display || '🎤 Listening...';
+      if (allFinal && liveCaptionOverlay) {
+        liveCaptionOverlay.textContent = '⏳ Processing...';
+        setTimeout(function() {
+          var corrected = correctTranscript(transcript).trim();
+          if (liveCaptionOverlay && micOn) {
+            liveCaptionOverlay.textContent = corrected || transcript.trim() || '🎤 Listening...';
+          }
+        }, 50);
+      } else if (liveCaptionOverlay) {
+        liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
       }
     };
     
