@@ -624,7 +624,7 @@
         var captured = transcript;
         setTimeout(function() {
           var corrected = correctTranscript(captured).trim();
-          if (liveCaptionOverlay && micOn) {
+          if (liveCaptionOverlay) {
             liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
           }
         }, 80);
@@ -675,7 +675,7 @@
           }
         }, 150);
       } else {
-        if (micBtn) micBtn.classList.remove('listening');
+        stopMic();
       }
     };
   }
