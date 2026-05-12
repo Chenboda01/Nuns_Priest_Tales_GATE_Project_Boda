@@ -614,19 +614,20 @@
       micRestartCount = 0;
       clearTimeout(micSilenceTimer);
       var transcript = '';
-      var allFinal = true;
+      var hasFinal = false;
       for (var i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript;
-        if (!event.results[i].isFinal) allFinal = false;
+        if (event.results[i].isFinal) hasFinal = true;
       }
-      if (allFinal && liveCaptionOverlay) {
+      if (hasFinal && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = '⏳ Processing...';
+        var captured = transcript;
         setTimeout(function() {
-          var corrected = correctTranscript(transcript).trim();
+          var corrected = correctTranscript(captured).trim();
           if (liveCaptionOverlay && micOn) {
-            liveCaptionOverlay.textContent = corrected || transcript.trim() || '🎤 Listening...';
+            liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
           }
-        }, 50);
+        }, 80);
       } else if (liveCaptionOverlay) {
         liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
       }
