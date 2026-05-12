@@ -622,12 +622,13 @@
       if (hasFinal && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = '⏳ Processing...';
         var captured = transcript;
+        var showAt = Date.now() + 400;
+        var corrected = correctTranscript(captured).trim();
+        var result = corrected || captured.trim() || '🎤 Listening...';
+        var wait = Math.max(0, showAt - Date.now());
         setTimeout(function() {
-          var corrected = correctTranscript(captured).trim();
-          if (liveCaptionOverlay) {
-            liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
-          }
-        }, 80);
+          if (liveCaptionOverlay) liveCaptionOverlay.textContent = result;
+        }, wait);
       } else if (liveCaptionOverlay) {
         liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
       }
