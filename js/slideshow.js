@@ -324,6 +324,7 @@
   var MAX_MIC_RESTARTS = 5;
   var micSilenceTimer = null;
   var micProcessTimer = null;
+  var micProcessing = false;
 
   if (!liveCaptionOverlay) {
     var lco = document.createElement('div');
@@ -621,15 +622,17 @@
         if (event.results[i].isFinal) hasFinal = true;
       }
       if (hasFinal && liveCaptionOverlay) {
+        micProcessing = true;
         liveCaptionOverlay.textContent = '⏳ Processing...';
         var captured = transcript;
         micProcessTimer = setTimeout(function() {
+          micProcessing = false;
           var corrected = correctTranscript(captured).trim();
           if (liveCaptionOverlay) {
             liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
           }
         }, 500);
-      } else if (liveCaptionOverlay) {
+      } else if (!micProcessing && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
       }
     };
@@ -686,6 +689,7 @@
     if (!recognition) return;
     micOn = true;
     micRestartCount = 0;
+    micProcessing = false;
     clearTimeout(micSilenceTimer);
     clearTimeout(micProcessTimer);
     micSilenceTimer = setTimeout(function() {
