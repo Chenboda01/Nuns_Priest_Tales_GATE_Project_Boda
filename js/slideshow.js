@@ -631,7 +631,7 @@
           if (liveCaptionOverlay) {
             liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
           }
-        }, 500);
+        }, 1000);
       } else if (!micProcessing && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
       }
