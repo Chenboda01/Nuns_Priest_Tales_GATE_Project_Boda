@@ -214,11 +214,10 @@
     autoBtn.classList.toggle('tracking', autoPresentOn && autoState === 'tracking');
     var scene = autoCurrentScene || getActiveScene() || '';
     var pct = Math.round(sceneCoverage(scene, autoTranscript) * 100);
-    var label = autoPresentOn ? ' ' + autoSpeedLabels[autoSpeedOrder[autoSpeedIndex]] : '';
     if (autoState === 'tracking' && scene) {
-      autoBtn.textContent = '✨ S' + parseInt(scene, 10) + ' ' + pct + '%' + label;
+      autoBtn.innerHTML = '✨ S' + parseInt(scene, 10) + ' ' + pct + '% <span class="speed-trigger">' + autoSpeedLabels[autoSpeedOrder[autoSpeedIndex]] + '</span>';
     } else if (autoPresentOn) {
-      autoBtn.textContent = '✨ Auto ' + pct + '%' + label;
+      autoBtn.innerHTML = '✨ Auto ' + pct + '% <span class="speed-trigger">' + autoSpeedLabels[autoSpeedOrder[autoSpeedIndex]] + '</span>';
     } else {
       autoBtn.textContent = '✨ Auto Present';
     }
@@ -238,35 +237,55 @@
     autoSceneTimer = setTimeout(advanceAutoScene, getAutoDuration() * 1000);
   }
 
-  function createSpeedButtons() {
-    var container = document.createElement('div');
-    container.className = 'auto-speed-bar';
-    container.id = 'auto-speed-bar';
-    container.style.display = 'none';
-    autoSpeedOrder.forEach(function(name, i) {
-      var btn = document.createElement('button');
-      btn.className = 'speed-btn' + (i === autoSpeedIndex ? ' active' : '');
-      btn.dataset.speed = name;
-      btn.dataset.index = i;
-      btn.title = name + ' (' + autoSpeeds[name] + 's)';
-      btn.textContent = autoSpeedLabels[name];
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        autoSpeedIndex = i;
-        document.querySelectorAll('.speed-btn').forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        if (autoPresentOn && autoState === 'tracking') {
-          scheduleAutoAdvance();
-          updateAutoButton();
-        }
-      });
-      container.appendChild(btn);
-    });
-    if (autoBtn && autoBtn.parentNode) {
-      autoBtn.parentNode.insertBefore(container, autoBtn.nextSibling);
+  function setSpeed(i) {
+    autoSpeedIndex = i;
+    if (autoPresentOn && autoState === 'tracking') {
+      scheduleAutoAdvance();
+      updateAutoButton();
     }
+    if (autoDropdown) autoDropdown.classList.remove('open');
   }
-  createSpeedButtons();
+
+  function toggleSpeedDropdown(e) {
+    if (e) e.stopPropagation();
+    if (!autoDropdown) return;
+    autoDropdown.classList.toggle('open');
+  }
+
+  function closeSpeedDropdown() {
+    if (autoDropdown) autoDropdown.classList.remove('open');
+  }
+
+  var autoDropdown = null;
+  function createSpeedDropdown() {
+    var dd = document.createElement('div');
+    dd.className = 'auto-speed-dropdown';
+    dd.id = 'auto-speed-dropdown';
+    autoSpeedOrder.forEach(function(name, i) {
+      var item = document.createElement('div');
+      item.className = 'speed-item' + (i === autoSpeedIndex ? ' active' : '');
+      item.dataset.index = i;
+      item.textContent = autoSpeedLabels[name] + ' ' + name + ' (' + autoSpeeds[name] + 's)';
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.querySelectorAll('.speed-item').forEach(function(s) { s.classList.remove('active'); });
+        item.classList.add('active');
+        setSpeed(i);
+        closeSpeedDropdown();
+        scheduleAutoAdvance();
+        updateAutoButton();
+      });
+      dd.appendChild(item);
+    });
+    document.body.appendChild(dd);
+    autoDropdown = dd;
+    document.addEventListener('click', function(e) {
+      if (autoDropdown && !autoDropdown.contains(e.target) && e.target !== autoBtn) {
+        closeSpeedDropdown();
+      }
+    });
+  }
+  createSpeedDropdown();
 
   function showSlideContent() {
     var slide = getCurrentSlide();
@@ -379,9 +398,8 @@
   function toggleAutoPresent() {
     autoPresentOn = !autoPresentOn;
     clearTimeout(autoAdvanceTimer);
-    var speedBar = document.getElementById('auto-speed-bar');
     if (autoPresentOn) {
-      if (speedBar) speedBar.style.display = 'flex';
+      closeSpeedDropdown();
       autoState = 'listening';
       preloadAutoScenes();
       if (!micOn) { initSpeechRecognition(); startMic(); }
@@ -395,7 +413,7 @@
         scheduleAutoAdvance();
       }
     } else {
-      if (speedBar) speedBar.style.display = 'none';
+      closeSpeedDropdown();
       autoState = 'idle';
       autoCurrentScene = null;
       autoTranscript = '';
@@ -1169,8 +1187,12 @@
 
   if (autoBtn) {
     autoBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      toggleAutoPresent();
+      if (e.target.classList.contains('speed-trigger')) {
+        toggleSpeedDropdown(e);
+      } else {
+        e.stopPropagation();
+        toggleAutoPresent();
+      }
     });
   }
 
