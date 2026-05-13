@@ -25,7 +25,11 @@
   var autoLastStatusPct = -1;
   var autoAdvanceTimer = null;
   var autoSceneTimer = null;
-  var autoSceneDuration = 20;
+  var autoCaptionText = '';
+  var autoSpeeds = { turtle: 30, chill: 20, standard: 12, hurry: 7, madmax: 3 };
+  var autoSpeedOrder = ['turtle', 'chill', 'standard', 'hurry', 'madmax'];
+  var autoSpeedIndex = 1;
+  var autoSpeedLabels = { turtle: '🐢', chill: '🏖️', standard: 'Std', hurry: '⏰', madmax: '🤠' };
   var autoSceneScripts = {};
   var autoSceneWords = {};
   var autoThreshold = 0.50;
@@ -210,10 +214,11 @@
     autoBtn.classList.toggle('tracking', autoPresentOn && autoState === 'tracking');
     var scene = autoCurrentScene || getActiveScene() || '';
     var pct = Math.round(sceneCoverage(scene, autoTranscript) * 100);
+    var label = autoPresentOn ? ' ' + autoSpeedLabels[autoSpeedOrder[autoSpeedIndex]] : '';
     if (autoState === 'tracking' && scene) {
-      autoBtn.textContent = '✨ S' + parseInt(scene, 10) + ' ' + pct + '%';
+      autoBtn.textContent = '✨ S' + parseInt(scene, 10) + ' ' + pct + '%' + label;
     } else if (autoPresentOn) {
-      autoBtn.textContent = '✨ Auto ' + pct + '%';
+      autoBtn.textContent = '✨ Auto ' + pct + '%' + label;
     } else {
       autoBtn.textContent = '✨ Auto Present';
     }
@@ -226,10 +231,42 @@
     }
   }
 
+  function getAutoDuration() { return autoSpeeds[autoSpeedOrder[autoSpeedIndex]]; }
+
   function scheduleAutoAdvance() {
     clearTimeout(autoSceneTimer);
-    autoSceneTimer = setTimeout(advanceAutoScene, autoSceneDuration * 1000);
+    autoSceneTimer = setTimeout(advanceAutoScene, getAutoDuration() * 1000);
   }
+
+  function createSpeedButtons() {
+    var container = document.createElement('div');
+    container.className = 'auto-speed-bar';
+    container.id = 'auto-speed-bar';
+    container.style.display = 'none';
+    autoSpeedOrder.forEach(function(name, i) {
+      var btn = document.createElement('button');
+      btn.className = 'speed-btn' + (i === autoSpeedIndex ? ' active' : '');
+      btn.dataset.speed = name;
+      btn.dataset.index = i;
+      btn.title = name + ' (' + autoSpeeds[name] + 's)';
+      btn.textContent = autoSpeedLabels[name];
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        autoSpeedIndex = i;
+        document.querySelectorAll('.speed-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        if (autoPresentOn && autoState === 'tracking') {
+          scheduleAutoAdvance();
+          updateAutoButton();
+        }
+      });
+      container.appendChild(btn);
+    });
+    if (autoBtn && autoBtn.parentNode) {
+      autoBtn.parentNode.insertBefore(container, autoBtn.nextSibling);
+    }
+  }
+  createSpeedButtons();
 
   function showSlideContent() {
     var slide = getCurrentSlide();
@@ -237,11 +274,14 @@
     var heading = slide.querySelector('h1, h2, h3, h4');
     var txt = (slide.textContent || '').trim();
     if (txt) {
+      autoCaptionText = txt;
       liveCaptionOverlay.textContent = txt;
     } else if (heading) {
+      autoCaptionText = heading.textContent;
       liveCaptionOverlay.textContent = heading.textContent;
     } else {
-      liveCaptionOverlay.textContent = 'Auto Present — advancing automatically';
+      autoCaptionText = 'Auto Present — advancing automatically';
+      liveCaptionOverlay.textContent = autoCaptionText;
     }
   }
 
@@ -255,7 +295,8 @@
     ensureWords(autoCurrentScene);
     loadAutoSceneScript(autoCurrentScene).then(function(txt) {
       if (txt && liveCaptionOverlay && autoPresentOn) {
-        showAutoStatus('Auto scene ' + parseInt(autoCurrentScene, 10) + ': ' + txt);
+        autoCaptionText = 'Auto scene ' + parseInt(autoCurrentScene, 10) + ': ' + txt;
+        liveCaptionOverlay.textContent = autoCaptionText;
       } else if (liveCaptionOverlay && autoPresentOn) {
         showSlideContent();
       }
@@ -338,7 +379,9 @@
   function toggleAutoPresent() {
     autoPresentOn = !autoPresentOn;
     clearTimeout(autoAdvanceTimer);
+    var speedBar = document.getElementById('auto-speed-bar');
     if (autoPresentOn) {
+      if (speedBar) speedBar.style.display = 'flex';
       autoState = 'listening';
       preloadAutoScenes();
       if (!micOn) { initSpeechRecognition(); startMic(); }
@@ -352,6 +395,7 @@
         scheduleAutoAdvance();
       }
     } else {
+      if (speedBar) speedBar.style.display = 'none';
       autoState = 'idle';
       autoCurrentScene = null;
       autoTranscript = '';
@@ -881,32 +925,45 @@
       }
       if (hasFinal && liveCaptionOverlay) {
         micProcessing = true;
-        liveCaptionOverlay.textContent = '⏳ Processing...';
         var captured = transcript;
-        // Feed corrected text for coverage (auto) or raw (non-auto fallback)
-        // correctTranscript applies story-term mishearing fixes (Chanticleer, Pertelote, etc.)
-        var textForFeed = correctTranscript(captured).trim() || captured.trim();
+        var correctedText = correctTranscript(captured).trim() || captured.trim();
+        // Feed corrected text to auto-present for coverage
         if (autoPresentOn) {
-          feedAutoPresenter(textForFeed);
-        }
-        micProcessTimer = setTimeout(function() {
-          micProcessing = false;
-          var corrected = correctTranscript(captured).trim();
-          if (liveCaptionOverlay) {
-            liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
-          }
-          if (!autoPresentOn) {
+          feedAutoPresenter(correctedText);
+          // Briefly show corrected speech, then restore teleprompter
+          liveCaptionOverlay.textContent = correctedText;
+          var prevCaption = autoCaptionText;
+          clearTimeout(micProcessTimer);
+          micProcessTimer = setTimeout(function() {
+            micProcessing = false;
+            if (autoPresentOn && prevCaption) {
+              liveCaptionOverlay.textContent = prevCaption;
+            } else if (!autoPresentOn && liveCaptionOverlay) {
+              liveCaptionOverlay.textContent = correctedText || captured.trim() || '🎤 Listening...';
+            }
+          }, 2500);
+        } else {
+          liveCaptionOverlay.textContent = '⏳ Processing...';
+          micProcessTimer = setTimeout(function() {
+            micProcessing = false;
+            var corrected = correctTranscript(captured).trim();
+            if (liveCaptionOverlay) {
+              liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
+            }
             feedAutoPresenter(corrected || captured.trim());
-          }
-        }, 1000);
+          }, 1000);
+        }
       } else if (!micProcessing && liveCaptionOverlay) {
-        liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
+        // When auto-present is on, keep showing teleprompter, not raw speech
+        if (!autoPresentOn) {
+          liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
+        }
       }
     };
     
     recognition.onspeechstart = function() {
       clearTimeout(micSilenceTimer);
-      if (liveCaptionOverlay) liveCaptionOverlay.textContent = '🔊 Hearing...';
+      if (liveCaptionOverlay && !autoPresentOn) liveCaptionOverlay.textContent = '🔊 Hearing...';
     };
     
     recognition.onerror = function(event) {
@@ -967,7 +1024,7 @@
     if (micBtn) micBtn.classList.add('listening');
     if (liveCaptionOverlay) {
       liveCaptionOverlay.classList.add('active');
-      liveCaptionOverlay.textContent = '🎤 Listening...';
+      if (!autoPresentOn) liveCaptionOverlay.textContent = '🎤 Listening...';
     }
     safelyStartRecognition(3);
   }
