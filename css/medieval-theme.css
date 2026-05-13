@@ -373,7 +373,7 @@ body.light .reveal .controls {
   box-shadow: 0 8px 26px rgba(231, 173, 82, 0.28);
 }
 
-.auto-btn.active {
+button.auto-btn.active {
   background:
     repeating-linear-gradient(115deg,
       transparent 0px,
@@ -434,7 +434,7 @@ body.light .reveal .controls {
 }
 
 @media (prefers-reduced-motion: reduce) {
-button.auto-btn.active {
+  .auto-btn.active {
     animation: none;
     background-position: 0 0, 0 0, 0% 50%;
   }

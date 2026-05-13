@@ -22,10 +22,11 @@
   var autoState = 'idle';
   var autoCurrentScene = null;
   var autoTranscript = '';
+  var autoLastStatusPct = -1;
   var autoAdvanceTimer = null;
   var autoSceneScripts = {};
   var autoSceneWords = {};
-  var autoThreshold = 0.65;
+  var autoThreshold = 0.50;
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -205,7 +206,15 @@
     if (!autoBtn) return;
     autoBtn.classList.toggle('active', autoPresentOn);
     autoBtn.classList.toggle('tracking', autoPresentOn && autoState === 'tracking');
-    autoBtn.textContent = autoPresentOn ? '✨ Auto ' + Math.round(sceneCoverage(autoCurrentScene || getActiveScene() || '00', autoTranscript) * 100) + '%' : '✨ Auto Present';
+    var scene = autoCurrentScene || getActiveScene() || '';
+    var pct = Math.round(sceneCoverage(scene, autoTranscript) * 100);
+    if (autoState === 'tracking' && scene) {
+      autoBtn.textContent = '✨ S' + parseInt(scene, 10) + ' ' + pct + '%';
+    } else if (autoPresentOn) {
+      autoBtn.textContent = '✨ Auto ' + pct + '%';
+    } else {
+      autoBtn.textContent = '✨ Auto Present';
+    }
   }
 
   function showAutoStatus(text) {
@@ -242,9 +251,17 @@
 
   function feedAutoPresenter(text) {
     if (!autoPresentOn) return;
+    if (autoState === 'advancing') return;
     var commandScene = parseSceneCommand(text);
     if (commandScene) {
+      var remainder = text.replace(/\bscene\s+(?:number\s+)?\S+\b/i, '').trim();
       startTrackingScene(commandScene);
+      if (remainder) {
+        autoTranscript += ' ' + remainder;
+        loadAutoSceneScript(autoCurrentScene).then(function() {
+          updateAutoButton();
+        });
+      }
       return;
     }
     if (autoState !== 'tracking') {
@@ -253,14 +270,20 @@
       else return;
     }
     autoTranscript += ' ' + text;
-    loadAutoSceneScript(autoCurrentScene).then(function() {
-      var coverage = sceneCoverage(autoCurrentScene, autoTranscript);
+    var sceneAtCall = autoCurrentScene;
+    var transcriptAtCall = autoTranscript;
+    loadAutoSceneScript(sceneAtCall).then(function() {
+      var coverage = sceneCoverage(sceneAtCall, transcriptAtCall);
       updateAutoButton();
+      var pct = Math.round(coverage * 100);
       if (coverage >= autoThreshold && autoState === 'tracking') {
         autoState = 'advancing';
-        showAutoStatus('⏩ Auto advancing...');
+        showAutoStatus('⏩ Scene ' + parseInt(sceneAtCall, 10) + ' done (' + pct + '%) — advancing...');
         clearTimeout(autoAdvanceTimer);
-        autoAdvanceTimer = setTimeout(advanceAutoScene, 1200);
+        autoAdvanceTimer = setTimeout(advanceAutoScene, 800);
+      } else if (autoState === 'tracking' && pct >= 25 && pct !== autoLastStatusPct && pct % 25 === 0) {
+        autoLastStatusPct = pct;
+        showAutoStatus('📖 Reading scene ' + parseInt(sceneAtCall, 10) + ' — ' + pct + '% complete');
       }
     });
   }
@@ -272,13 +295,18 @@
       autoState = 'listening';
       preloadAutoScenes();
       if (!micOn) { initSpeechRecognition(); startMic(); }
-      showAutoStatus('Auto Present on. Say “Scene 1” or start reading.');
       var active = getActiveScene();
-      if (active) startTrackingScene(active);
+      if (active) {
+        startTrackingScene(active);
+        showAutoStatus('Auto Present on — tracking scene ' + parseInt(active, 10));
+      } else {
+        showAutoStatus('Auto Present on — say "Scene 1" to begin');
+      }
     } else {
       autoState = 'idle';
       autoCurrentScene = null;
       autoTranscript = '';
+      stopMic();
       showAutoStatus('Auto Present off.');
     }
     updateAutoButton();
@@ -797,6 +825,7 @@
       var transcript = '';
       var hasFinal = false;
       for (var i = event.resultIndex; i < event.results.length; i++) {
+        if (i > event.resultIndex) transcript += ' ';
         transcript += event.results[i][0].transcript;
         if (event.results[i].isFinal) hasFinal = true;
       }
@@ -804,13 +833,21 @@
         micProcessing = true;
         liveCaptionOverlay.textContent = '⏳ Processing...';
         var captured = transcript;
+        // Feed corrected text for coverage (auto) or raw (non-auto fallback)
+        // correctTranscript applies story-term mishearing fixes (Chanticleer, Pertelote, etc.)
+        var textForFeed = correctTranscript(captured).trim() || captured.trim();
+        if (autoPresentOn) {
+          feedAutoPresenter(textForFeed);
+        }
         micProcessTimer = setTimeout(function() {
           micProcessing = false;
           var corrected = correctTranscript(captured).trim();
           if (liveCaptionOverlay) {
             liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
           }
-          feedAutoPresenter(corrected || captured.trim());
+          if (!autoPresentOn) {
+            feedAutoPresenter(corrected || captured.trim());
+          }
         }, 1000);
       } else if (!micProcessing && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
@@ -1037,5 +1074,9 @@
   Reveal.on('slidechanged', function() {
     stopAudio();
     setupActiveScene();
+    if (autoPresentOn && autoState === 'tracking') {
+      var scene = getActiveScene();
+      if (scene) startTrackingScene(scene);
+    }
   });
 })();
