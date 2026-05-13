@@ -350,6 +350,98 @@ body.light .reveal .controls {
   background: rgba(231, 173, 82, 0.18);
   color: var(--r-link-color-hover);
 }
+
+.auto-btn {
+  position: fixed;
+  bottom: 126px;
+  right: 160px;
+  z-index: 110;
+  padding: 14px 28px;
+  border: 2px solid var(--r-link-color);
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.9);
+  color: var(--r-link-color);
+  cursor: pointer;
+  font-family: var(--r-main-font);
+  font-size: 1em;
+  font-weight: 700;
+  transition: transform 0.15s, box-shadow 0.2s, color 0.2s;
+}
+
+.auto-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(231, 173, 82, 0.28);
+}
+
+.auto-btn.active {
+  background:
+    repeating-linear-gradient(115deg,
+      transparent 0px,
+      transparent 18px,
+      rgba(255, 255, 255, 0.07) 18px,
+      rgba(255, 255, 255, 0.07) 20px,
+      transparent 20px,
+      transparent 36px
+    ),
+    linear-gradient(115deg,
+      transparent 28%,
+      rgba(255, 255, 255, 0.06) 40%,
+      rgba(255, 255, 255, 0.15) 45%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 58%
+    ),
+    linear-gradient(115deg,
+      #ff2d55 0%, #ff2d55 8%,
+      #ff9500  8%, #ff9500 16%,
+      #ffcc00 16%, #ffcc00 24%,
+      #34c759 24%, #34c759 32%,
+      #007aff 32%, #007aff 40%,
+      #af52de 40%, #af52de 48%,
+      #ff2d55 48%, #ff2d55 50%,
+      #ff2d55 50%, #ff2d55 58%,
+      #ff9500 58%, #ff9500 66%,
+      #ffcc00 66%, #ffcc00 74%,
+      #34c759 74%, #34c759 82%,
+      #007aff 82%, #007aff 90%,
+      #af52de 90%, #af52de 98%,
+      #ff2d55 98%, #ff2d55 100%
+    );
+  background-size: auto, auto, 200% 100%;
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+  text-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.92),
+    0 0 14px rgba(0, 0, 0, 0.55),
+    0 0 2px rgba(0, 0, 0, 0.95);
+  box-shadow:
+    0 0 20px rgba(255, 149, 0, 0.35),
+    0 0 40px rgba(0, 122, 255, 0.25);
+  animation: rainbow-road-flow 2.5s linear infinite;
+}
+
+@keyframes rainbow-road-flow {
+  0%   { background-position: 0 0, 0 0, 0% 50%; }
+  100% { background-position: -36px 0, -50% 0, -100% 50%; }
+}
+
+.auto-btn.tracking {
+  box-shadow:
+    0 0 18px rgba(52, 199, 89, 0.55),
+    0 0 40px rgba(52, 199, 89, 0.30),
+    0 0 60px rgba(0, 122, 255, 0.25),
+    inset 0 0 12px rgba(52, 199, 89, 0.12);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+button.auto-btn.active {
+    animation: none;
+    background-position: 0 0, 0 0, 0% 50%;
+  }
+  .auto-btn.tracking {
+    animation: none;
+  }
+}
 .reveal .pause-overlay .resume-button {
   display: none;
 }

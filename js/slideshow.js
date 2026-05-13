@@ -7,6 +7,7 @@
   var themeToggle = document.getElementById('theme-toggle');
   var captionToggle = document.getElementById('caption-toggle');
   var playBtn = document.getElementById('play-btn');
+  var autoBtn = document.getElementById('auto-btn');
   var progressBar = document.getElementById('progress-bar');
   var overlay = document.getElementById('first-load');
   var musicOn = false;
@@ -17,6 +18,14 @@
   var playingAudio = null;
   var highlightFrame = null;
   var playingScene = null;
+  var autoPresentOn = false;
+  var autoState = 'idle';
+  var autoCurrentScene = null;
+  var autoTranscript = '';
+  var autoAdvanceTimer = null;
+  var autoSceneScripts = {};
+  var autoSceneWords = {};
+  var autoThreshold = 0.65;
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -103,6 +112,176 @@
     if (container && container.children.length === 0 && !container.textContent.trim()) {
       loadWords(scene, container);
     }
+  }
+
+  function loadAutoSceneScript(scene) {
+    var key = pad(scene);
+    if (autoSceneScripts[key]) return Promise.resolve(autoSceneScripts[key]);
+    return fetch('assets/scenes/scene-' + key + '.txt')
+      .then(function(r) { return r.ok ? r.text() : ''; })
+      .then(function(txt) {
+        autoSceneScripts[key] = txt.trim();
+        autoSceneWords[key] = wordListFromText(autoSceneScripts[key]).map(normalizeWord).filter(Boolean);
+        return autoSceneScripts[key];
+      })
+      .catch(function() {
+        autoSceneScripts[key] = '';
+        autoSceneWords[key] = [];
+        return '';
+      });
+  }
+
+  function preloadAutoScenes() {
+    for (var i = 0; i <= 34; i++) loadAutoSceneScript(pad(i));
+  }
+
+  function sceneWordToNumber(text) {
+    var map = {
+      zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9,
+      ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16,
+      seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20, thirty: 30
+    };
+    var value = String(text || '').toLowerCase().replace(/-/g, ' ').trim();
+    if (/^\d+$/.test(value)) return parseInt(value, 10);
+    if (map[value] !== undefined) return map[value];
+    var parts = value.split(/\s+/);
+    if (parts.length === 2 && map[parts[0]] !== undefined && map[parts[1]] !== undefined) {
+      return map[parts[0]] + map[parts[1]];
+    }
+    return null;
+  }
+
+  function parseSceneCommand(text) {
+    var words = 'zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty(?:[- ](?:one|two|three|four))?';
+    var match = String(text || '').toLowerCase().match(new RegExp('\\bscene\\s+(?:number\\s+)?(\\d{1,2}|' + words + ')\\b'));
+    if (!match) return null;
+    var n = sceneWordToNumber(match[1]);
+    return n !== null && n >= 0 && n <= 34 ? pad(n) : null;
+  }
+
+  function getSceneIndices(scene) {
+    var key = pad(scene);
+    var groups = Array.prototype.slice.call(document.querySelectorAll('.reveal .slides > section'));
+    for (var h = 0; h < groups.length; h++) {
+      if (groups[h].getAttribute('data-scene') === key) return { h: h, v: 0 };
+      var children = Array.prototype.slice.call(groups[h].children).filter(function(child) { return child.tagName === 'SECTION'; });
+      for (var v = 0; v < children.length; v++) {
+        if (children[v].getAttribute('data-scene') === key) return { h: h, v: v };
+      }
+    }
+    return null;
+  }
+
+  function goToScene(scene) {
+    var idx = getSceneIndices(scene);
+    if (!idx || !window.Reveal || typeof Reveal.slide !== 'function') return false;
+    Reveal.slide(idx.h, idx.v);
+    return true;
+  }
+
+  function sceneCoverage(scene, transcript) {
+    var key = pad(scene);
+    var scriptWords = autoSceneWords[key] || [];
+    if (!scriptWords.length) return 0;
+    var spoken = wordListFromText(transcript).map(normalizeWord).filter(Boolean);
+    var spokenSet = new Set(spoken);
+    var matched = 0;
+    scriptWords.forEach(function(w) {
+      if (spokenSet.has(w)) {
+        matched++;
+        return;
+      }
+      for (var i = 0; i < spoken.length; i++) {
+        if (Math.abs(spoken[i].length - w.length) <= 2 && levenshtein(spoken[i], w) <= 1) {
+          matched++;
+          return;
+        }
+      }
+    });
+    return matched / scriptWords.length;
+  }
+
+  function updateAutoButton() {
+    if (!autoBtn) return;
+    autoBtn.classList.toggle('active', autoPresentOn);
+    autoBtn.classList.toggle('tracking', autoPresentOn && autoState === 'tracking');
+    autoBtn.textContent = autoPresentOn ? '✨ Auto ' + Math.round(sceneCoverage(autoCurrentScene || getActiveScene() || '00', autoTranscript) * 100) + '%' : '✨ Auto Present';
+  }
+
+  function showAutoStatus(text) {
+    if (liveCaptionOverlay) {
+      liveCaptionOverlay.classList.add('active');
+      liveCaptionOverlay.textContent = text;
+    }
+  }
+
+  function startTrackingScene(scene) {
+    autoCurrentScene = pad(scene);
+    autoTranscript = '';
+    autoState = 'tracking';
+    clearTimeout(autoAdvanceTimer);
+    goToScene(autoCurrentScene);
+    ensureWords(autoCurrentScene);
+    loadAutoSceneScript(autoCurrentScene).then(function(txt) {
+      if (txt && liveCaptionOverlay && autoPresentOn) showAutoStatus('Auto scene ' + parseInt(autoCurrentScene, 10) + ': ' + txt);
+      updateAutoButton();
+    });
+  }
+
+  function advanceAutoScene() {
+    var n = parseInt(autoCurrentScene || getActiveScene() || '0', 10);
+    if (n >= 34) {
+      autoPresentOn = false;
+      autoState = 'idle';
+      showAutoStatus('Auto Present complete.');
+      updateAutoButton();
+      return;
+    }
+    startTrackingScene(pad(n + 1));
+  }
+
+  function feedAutoPresenter(text) {
+    if (!autoPresentOn) return;
+    var commandScene = parseSceneCommand(text);
+    if (commandScene) {
+      startTrackingScene(commandScene);
+      return;
+    }
+    if (autoState !== 'tracking') {
+      var active = getActiveScene();
+      if (active) startTrackingScene(active);
+      else return;
+    }
+    autoTranscript += ' ' + text;
+    loadAutoSceneScript(autoCurrentScene).then(function() {
+      var coverage = sceneCoverage(autoCurrentScene, autoTranscript);
+      updateAutoButton();
+      if (coverage >= autoThreshold && autoState === 'tracking') {
+        autoState = 'advancing';
+        showAutoStatus('⏩ Auto advancing...');
+        clearTimeout(autoAdvanceTimer);
+        autoAdvanceTimer = setTimeout(advanceAutoScene, 1200);
+      }
+    });
+  }
+
+  function toggleAutoPresent() {
+    autoPresentOn = !autoPresentOn;
+    clearTimeout(autoAdvanceTimer);
+    if (autoPresentOn) {
+      autoState = 'listening';
+      preloadAutoScenes();
+      if (!micOn) { initSpeechRecognition(); startMic(); }
+      showAutoStatus('Auto Present on. Say “Scene 1” or start reading.');
+      var active = getActiveScene();
+      if (active) startTrackingScene(active);
+    } else {
+      autoState = 'idle';
+      autoCurrentScene = null;
+      autoTranscript = '';
+      showAutoStatus('Auto Present off.');
+    }
+    updateAutoButton();
   }
 
   function highlightWord(currentTime) {
@@ -631,6 +810,7 @@
           if (liveCaptionOverlay) {
             liveCaptionOverlay.textContent = corrected || captured.trim() || '🎤 Listening...';
           }
+          feedAutoPresenter(corrected || captured.trim());
         }, 1000);
       } else if (!micProcessing && liveCaptionOverlay) {
         liveCaptionOverlay.textContent = transcript.trim() || '🎤 Listening...';
@@ -821,6 +1001,11 @@
       e.preventDefault();
       toggleMic();
     }
+    var targetTag = e.target && e.target.tagName ? e.target.tagName : '';
+    if ((e.key === 'a' || e.key === 'A') && !/^(input|textarea|select|button)$/i.test(targetTag)) {
+      e.preventDefault();
+      toggleAutoPresent();
+    }
   }, true);
 
   musicToggle.addEventListener('click', function(e) {
@@ -837,6 +1022,13 @@
     e.stopPropagation();
     toggleCaption();
   });
+
+  if (autoBtn) {
+    autoBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleAutoPresent();
+    });
+  }
 
   Reveal.on('ready', function() {
     setupActiveScene();
