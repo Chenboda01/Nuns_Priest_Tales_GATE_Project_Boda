@@ -24,6 +24,8 @@
   var autoTranscript = '';
   var autoLastStatusPct = -1;
   var autoAdvanceTimer = null;
+  var autoSceneTimer = null;
+  var autoSceneDuration = 20;
   var autoSceneScripts = {};
   var autoSceneWords = {};
   var autoThreshold = 0.50;
@@ -224,29 +226,74 @@
     }
   }
 
+  function scheduleAutoAdvance() {
+    clearTimeout(autoSceneTimer);
+    autoSceneTimer = setTimeout(advanceAutoScene, autoSceneDuration * 1000);
+  }
+
+  function showSlideContent() {
+    var slide = getCurrentSlide();
+    if (!slide || !liveCaptionOverlay || !autoPresentOn) return;
+    var heading = slide.querySelector('h1, h2, h3, h4');
+    var txt = (slide.textContent || '').trim();
+    if (txt) {
+      liveCaptionOverlay.textContent = txt;
+    } else if (heading) {
+      liveCaptionOverlay.textContent = heading.textContent;
+    } else {
+      liveCaptionOverlay.textContent = 'Auto Present — advancing automatically';
+    }
+  }
+
   function startTrackingScene(scene) {
     autoCurrentScene = pad(scene);
     autoTranscript = '';
     autoState = 'tracking';
     clearTimeout(autoAdvanceTimer);
+    clearTimeout(autoSceneTimer);
     goToScene(autoCurrentScene);
     ensureWords(autoCurrentScene);
     loadAutoSceneScript(autoCurrentScene).then(function(txt) {
-      if (txt && liveCaptionOverlay && autoPresentOn) showAutoStatus('Auto scene ' + parseInt(autoCurrentScene, 10) + ': ' + txt);
+      if (txt && liveCaptionOverlay && autoPresentOn) {
+        showAutoStatus('Auto scene ' + parseInt(autoCurrentScene, 10) + ': ' + txt);
+      } else if (liveCaptionOverlay && autoPresentOn) {
+        showSlideContent();
+      }
       updateAutoButton();
+      scheduleAutoAdvance();
     });
   }
 
   function advanceAutoScene() {
-    var n = parseInt(autoCurrentScene || getActiveScene() || '0', 10);
-    if (n >= 34) {
-      autoPresentOn = false;
-      autoState = 'idle';
-      showAutoStatus('Auto Present complete.');
-      updateAutoButton();
-      return;
+    var scene = getActiveScene();
+    if (scene) {
+      var n = parseInt(scene, 10);
+      if (n >= 34) {
+        autoPresentOn = false;
+        autoState = 'idle';
+        showAutoStatus('Auto Present complete.');
+        updateAutoButton();
+        return;
+      }
+      startTrackingScene(pad(n + 1));
+    } else {
+      if (window.Reveal && typeof Reveal.next === 'function') {
+        Reveal.next();
+        var nextScene = getActiveScene();
+        showSlideContent();
+        updateAutoButton();
+        if (nextScene) {
+          startTrackingScene(nextScene);
+        } else {
+          scheduleAutoAdvance();
+        }
+      } else {
+        autoPresentOn = false;
+        autoState = 'idle';
+        showAutoStatus('Auto Present complete.');
+        updateAutoButton();
+      }
     }
-    startTrackingScene(pad(n + 1));
   }
 
   function feedAutoPresenter(text) {
@@ -298,14 +345,17 @@
       var active = getActiveScene();
       if (active) {
         startTrackingScene(active);
-        showAutoStatus('Auto Present on — tracking scene ' + parseInt(active, 10));
       } else {
-        showAutoStatus('Auto Present on — say "Scene 1" to begin');
+        autoState = 'tracking';
+        showSlideContent();
+        updateAutoButton();
+        scheduleAutoAdvance();
       }
     } else {
       autoState = 'idle';
       autoCurrentScene = null;
       autoTranscript = '';
+      clearTimeout(autoSceneTimer);
       stopMic();
       showAutoStatus('Auto Present off.');
     }
@@ -1076,7 +1126,13 @@
     setupActiveScene();
     if (autoPresentOn && autoState === 'tracking') {
       var scene = getActiveScene();
-      if (scene) startTrackingScene(scene);
+      if (scene) {
+        startTrackingScene(scene);
+      } else {
+        showSlideContent();
+        updateAutoButton();
+        scheduleAutoAdvance();
+      }
     }
   });
 })();
