@@ -26,7 +26,7 @@
   var autoAdvanceTimer = null;
   var autoSceneTimer = null;
   var autoCaptionText = '';
-  var autoSpeeds = { turtle: 30, chill: 20, standard: 12, hurry: 7, madmax: 3 };
+  var autoSpeeds = { turtle: 60, chill: 30, standard: 20, hurry: 10, madmax: 0.001 };
   var autoSpeedOrder = ['turtle', 'chill', 'standard', 'hurry', 'madmax'];
   var autoSpeedIndex = 1;
   var autoSpeedLabels = { turtle: '🐢', chill: '🏖️', standard: 'Std', hurry: '⏰', madmax: '🤠' };
