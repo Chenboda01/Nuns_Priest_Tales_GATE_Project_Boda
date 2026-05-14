@@ -338,22 +338,13 @@
       updateAutoButton();
       return;
     }
+    var slide = Reveal.getCurrentSlide();
     Reveal.next();
-    var nextScene = getActiveScene();
-    if (nextScene) {
-      var n = parseInt(nextScene, 10);
-      if (n >= 34) {
-        autoPresentOn = false;
-        autoState = 'idle';
-        showAutoStatus('Auto Present complete — all scenes done.');
-        updateAutoButton();
-        return;
-      }
-      startTrackingScene(nextScene);
-    } else {
-      showSlideContent();
+    if (Reveal.getCurrentSlide() === slide) {
+      autoPresentOn = false;
+      autoState = 'idle';
+      showAutoStatus('Auto Present complete — reached the end.');
       updateAutoButton();
-      scheduleAutoAdvance();
     }
   }
 
@@ -1204,10 +1195,20 @@
   Reveal.on('slidechanged', function() {
     stopAudio();
     setupActiveScene();
-    if (autoPresentOn && autoState === 'tracking') {
+    if (autoPresentOn) {
+      clearTimeout(autoSceneTimer);
       var scene = getActiveScene();
-      if (scene) {
-        startTrackingScene(scene);
+      if (scene && autoState === 'tracking') {
+        autoCurrentScene = pad(scene);
+        autoTranscript = '';
+        loadAutoSceneScript(autoCurrentScene).then(function(txt) {
+          if (txt && liveCaptionOverlay) {
+            autoCaptionText = 'Auto scene ' + parseInt(autoCurrentScene, 10) + ': ' + txt;
+            liveCaptionOverlay.textContent = autoCaptionText;
+          }
+          updateAutoButton();
+          scheduleAutoAdvance(120);
+        });
       } else {
         showSlideContent();
         updateAutoButton();
