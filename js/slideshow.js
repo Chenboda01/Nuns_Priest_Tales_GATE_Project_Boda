@@ -232,15 +232,16 @@
 
   function getAutoDuration() { return autoSpeeds[autoSpeedOrder[autoSpeedIndex]]; }
 
-  function scheduleAutoAdvance() {
+  function scheduleAutoAdvance(duration) {
     clearTimeout(autoSceneTimer);
-    autoSceneTimer = setTimeout(advanceAutoScene, getAutoDuration() * 1000);
+    autoSceneTimer = setTimeout(advanceAutoScene, (duration || getAutoDuration()) * 1000);
   }
 
   function setSpeed(i) {
     autoSpeedIndex = i;
     if (autoPresentOn && autoState === 'tracking') {
-      scheduleAutoAdvance();
+      var activeScene = getActiveScene();
+      scheduleAutoAdvance(activeScene ? 120 : undefined);
       updateAutoButton();
     }
     if (autoDropdown) autoDropdown.classList.remove('open');
@@ -272,7 +273,12 @@
         item.classList.add('active');
         setSpeed(i);
         closeSpeedDropdown();
-        scheduleAutoAdvance();
+        var scene = getActiveScene();
+        if (scene) {
+          scheduleAutoAdvance(120);
+        } else {
+          scheduleAutoAdvance();
+        }
         updateAutoButton();
       });
       dd.appendChild(item);
@@ -320,7 +326,7 @@
         showSlideContent();
       }
       updateAutoButton();
-      scheduleAutoAdvance();
+      scheduleAutoAdvance(120);
     });
   }
 
