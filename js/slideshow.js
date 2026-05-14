@@ -26,6 +26,7 @@
   var autoAdvanceTimer = null;
   var autoSceneTimer = null;
   var autoCaptionText = '';
+  var autoAdvancingFlag = false;
   var autoSpeeds = { turtle: 60, chill: 30, standard: 20, hurry: 10, madmax: 0.001 };
   var autoSpeedOrder = ['turtle', 'chill', 'standard', 'hurry', 'madmax'];
   var autoSpeedIndex = 1;
@@ -339,6 +340,7 @@
       return;
     }
     var slide = Reveal.getCurrentSlide();
+    autoAdvancingFlag = true;
     Reveal.next();
     if (Reveal.getCurrentSlide() === slide) {
       autoPresentOn = false;
@@ -1197,6 +1199,8 @@
     setupActiveScene();
     if (autoPresentOn) {
       clearTimeout(autoSceneTimer);
+      var fromAdvance = autoAdvancingFlag;
+      autoAdvancingFlag = false;
       var scene = getActiveScene();
       if (scene && autoState === 'tracking') {
         autoCurrentScene = pad(scene);
@@ -1212,7 +1216,7 @@
       } else {
         showSlideContent();
         updateAutoButton();
-        scheduleAutoAdvance();
+        scheduleAutoAdvance(fromAdvance ? undefined : 30);
       }
     }
   });
