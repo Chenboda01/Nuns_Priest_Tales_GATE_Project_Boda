@@ -331,34 +331,29 @@
   }
 
   function advanceAutoScene() {
-    var scene = getActiveScene();
-    if (scene) {
-      var n = parseInt(scene, 10);
+    if (!window.Reveal || typeof Reveal.next !== 'function') {
+      autoPresentOn = false;
+      autoState = 'idle';
+      showAutoStatus('Auto Present complete.');
+      updateAutoButton();
+      return;
+    }
+    Reveal.next();
+    var nextScene = getActiveScene();
+    if (nextScene) {
+      var n = parseInt(nextScene, 10);
       if (n >= 34) {
         autoPresentOn = false;
         autoState = 'idle';
-        showAutoStatus('Auto Present complete.');
+        showAutoStatus('Auto Present complete — all scenes done.');
         updateAutoButton();
         return;
       }
-      startTrackingScene(pad(n + 1));
+      startTrackingScene(nextScene);
     } else {
-      if (window.Reveal && typeof Reveal.next === 'function') {
-        Reveal.next();
-        var nextScene = getActiveScene();
-        showSlideContent();
-        updateAutoButton();
-        if (nextScene) {
-          startTrackingScene(nextScene);
-        } else {
-          scheduleAutoAdvance();
-        }
-      } else {
-        autoPresentOn = false;
-        autoState = 'idle';
-        showAutoStatus('Auto Present complete.');
-        updateAutoButton();
-      }
+      showSlideContent();
+      updateAutoButton();
+      scheduleAutoAdvance();
     }
   }
 
